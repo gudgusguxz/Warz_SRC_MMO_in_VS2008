@@ -1,0 +1,342 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Korean (Korea) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_UPLOAD DIALOGEX 0, 0, 308, 179
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "YouTube upload "
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    RTEXT           "Username",IDC_STATIC,7,15,49,8
+    EDITTEXT        IDC_ED_ID,62,12,85,14,ES_AUTOHSCROLL
+    RTEXT           "Password",IDC_STATIC,159,15,49,8
+    EDITTEXT        IDC_ED_PWD,216,12,85,14,ES_PASSWORD | ES_AUTOHSCROLL
+    RTEXT           "Title",IDC_STATIC,7,37,49,8
+    EDITTEXT        IDC_ED_TITLE,62,35,239,14,ES_AUTOHSCROLL
+    RTEXT           "Desc",IDC_STATIC,7,56,49,8
+    EDITTEXT        IDC_ED_DESC,62,54,239,57,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    RTEXT           "Keyword",IDC_STATIC,7,121,49,8
+    EDITTEXT        IDC_ED_KEYWORD,62,118,239,14,ES_AUTOHSCROLL
+    RTEXT           "File",IDC_STATIC,7,142,49,8
+    EDITTEXT        IDC_ED_FILE,62,139,239,14,ES_AUTOHSCROLL | ES_READONLY
+    DEFPUSHBUTTON   "Upload",IDOK,198,158,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,251,158,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_UPLOAD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 301
+        VERTGUIDE, 56
+        VERTGUIDE, 62
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 172
+        HORZGUIDE, 26
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Korean (Korea) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About BandiCapSample"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "BandiCapSample, Version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2008",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "OK",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_CONFIG DIALOGEX 0, 0, 413, 425
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Capture configuration"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "nCaptureMode",IDC_STATIC,7,7,319,33
+    CONTROL         "MODE_GDI",IDC_MODE_GDI,"Button",BS_AUTORADIOBUTTON | WS_GROUP,43,20,51,10
+    CONTROL         "MODE_D3D9",IDC_MODE_D3D9,"Button",BS_AUTORADIOBUTTON,125,20,57,10
+    CONTROL         "MODE_D3D9_SCALE",IDC_MODE_D3D9_SCALE,"Button",BS_AUTORADIOBUTTON,206,20,81,10
+    GROUPBOX        "FileType",IDC_STATIC,7,45,319,33
+    CONTROL         "F_AVI",IDC_F_AVI,"Button",BS_AUTORADIOBUTTON | WS_GROUP,43,59,35,10
+    CONTROL         "F_MP4",IDC_F_MP4,"Button",BS_AUTORADIOBUTTON,126,59,37,10
+    GROUPBOX        "Video",IDC_STATIC,7,85,155,145
+    LTEXT           "VideoSizeW",IDC_STATIC,51,102,38,8
+    COMBOBOX        IDC_VIDEO_SIZEW,94,100,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoSizeH",IDC_STATIC,53,117,36,8
+    COMBOBOX        IDC_VIDEO_SIZEH,94,114,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoFPS",IDC_STATIC,59,130,30,8
+    COMBOBOX        IDC_VIDEO_FPS,94,128,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoCodec",IDC_STATIC,51,156,38,8
+    COMBOBOX        IDC_VIDEO_CODEC,94,154,60,131,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoRateControl",IDC_STATIC,32,170,57,8
+    COMBOBOX        IDC_VIDEO_RATECONTROL,94,168,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoKBitrate",IDC_STATIC,45,184,44,8
+    COMBOBOX        IDC_VIDEO_KBITRATE,94,182,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoQuality",IDC_STATIC,48,198,41,8
+    COMBOBOX        IDC_VIDEO_QUALITY,94,196,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "VideoKeyframeInterval",IDC_STATIC,15,212,74,8
+    COMBOBOX        IDC_VIDEO_INTERVAL,94,210,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Audio",IDC_STATIC,171,86,155,145
+    LTEXT           "AudioChannels",IDC_STATIC,202,101,48,8
+    COMBOBOX        IDC_AUDIO_CHANNEL,256,100,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "AudioSampleRate",IDC_STATIC,193,115,57,8
+    COMBOBOX        IDC_AUDIO_SAMPLERATE,256,114,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "AudioCodec",IDC_STATIC,211,156,39,8
+    COMBOBOX        IDC_AUDIO_CODEC,256,154,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "AudioRateControl",IDC_STATIC,192,169,58,8
+    COMBOBOX        IDC_AUDIO_RATECONTROL,256,168,60,81,CBS_DROPDOWN | CBS_SORT | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "AudioKBitrate",IDC_STATIC,206,183,44,8
+    COMBOBOX        IDC_AUDIO_KBITRATE,256,182,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "AudioQuality",IDC_STATIC,208,197,42,8
+    COMBOBOX        IDC_AUDIO_QUALITY,256,196,60,81,CBS_DROPDOWN | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "FPS limits",IDC_STATIC,7,235,155,47
+    LTEXT           "Min",IDC_STATIC,77,249,12,8
+    COMBOBOX        IDC_FPS_MIN,94,247,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Max",IDC_STATIC,75,263,14,8
+    COMBOBOX        IDC_FPS_MAX,94,261,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Thread priority",IDC_STATIC,171,235,155,47
+    LTEXT           "Priority",IDC_STATIC,226,249,24,8
+    COMBOBOX        IDC_THREAD_PRIORITY,256,248,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Logo",IDC_STATIC,7,286,319,47
+    RTEXT           "LogoPath",IDC_STATIC,15,300,73,8
+    EDITTEXT        IDC_LOGO_PATH,94,299,60,13,ES_AUTOHSCROLL
+    RTEXT           "LogoAlpha",IDC_STATIC,15,315,73,8
+    COMBOBOX        IDC_LOGO_ALPHA,94,313,60,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "LogoPosX, LogoPosY",IDC_STATIC,177,300,74,8
+    COMBOBOX        IDC_LOGO_POSX,256,298,30,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LOGO_POSY,286,298,30,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "LogoSizeW, LogoSizeH",IDC_STATIC,177,315,74,8
+    COMBOBOX        IDC_LOGO_SIZEW,256,313,30,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LOGO_SIZEH,286,313,30,81,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Etc",IDC_STATIC,6,337,320,44
+    LTEXT           "CaptureRect",IDC_STATIC,47,349,42,8
+    EDITTEXT        IDC_CAPTURE_RECT_L,94,348,32,12,ES_AUTOHSCROLL
+    LTEXT           ",",IDC_STATIC,128,351,8,8
+    EDITTEXT        IDC_CAPTURE_RECT_T,136,348,32,12,ES_AUTOHSCROLL
+    LTEXT           ",",IDC_STATIC,170,351,8,8
+    EDITTEXT        IDC_CAPTURE_RECT_R,178,348,32,12,ES_AUTOHSCROLL
+    LTEXT           ",",IDC_STATIC,212,351,8,8
+    EDITTEXT        IDC_CAPTURE_RECT_B,220,348,32,12,ES_AUTOHSCROLL
+    LTEXT           "IncludeCursor",IDC_STATIC,43,366,46,8
+    CONTROL         "",IDC_INCLUDE_CURSOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,94,366,16,10
+    LTEXT           "AdjustAudioMixer",IDC_STATIC,193,366,57,8
+    CONTROL         "",IDC_ADJUST_AUDIOMIXER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,256,366,16,10
+    GROUPBOX        "Presets",IDC_STATIC,342,7,64,375
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,334,10,1,371
+    PUSHBUTTON      "Default",IDC_BTN_PRESET_DEFAULT,349,23,50,14
+    PUSHBUTTON      "Half size",IDC_BTN_PRESET_HALF,349,41,50,14
+    PUSHBUTTON      "320x240",IDC_BTN_PRESET_320x240,349,58,50,14
+    PUSHBUTTON      "400x300",IDC_BTN_PRESET_400x300,349,74,50,14
+    PUSHBUTTON      "512x384",IDC_BTN_PRESET_512x384,349,92,50,14
+    PUSHBUTTON      "576x432",IDC_BTN_PRESET_576x432,349,109,50,14
+    PUSHBUTTON      "640x480",IDC_BTN_PRESET_640x480,349,126,50,14
+    PUSHBUTTON      "800x600",IDC_BTN_PRESET_800x600,349,143,50,14
+    PUSHBUTTON      "MPEG-1",IDC_BTN_PRESET_MPEG1,349,172,50,14
+    PUSHBUTTON      "MJPEG",IDC_BTN_PRESET_MJPEG,349,189,50,14
+    PUSHBUTTON      "MJPEG-HQ",IDC_BTN_PRESET_MJPEG_HIGH,349,206,50,14
+    PUSHBUTTON      "MPEG-4",IDC_BTN_PRESET_MPEG4,349,223,50,14
+    PUSHBUTTON      "YouTube",IDC_BTN_PRESET_YOUTUBE,349,253,50,14
+    PUSHBUTTON      "YouTube HQ",IDC_BTN_PRESET_YOUTUBE_HQ,349,270,50,14
+    PUSHBUTTON      "Naver Blog / \nDaum TV Pot",IDC_BTN_PRESET_NAVER_BLOG,349,287,50,32,BS_MULTILINE
+    PUSHBUTTON      "Video Edting",IDC_BTN_PRESET_VIDEO_EDTING,349,322,50,14
+    LTEXT           "Target directory",IDC_STATIC,7,388,53,8
+    EDITTEXT        IDC_TARGET_DIRECTORY,69,387,272,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse",IDC_BROWSE,349,386,57,14
+    DEFPUSHBUTTON   "Ok",IDOK,286,404,56,14
+    PUSHBUTTON      "Cancel",IDCANCEL,349,404,57,14
+    PUSHBUTTON      "16, 16, 480, 360",IDC_CAPTURE_RECT_TEST,256,347,60,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 406
+        VERTGUIDE, 15
+        VERTGUIDE, 43
+        VERTGUIDE, 89
+        VERTGUIDE, 94
+        VERTGUIDE, 126
+        VERTGUIDE, 154
+        VERTGUIDE, 250
+        VERTGUIDE, 256
+        VERTGUIDE, 316
+        VERTGUIDE, 326
+        VERTGUIDE, 342
+        VERTGUIDE, 349
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 418
+        HORZGUIDE, 59
+        HORZGUIDE, 113
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_BANDICAPSAMPLE      ICON                    "BandiCapSample.ico"
+
+IDI_SMALL               ICON                    "small.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDC_BANDICAPSAMPLE MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About ...",                  IDM_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDC_BANDICAPSAMPLE ACCELERATORS
+BEGIN
+    "?",            IDM_ABOUT,              ASCII,  ALT
+    "/",            IDM_ABOUT,              ASCII,  ALT
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_APP_TITLE           "BandiCapSample"
+    IDC_BANDICAPSAMPLE      "BANDICAPSAMPLE"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

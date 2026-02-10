@@ -1,0 +1,8 @@
+@"
+*.lib
+*.ncb
+*.pdb
+*.obj
+*.exe
+*.dll
+"@ | Out-File -Encoding utf8 .gitignore

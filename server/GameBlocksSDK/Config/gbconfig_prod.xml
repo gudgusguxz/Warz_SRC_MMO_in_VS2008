@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<config>
+
+<!-- Global GameBlocks library configuration -->
+<library>
+<gameblocks_enabled>true</gameblocks_enabled>
+</library>
+
+<!-- Game must configure these -->
+<game>
+<!-- Set unique source id's for each game server
+ if you will have multiple game servers connecting
+ to gameblocks via a single psclient connection -->
+<source_id>gameserver</source_id>
+</game>
+
+<!-- Connection to GameBlocks server -->
+<server>
+<address>216.152.129.156</address>
+<port>8720</port>
+<timeout_period>7</timeout_period>
+</server>
+
+</config>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<config>
+
+<!-- Global GameBlocks library configuration -->
+<library>
+<gameblocks_enabled>true</gameblocks_enabled>
+</library>
+
+<!-- Game must configure these -->
+<game>
+<!-- Set unique source id's for each game server
+ if you will have multiple game servers connecting
+ to gameblocks via a single psclient connection -->
+<source_id>GameBlocksSamples</source_id>
+</game>
+
+<!-- Connection to GameBlocks server -->
+<server>
+<!-- remove this comment block and configure one of the following two properties:
+<address>ENTER_GAMEBLOCKS_SERVER_IP_HERE</address>
+<url>ENTER_GAMEBLOCKS_SERVER_URL_HERE</url>
+remove this as well -->
+<url>dice.bf4.example.gameblocks.info</url>
+<port>8740</port>
+
+<timeout_period>7</timeout_period>
+</server>
+
+</config>

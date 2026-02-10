@@ -1,0 +1,7 @@
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\bin\Debug\LangPackFixer.exe
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\bin\Debug\LangPackFixer.pdb
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\obj\Debug\ResolveAssemblyReference.cache
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\obj\Debug\LangPackFixer.Properties.Resources.resources
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\obj\Debug\LangPackFixer.csproj.GenerateResource.Cache
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\obj\Debug\LangPackFixer.exe
+Z:\tsg\WarZ\src\Tools\LangPackFixer\LangPackFixer\obj\Debug\LangPackFixer.pdb
