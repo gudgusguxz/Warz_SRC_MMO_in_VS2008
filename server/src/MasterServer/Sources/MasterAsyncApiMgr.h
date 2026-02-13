@@ -74,7 +74,7 @@ public:
 public:
 	CMSJobGetServerList() : CMSAsyncApiJob()
 	{
-		sprintf(desc, "CMSJobGetServerList %p", this);
+		sprintf_s(desc, sizeof(desc), "CMSJobGetServerList %p", this);
 	}
 
 	int		Exec();
@@ -88,7 +88,7 @@ public:
 public:
 	CMSJobTickAllServers() : CMSAsyncApiJob()
 	{
-		sprintf(desc, "CMSJobTickAllServers %p", this);
+		sprintf_s(desc, sizeof(desc), "CMSJobTickAllServers %p", this);
 	}
 
 	int		Exec();

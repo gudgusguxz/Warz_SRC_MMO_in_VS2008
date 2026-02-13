@@ -74,7 +74,7 @@ PostFX::Prepare( r3dScreenBuffer* dest, r3dScreenBuffer* src )
 
 		Name[ 0 ] = 0;
 
-		sscanf( mName, "class %63s", Name );
+		sscanf_s( mName, "class %63s", Name, (unsigned)sizeof(Name) );
 
 		uint32_t j = 0;
 		for( uint32_t i = 0, e = strlen( Name ); i < e; i ++ )

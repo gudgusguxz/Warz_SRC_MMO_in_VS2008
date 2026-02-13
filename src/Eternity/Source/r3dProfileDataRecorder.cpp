@@ -69,7 +69,7 @@ namespace
 
 			expandedName[ i ] = 0 ;
 
-			strcat ( expandedName, name ) ;
+			strcat_s ( expandedName, sizeof(expandedName), name ) ;
 		}
 
 		fprintf( f, "%-52s - %6.2f - %5d\n", expandedName, time, numCalls ) ;

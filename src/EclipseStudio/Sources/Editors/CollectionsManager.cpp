@@ -39,7 +39,7 @@ namespace
 
 	const char * GetLevelCollectionsXMLTypeDefFile(bool forSave)
 	{
-		sprintf(PATH_BUF, "%s\\collections\\collections.xml", forSave ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir());
+		sprintf_s(PATH_BUF, sizeof(PATH_BUF), "%s\\collections\\collections.xml", forSave ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir());
 		return PATH_BUF;
 	}
 

@@ -644,11 +644,11 @@ void GameObject::WriteSerializedData(pugi::xml_node& node)
 		rotNode.set_name("rotation");
 		char temp_str[128];
 		// save floats at %.4f to make merging easier
-		sprintf(temp_str, "%.4f", rot.x);
+		sprintf_s(temp_str, sizeof(temp_str), "%.4f", rot.x);
 		rotNode.append_attribute("x") = temp_str;
-		sprintf(temp_str, "%.4f", rot.y);
+		sprintf_s(temp_str, sizeof(temp_str), "%.4f", rot.y);
 		rotNode.append_attribute("y") = temp_str;
-		sprintf(temp_str, "%.4f", rot.z);
+		sprintf_s(temp_str, sizeof(temp_str), "%.4f", rot.z);
 		rotNode.append_attribute("z") = temp_str;
 	}
 
@@ -658,11 +658,11 @@ void GameObject::WriteSerializedData(pugi::xml_node& node)
 		scaleNode.set_name("scale");
 		char temp_str[128];
 		// save floats at %.4f to make merging easier
-		sprintf(temp_str, "%.4f", vScl.x);
+		sprintf_s(temp_str, sizeof(temp_str), "%.4f", vScl.x);
 		scaleNode.append_attribute("x") = temp_str;
-		sprintf(temp_str, "%.4f", vScl.y);
+		sprintf_s(temp_str, sizeof(temp_str), "%.4f", vScl.y);
 		scaleNode.append_attribute("y") = temp_str;
-		sprintf(temp_str, "%.4f", vScl.z);
+		sprintf_s(temp_str, sizeof(temp_str), "%.4f", vScl.z);
 		scaleNode.append_attribute("z") = temp_str;
 	}
 

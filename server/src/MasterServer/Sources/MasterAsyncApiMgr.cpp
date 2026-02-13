@@ -161,7 +161,7 @@ void CMSAsyncApiMgr::GetStatus(char* text)
 	for(int i=0; i<NUM_WORKER_THREADS; i++)
 	{
 		r3dCSHolder cs1(workers_[i].csJobs_);
-		sprintf(text + strlen(text), "%d ", workers_[i].jobs_.size());
+		sprintf_s(text + strlen(text), sizeof(char) * 64, "%d ", workers_[i].jobs_.size());
 	}
 }
 
@@ -230,7 +230,7 @@ void CMSAsyncApiMgr::Tick()
 //
 //
 
-int CMSJobGetServerList::Exec() //àªèÒ
+int CMSJobGetServerList::Exec() //ï¿½ï¿½ï¿½
 {
 	CWOBackendReq req("api_ServersMgr.aspx");
 	req.AddParam("skey1",  g_ServerApiKey);

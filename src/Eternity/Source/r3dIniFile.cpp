@@ -232,7 +232,7 @@ const char* r3dReadCFG_S(const char* FileName, const char* group, const char* na
 int r3dReadCFG_I(const char* FileName, const char* group, const char* name, int defval)
 {
   char defaultvalue[64];
-  sprintf(defaultvalue,"%d", defval );
+  sprintf_s(defaultvalue, sizeof(defaultvalue), "%d", defval );
 
   r3dGetPrivateProfileString (group, name, defaultvalue, _r3d_inibuf, _r3d_inibufsize, FileName);
   return atoi(_r3d_inibuf);
@@ -241,7 +241,7 @@ int r3dReadCFG_I(const char* FileName, const char* group, const char* name, int 
 float r3dReadCFG_F(const char* FileName, const char* group, const char* name, float defval)
 {
   char defaultvalue[64];
-  sprintf(defaultvalue,"%f", defval );
+  sprintf_s(defaultvalue, sizeof(defaultvalue), "%f", defval );
 
   r3dGetPrivateProfileString (group, name, defaultvalue, _r3d_inibuf, _r3d_inibufsize, FileName);
   return float(atof(_r3d_inibuf));
@@ -250,12 +250,12 @@ float r3dReadCFG_F(const char* FileName, const char* group, const char* name, fl
 r3dVector r3dReadCFG_V(const char* FileName, const char* group, const char* name, const r3dPoint3D& DefVal)
 {
   char defaultvalue[512];
-  sprintf(defaultvalue,"%f %f %f", DefVal.X, DefVal.Y, DefVal.Z);
+  sprintf_s(defaultvalue, sizeof(defaultvalue), "%f %f %f", DefVal.X, DefVal.Y, DefVal.Z);
 
   r3dGetPrivateProfileString(group, name, defaultvalue, _r3d_inibuf, _r3d_inibufsize, FileName);
 
   float X,Y,Z;
-  sscanf(_r3d_inibuf,"%f %f %f", &X, &Y, &Z);
+  sscanf_s(_r3d_inibuf,"%f %f %f", &X, &Y, &Z);
   return r3dVector(X,Y,Z);
 }
 
@@ -269,7 +269,7 @@ void r3dWriteCFG_V(const char* FileName, const char* group, const char* name, co
 {
  char defaultvalue[128];
 
- sprintf(defaultvalue,"%.4f %.4f %.4f", DefVal.x, DefVal.y, DefVal.z );
+ sprintf_s(defaultvalue, sizeof(defaultvalue), "%.4f %.4f %.4f", DefVal.x, DefVal.y, DefVal.z );
 
  WritePrivateProfileString(group, name, defaultvalue, FileName);
 }
@@ -279,7 +279,7 @@ void r3dWriteCFG_I(const char* FileName, const char* group, const char* name, in
 {
  char defaultvalue[64];
 
- sprintf(defaultvalue,"%d", val );
+ sprintf_s(defaultvalue, sizeof(defaultvalue), "%d", val );
 
  WritePrivateProfileString (group, name, defaultvalue, FileName);
 }
@@ -289,7 +289,7 @@ void r3dWriteCFG_F(const char* FileName, const char* group, const char* name, fl
 {
  char defaultvalue[64];
 
- sprintf(defaultvalue,"%.4f", val );
+ sprintf_s(defaultvalue, sizeof(defaultvalue), "%.4f", val );
 
  WritePrivateProfileString (group, name, defaultvalue, FileName);
 }

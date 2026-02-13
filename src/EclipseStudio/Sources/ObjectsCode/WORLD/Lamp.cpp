@@ -738,7 +738,7 @@ float	obj_LightHelper :: DrawPropertyEditor(float scrx, float scry, float scrw, 
 		{
 			char drive[16], dir[ 512 ], name[512], ext[ 512 ] ;
 			_splitpath( LT.ProjectMap->getFileLoc().FileName, drive, dir, name, ext ) ;
-			strcpy( sProjTexName, name ) ;
+			strcpy_s( sProjTexName, sizeof(sProjTexName), name ) ;
 			strcat( sProjTexName, ext ) ;
 		}
 

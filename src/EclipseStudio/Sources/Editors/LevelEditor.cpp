@@ -701,7 +701,7 @@ stringlist_t gErosionPatternTextureNames;
 bool ReadTimeCurve( FILE* fin, r3dTimeGradient2& curve )
 {
 	int count;
-	if( fscanf( fin, "point_count %d\n", &count ) != 1 )
+	if( fscanf_s( fin, "point_count %d\n", &count ) != 1 )
 		return false;
 
 	if( count < 0 || count > curve.MAX_VALUES )
@@ -710,7 +710,7 @@ bool ReadTimeCurve( FILE* fin, r3dTimeGradient2& curve )
 	for( int i = 0, e = count; i < e; i ++ )
 	{
 		float time, value;
-		if( fscanf( fin, "(%f,%f)\n", &time, &value ) != 2 )
+		if( fscanf_s( fin, "(%f,%f)\n", &time, &value ) != 2 )
 			return false;
 
 		curve.AddValue( time, value );
@@ -923,7 +923,7 @@ int LoadXMLSettings()
 
 	FName[ sizeof FName - 1 ] = 0;
 
-	_snprintf( FName, sizeof FName - 1, LEVEL_SETTINGS_FILE, r3dGameLevel::GetHomeDir() ) ;
+	_snprintf_s( FName, sizeof(FName), _TRUNCATE, LEVEL_SETTINGS_FILE, r3dGameLevel::GetHomeDir() ) ;
 
 	bool XMLExists = false;
 
@@ -1021,7 +1021,7 @@ int LoadLevel( float startLoadingProgress )
 
 	FName[ sizeof FName - 1 ] = 0;
 
-	_snprintf( FName, sizeof FName - 1, "%s\\vars.ini", r3dGameLevel::GetHomeDir() );
+	_snprintf_s( FName, sizeof(FName), _TRUNCATE, "%s\\vars.ini", r3dGameLevel::GetHomeDir() );
 
 	if( !r3d_access( FName, 4 ) )
 	{
@@ -1665,7 +1665,7 @@ namespace
 		for ( unsigned int i = 0, e = obj_LocalColorCorrection::LocalColorCorrectionCount(); i < e; i ++  )
 		{
 			obj_LocalColorCorrection* pLocalCC = obj_LocalColorCorrection::LocalColorCorrectionGet( i );
-			sprintf( szName, "Local Color Correction %i", i );
+			sprintf_s( szName, sizeof(szName), "Local Color Correction %i", i );
 			localCCList.push_back ( szName );
 		}
 
@@ -1686,7 +1686,7 @@ namespace
 		for ( int i = 0, e = g_EnvmapProbes.GetCount(); i < e; i ++  )
 		{
 			obj_EnvmapProbe* probe = g_EnvmapProbes.GetProbe( i );
-			sprintf( szName, "Probe %i", probe->GetID() );
+			sprintf_s( szName, sizeof(szName), "Probe %i", probe->GetID() );
 			envmapList.push_back ( szName );
 		}
 
@@ -1749,7 +1749,7 @@ namespace
 			if( obj->Class->Name == sSelectedType )
 			{
 				char objName [256];
-				sprintf ( objName, "[%i] %s", g_dObjectNames.size (), obj->Name.c_str() );
+				sprintf_s( objName, sizeof(objName), "[%i] %s", g_dObjectNames.size (), obj->Name.c_str() );
 				g_dObjects.push_back( obj );
 				g_dObjectNames.push_back( objName );
 			}
@@ -1773,7 +1773,7 @@ namespace
 		//float alt_len = ( UI_TargetPos - gCam ).Length();
 		//r3dPoint3D pos = gCam + gCam.vPointTo * R3D_MIN( alt_len, 233.f );
 		char name[256];
-		sprintf(name, "water_plane_%d", timeGetTime());
+		sprintf_s(name, sizeof(name), "water_plane_%d", timeGetTime());
 
 		r3dPoint3D pos = r3dVector(0,0,0);
 		return static_cast<obj_WaterPlane*>( srv_CreateGameObject( "obj_WaterPlane", name, pos ) );
@@ -4195,7 +4195,7 @@ void Editor_Level :: Process(bool enable)
 	{
 		if( dir[ i ] == '\\' || dir[ i ] == '/' )
 		{
-			strcpy( LevelName, dir + i + 1 ) ;
+			strcpy_s( LevelName, sizeof(LevelName), dir + i + 1 ) ;
 
 			if( enable )
 			{
@@ -6266,7 +6266,7 @@ void ExtractDirName( char ( &buff )[ N ], const char* src )
 
 	_splitpath( src, drive, split_path, file, ext );
 
-	strcpy( buff, split_path );	
+	strcpy_s( buff, N, split_path );
 }
 
 void FixDirSlashes( char * MatDirName )
@@ -6485,11 +6485,11 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 			{
 				if( r3dTexture* tex = *( g_iTerrainNormalMapEditMode ? MatTexNormalArray : MatTexArray ) [ CurrentPaintLayerIdx3 ] )
 				{
-					strcpy( newPath, tex->getFileLoc().FileName );
+					strcpy_s( newPath, sizeof(newPath), tex->getFileLoc().FileName );
 				}
 				else
 				{
-					strcpy( newPath, TERRAIN_MAT_DIR_NAME );
+					strcpy_s( newPath, sizeof(newPath), TERRAIN_MAT_DIR_NAME );
 				}
 			}
 
@@ -6500,7 +6500,7 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 
 				char sStatStr[ MAX_PATH * 2 ];
 
-				strcpy( sStatStr, tex->getFileLoc().FileName );
+				strcpy_s( sStatStr, sizeof(sStatStr), tex->getFileLoc().FileName );
 				strlwr( sStatStr );
 
 				for( size_t i = 0, e = strlen( sStatStr ) ; i < e; i ++ )
@@ -6604,7 +6604,7 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 
 		char DirWithWCard[ 512 ];
 
-		strcpy( DirWithWCard, MatDirName );
+		strcpy_s( DirWithWCard, sizeof(DirWithWCard), MatDirName );
 		strcat( DirWithWCard, "\\*.*" );
 
 		if( imgui_FileList( 5, DIR_LIST_START + DIR_LIST_HEIGHT + 5, 300, FILE_LIST_HEIGHT, DirWithWCard, MatFName, &matSelOffset, false, bChangedVal, 0, ".dds|.tga|.bmp" ) )
@@ -6805,11 +6805,11 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 		{
 			if( g_iTerrainGlobalNormalMapEditMode )
 			{
-				strcpy( newPath, sts.FarNormalTextureName.c_str() );
+				strcpy_s( newPath, sizeof(newPath), sts.FarNormalTextureName.c_str() );
 			}
 			else
 			{
-				strcpy( newPath, sts.FarDiffuseTextureName.c_str() );
+				strcpy_s( newPath, sizeof(newPath), sts.FarDiffuseTextureName.c_str() );
 			}
 		}
 
@@ -6844,10 +6844,10 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 				_splitpath( sts.FarDiffuseTextureName.c_str(), drive, path, fileName, ext );
 				if( bChangedPath )
 				{
-					strcpy( MatDirName, path );
+					strcpy_s( MatDirName, sizeof(MatDirName), path );
 				}
 
-				strcpy( MatFName, fileName );
+				strcpy_s( MatFName, sizeof(MatFName), fileName );
 				strcat( MatFName, ext );
 				break;
 
@@ -6856,17 +6856,17 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 
 				if( bChangedPath )
 				{
-					strcpy( MatDirName, path );
+					strcpy_s( MatDirName, sizeof(MatDirName), path );
 				}
 
-				strcpy( MatFName, fileName );
+				strcpy_s( MatFName, sizeof(MatFName), fileName );
 				strcat( MatFName, ext );
 				break;
 			};
 
 			if( !strlen( MatDirName ) )
 			{
-				strcpy( MatDirName, TERRAIN_MAT_DIR_NAME );
+				strcpy_s( MatDirName, sizeof(MatDirName), TERRAIN_MAT_DIR_NAME );
 			}
 		}
 		//------------------------------------------------------------------------
@@ -6895,7 +6895,7 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 
 		char DirWithWCard[ 512 ];
 
-		strcpy( DirWithWCard, MatDirName );
+		strcpy_s( DirWithWCard, sizeof(DirWithWCard), MatDirName );
 		strcat( DirWithWCard, "\\*.*" );
 
 		if( imgui_FileList( 5, DIR_LIST_START + DIR_LIST_HEIGHT + 5, 300, FILE_LIST_HEIGHT, DirWithWCard, MatFName, &matSelOffset, false, bChangedVal, 0, ".dds|.tga|.bmp" ) )
@@ -8600,7 +8600,7 @@ void Editor_Level :: ProcessObjects()
 			char drive[ 16 ], dir[ 1024 ], file[ 1024 ], ext[ 1024 ] ;
 			_splitpath( EditObject1->FileName.c_str(), drive, dir, file, ext ) ;
 
-			strcpy( ObjectName, file ) ;
+			strcpy_s( ObjectName, sizeof(ObjectName), file ) ;
 			EditObject1_Last = EditObject1 ;
 		}
 
@@ -8995,7 +8995,7 @@ void UpdateDestructionMeshSettings( const char* target )
 
 	if( target )
 	{
-		strcpy( TargetLWR, target );
+		strcpy_s( TargetLWR, sizeof(TargetLWR), target );
 		strlwr( TargetLWR );
 	}
 
@@ -9010,7 +9010,7 @@ void UpdateDestructionMeshSettings( const char* target )
 			if( target )
 			{
 				char FileNameLwr[ MAX_PATH ];
-				strcpy( FileNameLwr, mgo->MeshLOD[0]->FileName.c_str() );
+				strcpy_s( FileNameLwr, sizeof(FileNameLwr), mgo->MeshLOD[0]->FileName.c_str() );
 				strlwr( FileNameLwr );
 
 				if( !strstr( FileNameLwr, TargetLWR ) )
@@ -9173,7 +9173,7 @@ Editor_Level::ProcessDamageLib()
 
 		if( catIdx >= 0 && catIdx < (int)dirBoundCatList.size() )
 		{
-			strcpy( CatName, dirBoundCatList[ catIdx ].c_str() );
+			strcpy_s( CatName, sizeof(CatName), dirBoundCatList[ catIdx ].c_str() );
 
 			const CategoryStruct& cat = ObjectCategories[ indexMap[ catIdx ] ];
 
@@ -9185,7 +9185,7 @@ Editor_Level::ProcessDamageLib()
 
 			if( itemIdx >= 0 && itemIdx < (int)cat.ObjectsNames.size() )
 			{
-				strcpy( MeshName, cat.ObjectsNames[ itemIdx ].c_str() );
+				strcpy_s( MeshName, sizeof(MeshName), cat.ObjectsNames[ itemIdx ].c_str() );
 			}
 		}
 	}
@@ -9386,7 +9386,7 @@ Editor_Level::ProcessDamageLib()
 
 						if( damagedIdx >= 0 && damagedIdx < (int)cat.ObjectsNames.size() )
 						{
-							strcpy( en->MeshName.str(), CatNames[ indexMap[ catIdx ] ].c_str() );
+							strcpy_s( en->MeshName.str(), en->MeshName.MAX_LENGTH, CatNames[ indexMap[ catIdx ] ].c_str() );
 							strcat( en->MeshName.str(), "/" );
 							strcat( en->MeshName.str(), cat.ObjectsNames[ damagedIdx ].c_str() );
 						}
@@ -9456,7 +9456,7 @@ Editor_Level::ProcessDamageLib()
 
 				if( soundIdx >= 0 && soundIdx < (int)sl.size() )
 				{
-					strcpy( en->SoundName.str(), sl[ soundIdx ].c_str() );
+					strcpy_s( en->SoundName.str(), en->SoundName.MAX_LENGTH, sl[ soundIdx ].c_str() );
 				}
 
 				SliderY += 202;
@@ -9547,7 +9547,7 @@ void ReadCorrespondingSCOMaterial( char* output, const char* fileName )
 
 	char pathWithMask [ MAX_PATH ] ;
 
-	strcpy( pathWithMask, Path ) ;
+	strcpy_s( pathWithMask, sizeof(pathWithMask), Path ) ;
 	strcat( pathWithMask, "*.sco" ) ;
 
 	HANDLE h = FindFirstFile( pathWithMask, &ffblk );
@@ -9572,7 +9572,7 @@ void ReadCorrespondingSCOMaterial( char* output, const char* fileName )
 						break ;
 					}
 
-					strcpy( output, m->MatChunks[ 0 ].Mat->Name ) ;
+					strcpy_s( output, MAX_PATH, m->MatChunks[ 0 ].Mat->Name ) ; // TODO: verify buffer size
 					break ;
 				}
 			}
@@ -10982,7 +10982,7 @@ void ProcessDecalsEditor(bool globalLib, float SliderX, float SliderY)
 
 				_splitpath( type.DiffuseTexName.c_str(), drive, dir, name, ext ) ;
 
-				strcpy( TexFileName, name ) ;
+				strcpy_s( TexFileName, sizeof(TexFileName), name ) ;
 				strcat( TexFileName, ext ) ;
 
 				if ( imgui_FileList(5, 80, 300, 380, "Data\\Decals\\*.dds", TexFileName, &offset, false ) )
@@ -11097,7 +11097,7 @@ void ProcessDecalsEditor(bool globalLib, float SliderX, float SliderY)
 				{
 					char buff[ 256 ];
 
-					_snprintf( buff, sizeof buff, "Decal %d", i );
+					_snprintf_s( buff, sizeof(buff), _TRUNCATE, "Decal %d", i );
 
 					decalNamez.push_back( buff );
 				}
@@ -12040,7 +12040,7 @@ float ProcessGrassConfigure( float SliderX, float SliderY )
 
 			if( sts.CustomTintPath.Length() )
 			{
-				strcpy( SelectedTex, sts.CustomTintPath.c_str() );
+				strcpy_s( SelectedTex, sizeof(SelectedTex), sts.CustomTintPath.c_str() );
 			}
 
 			if( imgui_FileList( SliderX, SliderY, DEFAULT_CONTROLS_WIDTH, 87, GetGrassPath( "*.dds" ).c_str(), SelectedTex, &g_GrassTintTextureOffset ) )
@@ -12842,7 +12842,7 @@ case	PE_FOG3:
 
 				static char ParticlePath[ MAX_PATH ] ;
 
-				strcpy( ParticlePath, r3dGameLevel::Environment->RainParticleSystemName ) ;
+				strcpy_s( ParticlePath, sizeof(ParticlePath), r3dGameLevel::Environment->RainParticleSystemName ) ;
 
 				if( InSelectParticleMode )
 				{
@@ -13507,7 +13507,7 @@ void Editor_Level :: ProcessPost_NightVision()
 
 	_splitpath( GetCCLUT3DTextureName( HUDFilter_NightVision, r3dAtmosphere::SKY_PHASE_DAY ).c_str(), drive, dir, name, ext );
 
-	strcpy( textureName, name );
+	strcpy_s( textureName, sizeof(textureName), name );
 	strcat( textureName, ext );
 
 	if ( imgui_FileList(SliderX, SliderY, 360, CC_FILE_LIST_SIZE, fullPath, textureName, &offset ) )
@@ -14554,7 +14554,7 @@ void Editor_Level :: ProcessColorGrading()
 					const char* execStr = g_texture_edit_cmd->GetString();
 
 					char nameWithExternal[ 256 ];
-					strcpy( nameWithExternal, LUT3D_EXTERNAL_SUPBATH );
+					strcpy_s( nameWithExternal, sizeof(nameWithExternal), LUT3D_EXTERNAL_SUPBATH );
 					strcat( nameWithExternal, textureName );
 
 					GetCCLUT3DTextureFullPath( FileName, nameWithExternal );
@@ -14793,7 +14793,7 @@ float Editor_Level::ProcessColorCorrectionMenu( HUDFilterSettings &hfs, float Sl
 
 	static char textureName[ 256 ] = {0};
 
-	strcpy( textureName, name ) ;
+	strcpy_s( textureName, sizeof(textureName), name ) ;
 	strcat( textureName, ext ) ;
 
 	const int CC_FILE_LIST_SIZE = 300;
@@ -15072,11 +15072,11 @@ void Editor_Level::ProcessAssets()
 	{
 		CategoryStruct cat;
 		FILE *f = fopen("Data/ObjectsDepot/Particles/Objects.dat","rt");
-		fscanf(f, "%d", &cat.NumObjects);
+		fscanf_s(f, "%d", &cat.NumObjects);
 		for (int y=0;y<cat.NumObjects;y++)
 		{
 			char D1[64], D2[64];
-			fscanf(f,"%s %s", D1, D2);
+			fscanf_s(f,"%s %s", D1, (unsigned)sizeof(D1), D2, (unsigned)sizeof(D2));
 			cat.ObjectsNames.push_back(D1);
 			cat.ObjectsClasses.push_back(D2);
 			cat.ObjectsSubfolders.push_back("");
@@ -15836,7 +15836,7 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 
 			_splitpath( r3dGameLevel::Environment->StaticSkyMeshName.c_str(), drive, dir, name, ext ) ;
 
-			strcpy( SkyMeshName, name ) ;
+			strcpy_s( SkyMeshName, sizeof(SkyMeshName), name ) ;
 			strcat( SkyMeshName, ext ) ;
 
 			if( imgui_FileList( SliderX, SliderY, 360, 60, STATICSKY_PATH "*.sco", SkyMeshName, &offset ) )
@@ -15913,12 +15913,12 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 
 				_splitpath( r3dGameLevel::Environment->StaticSkyTextureNames[ index ].c_str(), drive, dir, name, ext ) ;
 
-				strcpy( SkyTexName, name );
+				strcpy_s( SkyTexName, sizeof(SkyTexName), name );
 				strcat( SkyTexName, ext );
 
 				_splitpath( r3dGameLevel::Environment->StaticSkyGlowTextureNames[ index ].c_str(), drive, dir, name, ext ) ;
 
-				strcpy( SkyGlowTexName, name );
+				strcpy_s( SkyGlowTexName, sizeof(SkyGlowTexName), name );
 				strcat( SkyGlowTexName, ext );
 			}
 
@@ -16088,7 +16088,7 @@ static void FixPresetExt( char* preset )
 
 	if( stricmp( ext, ".xml" ) )
 	{
-		strcpy( preset, drive );
+		strcpy_s( preset, MAX_PATH * 2, drive ); // TODO: verify buffer size - caller uses char[512]
 		strcat( preset, folder );
 		strcat( preset, name );
 		strcat( preset, ext );
@@ -16477,7 +16477,7 @@ void Editor_Level::ProcessKill()
 		if( r3dMesh* mesh = obj->GetObjectMesh() )
 		{
 			char fileName[ 1024 ];
-			strcpy( fileName, mesh->FileName.c_str() );
+			strcpy_s( fileName, sizeof(fileName), mesh->FileName.c_str() );
 
 			killedMeshes.PushBack( fileName );
 
@@ -16534,39 +16534,39 @@ void Editor_Level::ProcessKill()
 
 			size_t extStart = strlen( fileName ) - 3;
 
-			strcpy( fileName + extStart, "scb" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "scb" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "skl" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "skl" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "wgt" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "wgt" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "mpx" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "mpx" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "phx" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "phx" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart - 1, "_Collision.sco" );
+			strcpy_s( fileName + extStart - 1, sizeof(fileName) - extStart + 1, "_Collision.sco" );
 			hotkill_remove( fileName );
 
 			extStart = strlen( fileName ) - 3;
 
-			strcpy( fileName + extStart, "scb" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "scb" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "skl" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "skl" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "wgt" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "wgt" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "mpx" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "mpx" );
 			hotkill_remove( fileName );
 
-			strcpy( fileName + extStart, "phx" );
+			strcpy_s( fileName + extStart, sizeof(fileName) - extStart, "phx" );
 			hotkill_remove( fileName );
 		}
 	}
@@ -16638,7 +16638,7 @@ void Editor_Level::ProcessKill()
 
 		if( strlen( message ) > 8192 )
 		{
-			strcpy( message + 8192 - 8, " ..." );
+			strcpy_s( message + 8192 - 8, 8, " ..." );
 		}
 
 		MessageBoxA( r3dRenderer->HLibWin, message, "Information", MB_OK );
@@ -16789,7 +16789,7 @@ void Editor_Level::ProcessReveal()
 
 		if( message.Length() > 8192 )
 		{
-			strcpy( (char*)message.c_str() + 8192 - 8, " ..." );
+			strcpy_s( (char*)message.c_str() + 8192 - 8, 8, " ..." );
 		}
 
 		if( message.Length() > 3 )
@@ -16850,7 +16850,7 @@ void ProcessZombieMod()
 	v1 ? g_ZombieModDebugVisFlags |= 1 : g_ZombieModDebugVisFlags &= ~1;
 	if (g_ZombieModDebugVisFlags & 1)
 	{
-		SliderY += imgui_Static(SliderX, SliderY, "Blue – visibility, green – sound, yellow – smell");
+		SliderY += imgui_Static(SliderX, SliderY, "Blue ï¿½ visibility, green ï¿½ sound, yellow ï¿½ smell");
 	}
 }
 

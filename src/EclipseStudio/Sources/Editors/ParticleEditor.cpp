@@ -1994,7 +1994,7 @@ void UpdateParticleAtlas( const char* basePath, const char* atlasName )
 	si.cb = sizeof si;
 
 	char fullPath[ 512 ];
-	strcpy( fullPath, basePath );
+	strcpy_s( fullPath, sizeof(fullPath), basePath );
 	strcat( fullPath, atlasName );
 
 	if( !r3dDirectoryExists( fullPath ) )

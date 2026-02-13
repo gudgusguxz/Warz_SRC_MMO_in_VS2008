@@ -91,7 +91,7 @@ int CVarContainer::Read(const char* fname)
     
     char var[256] = "";
     char arg[256] = "";
-    sscanf(buf, "%s = %s", var, arg);
+    sscanf_s(buf, "%s = %s", var, (unsigned)sizeof(var), arg, (unsigned)sizeof(arg));
     if(!*var) continue;
     
     CVar *vp = Find(var);

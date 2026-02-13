@@ -48,7 +48,7 @@ obj_ParticleSystem::~obj_ParticleSystem()
 void
 obj_ParticleSystem::GetParticlePath( char* oPath, const char* particleName )
 {
-	sprintf( oPath, "Data\\Particles\\%s.prt", particleName );
+	sprintf_s( oPath, 256, "Data\\Particles\\%s.prt", particleName ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -111,7 +111,7 @@ void obj_ParticleSystem::Reload()
 
 	char Str1[256];
 
-	sprintf(Str1,"Data\\Particles\\%s.prt", Name.c_str());
+	sprintf_s(Str1, sizeof(Str1), "Data\\Particles\\%s.prt", Name.c_str());
 
 	Torch = r3dParticleSystemLoad(Str1);
 	Torch->Position = GetPosition();

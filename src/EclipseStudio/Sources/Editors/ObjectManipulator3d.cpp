@@ -1696,7 +1696,7 @@ void ObjectManipulator3d::PickByName	( const char* Name, int bExactMatch )
 		char drive[ 16 ], dir[ 1024 ], file[ 1024 ], ext[ 1024 ] ;
 		_splitpath( dest, drive, dir, file, ext ) ;
 
-		strcpy( dest, file ) ;
+		strcpy_s( dest, sizeof(dest), file ) ;
 
 		if( ( bExactMatch && strcmp( dest, src ) == 0 )
 				||

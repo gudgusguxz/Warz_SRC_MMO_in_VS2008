@@ -242,7 +242,7 @@ static void Text_Print(float x, float y, const r3dColor& color, const char *mess
 	va_list	va;
 	char		buffer[1000];
 	va_start(va, message);
-	vsprintf(buffer, message, va);
+	vsprintf_s(buffer, sizeof(buffer), message, va);
 	va_end(va);
 	_r3dSystemFont->PrintF(x,y, color,buffer);
 }

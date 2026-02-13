@@ -569,7 +569,7 @@ GrassGen::Generate( uint32_t idx )
 {
 	GrassLibEntry gle;
 
-	strcpy( g_LastGrassGenError, "Unknown Error" );
+	strcpy_s( g_LastGrassGenError, sizeof(g_LastGrassGenError), "Unknown Error" );
 
 	if( !GenerateGrass( gle, mPatchSettings[ idx ] ) )
 	{

@@ -266,7 +266,7 @@ int CSoundSystem::LoadSoundEffects(const char *basedir, const char *fname)
 	FMOD_RESULT rv;
 	const int bufSize = 256;
 	char full_name[bufSize];
-	sprintf(full_name, "%s\\%s", basedir, fname);
+	sprintf_s(full_name, sizeof(full_name), "%s\\%s", basedir, fname);
 	r3dOutToLog("FMOD: LoadSoundEffects: Loading from %s\n", full_name);
 
 	r3dFile* f = r3d_open(full_name, "rb");
@@ -276,7 +276,7 @@ int CSoundSystem::LoadSoundEffects(const char *basedir, const char *fname)
 		return 0;
 	}
 
-	sprintf(full_name, "%s\\", basedir);
+	sprintf_s(full_name, sizeof(full_name), "%s\\", basedir);
 	rv = FMODEventSystem->setMediaPath(full_name); SND_ERR_CHK(rv);
 
 	char* fileBuffer = game_new char[f->size + 1];

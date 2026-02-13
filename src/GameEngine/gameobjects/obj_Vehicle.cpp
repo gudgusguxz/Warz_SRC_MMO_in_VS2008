@@ -1541,13 +1541,13 @@ void obj_Vehicle::DrawDebugInfo() const
 			char diffType[64];
 			switch( vd->diffData.mType )
 			{
-			case PxVehicleDifferential4WData::eDIFF_TYPE_LS_4WD:		sprintf(diffType, "4-wheel drive with limited slip"); break;
-			case PxVehicleDifferential4WData::eDIFF_TYPE_LS_FRONTWD:	sprintf(diffType, "front-wheel drive with limited slip"); break;
-			case PxVehicleDifferential4WData::eDIFF_TYPE_LS_REARWD:		sprintf(diffType, "rear-wheel drive with limited slip"); break;
-			case PxVehicleDifferential4WData::eDIFF_TYPE_OPEN_4WD:		sprintf(diffType, "4-wheel drive with open differential"); break;
-			case PxVehicleDifferential4WData::eDIFF_TYPE_OPEN_FRONTWD:	sprintf(diffType, "front-wheel drive with open differential"); break;
-			case PxVehicleDifferential4WData::eDIFF_TYPE_OPEN_REARWD:	sprintf(diffType, "rear-wheel drive with open differential"); break;
-			default: sprintf(diffType, "Unknown"); break;
+			case PxVehicleDifferential4WData::eDIFF_TYPE_LS_4WD:		sprintf_s(diffType, sizeof(diffType), "4-wheel drive with limited slip"); break;
+			case PxVehicleDifferential4WData::eDIFF_TYPE_LS_FRONTWD:	sprintf_s(diffType, sizeof(diffType), "front-wheel drive with limited slip"); break;
+			case PxVehicleDifferential4WData::eDIFF_TYPE_LS_REARWD:		sprintf_s(diffType, sizeof(diffType), "rear-wheel drive with limited slip"); break;
+			case PxVehicleDifferential4WData::eDIFF_TYPE_OPEN_4WD:		sprintf_s(diffType, sizeof(diffType), "4-wheel drive with open differential"); break;
+			case PxVehicleDifferential4WData::eDIFF_TYPE_OPEN_FRONTWD:	sprintf_s(diffType, sizeof(diffType), "front-wheel drive with open differential"); break;
+			case PxVehicleDifferential4WData::eDIFF_TYPE_OPEN_REARWD:	sprintf_s(diffType, sizeof(diffType), "rear-wheel drive with open differential"); break;
+			default: sprintf_s(diffType, sizeof(diffType), "Unknown"); break;
 			}
 			Font_Editor->PrintF(position.x, position.y + 12, r3dColor(255,255,255), "Differential Type: %s", diffType);
 			Font_Editor->PrintF(position.x, position.y + 24, r3dColor(255,255,255), "Front/Rear Split: %.3f", vd->diffData.mFrontRearSplit);
@@ -1566,8 +1566,8 @@ void obj_Vehicle::DrawDebugInfo() const
 					continue;
 
 				char seat[16] = { 0 };
-				sprintf(seat, "Seat(%d):taken ", players[i]->seatPosition);
-				strcat(seats, seat);			
+				sprintf_s(seat, sizeof(seat), "Seat(%d):taken ", players[i]->seatPosition);
+				strcat_s(seats, sizeof(seats), seat);			
 			}
 			*/
 			Font_Editor->PrintF(position.x, position.y + 108, r3dColor(255,255,255), "%s", seats);

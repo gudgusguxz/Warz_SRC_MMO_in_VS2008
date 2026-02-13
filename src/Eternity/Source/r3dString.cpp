@@ -112,7 +112,8 @@ r3dString operator + ( const r3dString& s0, const r3dString& s1 )
 
 	char* newString = gfx_new char[ s0len + s1len + 1 ];
 
-	strcat( r3dscpy( newString, cs0 ), cs1 );
+	r3dscpy( newString, cs0 );
+	strcat_s( newString, s0len + s1len + 1, cs1 );
 	
 	r3dString res( newString );
 

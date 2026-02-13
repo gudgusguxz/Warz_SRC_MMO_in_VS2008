@@ -327,7 +327,7 @@ int r3dAtmosphere :: SerializeXML( pugi::xml_node root )
 
 int	r3dAtmosphere :: LoadFromXML( pugi::xml_node root )
 {
-	strcpy( RainParticleSystemName, PT_EMPTY_STR ) ;
+	strcpy_s( RainParticleSystemName, sizeof(RainParticleSystemName), PT_EMPTY_STR ) ;
 
 	int res = SerializeXML<false>( root );
 
@@ -625,7 +625,7 @@ void r3dAtmosphere::SetRainParticle( const char* Name )
 
 	if( RainParticleSystemName != Name )
 	{
-		strcpy( RainParticleSystemName, Name ) ;
+		strcpy_s( RainParticleSystemName, sizeof(RainParticleSystemName), Name ) ;
 	}
 
 	if( !stricmp( RainParticleSystemName, PT_EMPTY_STR ) || !strlen( RainParticleSystemName ) )
@@ -654,7 +654,7 @@ void r3dAtmosphere::OnParticleSystemDelete( obj_ParticleSystem* system )
 {
 	if( system == RainParticleSystem )
 	{
-		strcpy( RainParticleSystemName, PT_EMPTY_STR );
+		strcpy_s( RainParticleSystemName, sizeof(RainParticleSystemName), PT_EMPTY_STR );
 		RainParticleSystem = NULL;
 	}
 }

@@ -229,13 +229,13 @@ BOOL obj_LampBulb::OnEvent(int event, void *data)
        case 0:
 	 CA->NumCommands = 10;
 	  CA->Commands[0].CommandID = OBJ_EVENT_USER + 100;
-	  strcpy(CA->Commands[0].Name,"RND COLOR");
+	  strcpy_s(CA->Commands[0].Name, sizeof(CA->Commands[0].Name), "RND COLOR");
 	  CA->Commands[1].CommandID = OBJ_EVENT_USER + 101;
-	  strcpy(CA->Commands[1].Name,"RESET");
+	  strcpy_s(CA->Commands[1].Name, sizeof(CA->Commands[1].Name), "RESET");
 	  CA->Commands[2].CommandID = OBJ_EVENT_USER + 102;
-	  strcpy(CA->Commands[2].Name,"TURN ON");
+	  strcpy_s(CA->Commands[2].Name, sizeof(CA->Commands[2].Name), "TURN ON");
 	  CA->Commands[3].CommandID = OBJ_EVENT_USER + 103;
-	  strcpy(CA->Commands[3].Name,"TURN OFF");
+	  strcpy_s(CA->Commands[3].Name, sizeof(CA->Commands[3].Name), "TURN OFF");
 	  CA->Commands[4].CommandID = OBJ_EVENT_USER + 104;
 	  sprintf(CA->Commands[4].Name,"SHADOWS: %d", bCastShadows);
 
@@ -260,17 +260,17 @@ BOOL obj_LampBulb::OnEvent(int event, void *data)
        case 1:
 	 CA->NumCommands = 7;
 	  CA->Commands[0].CommandID = OBJ_EVENT_USER + 100;
-	  strcpy(CA->Commands[0].Name,"RED +");
+	  strcpy_s(CA->Commands[0].Name, sizeof(CA->Commands[0].Name), "RED +");
 	  CA->Commands[1].CommandID = OBJ_EVENT_USER + 101;
-	  strcpy(CA->Commands[1].Name,"RED -");
+	  strcpy_s(CA->Commands[1].Name, sizeof(CA->Commands[1].Name), "RED -");
 	  CA->Commands[2].CommandID = OBJ_EVENT_USER + 102;
-	  strcpy(CA->Commands[2].Name,"GREEN +");
+	  strcpy_s(CA->Commands[2].Name, sizeof(CA->Commands[2].Name), "GREEN +");
 	  CA->Commands[3].CommandID = OBJ_EVENT_USER + 103;
-	  strcpy(CA->Commands[3].Name,"GREEN -");
+	  strcpy_s(CA->Commands[3].Name, sizeof(CA->Commands[3].Name), "GREEN -");
 	  CA->Commands[4].CommandID = OBJ_EVENT_USER + 104;
-	  strcpy(CA->Commands[4].Name,"BLUE +");
+	  strcpy_s(CA->Commands[4].Name, sizeof(CA->Commands[4].Name), "BLUE +");
 	  CA->Commands[5].CommandID = OBJ_EVENT_USER + 105;
-	  strcpy(CA->Commands[5].Name,"BLUE -");
+	  strcpy_s(CA->Commands[5].Name, sizeof(CA->Commands[5].Name), "BLUE -");
 	  CA->Commands[6].CommandID = OBJ_EVENT_USER + 106;
 	  sprintf(CA->Commands[6].Name,"BACK %d %d %d", Color.R, Color.G, Color.B );
 	  return TRUE;
