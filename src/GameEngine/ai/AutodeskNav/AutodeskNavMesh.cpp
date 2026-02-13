@@ -916,8 +916,8 @@ void AutodeskNavMesh::ExportToObj()
 	
 	char prg[MAX_PATH];
 	char param[MAX_PATH];
-	sprintf(prg, "%s\\NavGenLauncher\\NavGenLauncher.exe", curDir);
-	sprintf(param, "%s\\%s\\Level.NavGenProj", curDir, Nav::GetNavDataFolderPath().c_str());
+	sprintf_s(prg, sizeof(prg), "%s\\NavGenLauncher\\NavGenLauncher.exe", curDir);
+	sprintf_s(param, sizeof(param), "%s\\%s\\Level.NavGenProj", curDir, Nav::GetNavDataFolderPath().c_str());
 	
 	ShellExecute(NULL, "open", prg, param, NULL, SW_SHOW);
 }

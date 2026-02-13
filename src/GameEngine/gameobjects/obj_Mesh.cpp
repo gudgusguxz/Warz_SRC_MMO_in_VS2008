@@ -471,7 +471,7 @@ MeshGameObject::ReloadDestructionMesh( const char* nameOfChangedMesh )
 		if( m_pDamageLibEntry->DestroyedMeshCollision )
 		{
 			char fullPath[ 1024 ] = "Data/ObjectsDepot/";
-			strcat( fullPath, nameOfChangedMesh );
+			strcat_s( fullPath, sizeof(fullPath), nameOfChangedMesh );
 
 			PhysicsConfig.SetDestroyedMesh( fullPath );
 		}
@@ -524,7 +524,7 @@ MeshGameObject::GetMeshLibKey() const
 	char* tempFName = (char*)_alloca( srcMesh->FileName.Length() + 1 );
 	r3d_assert( tempFName );
 
-	strcpy( tempFName, srcMesh->FileName.c_str() );
+	strcpy_s( tempFName, srcMesh->FileName.Length() + 1, srcMesh->FileName.c_str() ); // TODO: verify buffer size - _alloca'd buffer
 	strlwr( tempFName );
 
 	if( const char* start = strstr( tempFName, COMMON_DEPOT_PREFIX ) )
@@ -602,7 +602,7 @@ static bool FillDestructionMeshName( char (&oName) [ MAX_PATH ], DamageLibEntry*
 		char FullName[ MAX_PATH ] ;
 		FullName[ MAX_PATH - 1 ] = 0 ;
 
-		_snprintf( FullName, MAX_PATH - 1, "%s%s", COMMON_DEPOT_PREFIX, dlibEntry->MeshName.c_str() );
+		_snprintf_s( FullName, sizeof(FullName), _TRUNCATE, "%s%s", COMMON_DEPOT_PREFIX, dlibEntry->MeshName.c_str() );
 		FixFileName( FullName, oName );
 
 		return true ;
@@ -645,10 +645,10 @@ BOOL MeshGameObject::Load(const char* fname)
 
 	r3d_assert( tempFName );
 
-	strcpy( tempFName, fname );
+	strcpy_s( tempFName, strlen( fname ) + 1, fname ); // TODO: verify buffer size - _alloca'd buffer
 	strlwr( tempFName );
 
-	char szFixedName[MAX_PATH];	
+	char szFixedName[MAX_PATH];
 	FixFileName(fname, szFixedName);
 
 	if(!GameObject::Load(szFixedName))
@@ -804,7 +804,7 @@ float MeshGameObject::DrawDrawDistancePropertyEditor( float scrx, float scry, fl
 	{
 		char label[ 64 ];
 
-		sprintf( label, "LOD %d Dist", i );
+		sprintf_s( label, sizeof(label), "LOD %d Dist", i );
 
 		starty += imgui_Value_Slider( scrx, starty, label, &LODDistances[ i ], i ? LODDistances[ i - 1 ] : 0.f, 2048.f, "%.2f" );
 	}
@@ -2128,17 +2128,17 @@ BOOL MeshGameObject::DoLoad(	r3dMesh* (TargetLODs)[ NUM_LODS ],
 	r3dscpy(TempStr1, szFileName);
 	TempStr1[strlen(TempStr1)-4]=0;
 	char TempLodName[128];
-	sprintf(TempLodName, "%s_LOD1.sco", TempStr1);
+	sprintf_s(TempLodName, sizeof(TempLodName), "%s_LOD1.sco", TempStr1);
 	if(r3d_access(TempLodName, 0)==0)
 	{
 		TargetLODs[1] = r3dGOBAddMesh(TempLodName/*, true, false, async, false, use_thumbnails*/ );
 	}
-	sprintf(TempLodName, "%s_LOD2.sco", TempStr1);
+	sprintf_s(TempLodName, sizeof(TempLodName), "%s_LOD2.sco", TempStr1);
 	if(r3d_access(TempLodName, 0)==0)
 	{
 		TargetLODs[2] = r3dGOBAddMesh(TempLodName/*, true, false, async, false, use_thumbnails*/);
 	}
-	sprintf(TempLodName, "%s_LOD3.sco", TempStr1);
+	sprintf_s(TempLodName, sizeof(TempLodName), "%s_LOD3.sco", TempStr1);
 	if(r3d_access(TempLodName, 0)==0)
 	{
 		TargetLODs[3] = r3dGOBAddMesh(TempLodName/*, true, false, async, false, use_thumbnails*/);

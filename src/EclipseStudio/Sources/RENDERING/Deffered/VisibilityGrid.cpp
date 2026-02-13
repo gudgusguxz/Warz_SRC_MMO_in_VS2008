@@ -820,11 +820,11 @@ VisibiltyGrid::Calculate()
 									r3dRenderer->SetVertexShader();
 									r3dRenderer->SetPixelShader();
 
-									sprintf( buf, "%d of %d frames done", FramesDone, TotalFrames ) ;
+									sprintf_s( buf, sizeof(buf), "%d of %d frames done", FramesDone, TotalFrames ) ;
 
 									MenuFont_Editor->DrawScaledText( 128.f, 64.f, 2, 2, 1, r3dColor::white, buf, 0 );
 
-									sprintf( buf, "%.4f invis/vis", visCount ? float( invisCount ) / visCount : 0.f ) ;
+									sprintf_s( buf, sizeof(buf), "%.4f invis/vis", visCount ? float( invisCount ) / visCount : 0.f ) ;
 
 									MenuFont_Editor->DrawScaledText( 128.f, 96.f, 2, 2, 1, r3dColor::white, buf, 0 );
 

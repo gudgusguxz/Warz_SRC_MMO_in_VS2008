@@ -1182,7 +1182,7 @@ float obj_Mech::DrawMeshesConfigEditor(float scrx, float scry, float scrw, float
 		{
 			ReinitializeMech(s.c_str());
 			InitDefaultAnimations(s.c_str());
-			strcpy(sMechSelected, s.c_str());
+			strcpy_s(sMechSelected, sizeof(sMechSelected), s.c_str());
 		}
 	}
 

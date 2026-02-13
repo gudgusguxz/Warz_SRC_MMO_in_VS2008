@@ -47,9 +47,9 @@ int CSVEntry::FPrintCSVLine(FILE* f, int numEntries)
 	{
 		int numChars;
 		if( i < numEntries - 1 )
-			numChars = sprintf(&(buf[pos]), "%0.6f,", m_values[i]);
+			numChars = sprintf_s(&(buf[pos]), sizeof(buf) - pos, "%0.6f,", m_values[i]);
 		else
-			numChars = sprintf(&(buf[pos]), "%0.6f\n", m_values[i]);
+			numChars = sprintf_s(&(buf[pos]), sizeof(buf) - pos, "%0.6f\n", m_values[i]);
 		if( numChars > 0 )
 			pos += numChars;
 	}
@@ -151,7 +151,7 @@ CSVLog::CSVLog()
 	: m_firstEntryMade( false )
 {
 	m_csvLogFilename = new char[ 11 ];
-	strncpy( m_csvLogFilename, "csvLog.csv", 10 );
+	strncpy_s( m_csvLogFilename, 11, "csvLog.csv", 10 );
 	InitCSVLogFile();
 }
 
@@ -163,7 +163,7 @@ CSVLog::CSVLog(const char* fname)
 	r3d_assert( len > 0 );
 
 	m_csvLogFilename = new char[ len + 1 ];
-	strncpy( m_csvLogFilename, fname, len );
+	strncpy_s( m_csvLogFilename, len + 1, fname, len );
 	m_csvLogFilename[ len ] = 0;
 	InitCSVLogFile();
 }
@@ -233,7 +233,7 @@ void CSVLog::ChangeLogFile(const char* fname)
 
 	delete[] m_csvLogFilename;
 	m_csvLogFilename = new char[ len + 1 ];
-	strncpy( m_csvLogFilename, fname, len );
+	strncpy_s( m_csvLogFilename, len + 1, fname, len );
 	m_csvLogFilename[ len ] = '\0';
 
 	if(m_csvLogOpened)

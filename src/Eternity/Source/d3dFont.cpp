@@ -156,7 +156,7 @@ void CD3DFont::WriteGlyphDefinition(const char* fname)
   if(f == NULL) r3dError("can't open %s for writing", fname);
 
   char buf[MAX_PATH];
-  sprintf(buf, "%s_%d_%x", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
+  sprintf_s(buf, sizeof(buf), "%s_%d_%x", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
 
   fprintf(f, "struct CD3DFont::glyphData_s glyphData_%s = {\n", buf);
   fprintf(f, "  %ff,\n", glyphTexScale);
@@ -181,7 +181,7 @@ HRESULT	CD3DFont::CreateFromDefinition(const glyphData_s& gl)
   assert(glyphTexture == NULL);
 
   char buf[MAX_PATH];
-  sprintf(buf, "Data\\Fonts\\%s_%d_%x.tga", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
+  sprintf_s(buf, sizeof(buf), "Data\\Fonts\\%s_%d_%x.tga", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
   glyphTexture = r3dRenderer->LoadTexture(buf, OUT_TEXTURE_TYPE);
   
   glyphTexScale = gl.texScale;
@@ -203,7 +203,7 @@ void CD3DFont::LoadGlyphsFromFile()
   
   // load font texcoords data
   char FN[MAX_PATH];
-  sprintf(FN, "Data\\Fonts\\%s_%d_%x.dat", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
+  sprintf_s(FN, sizeof(FN), "Data\\Fonts\\%s_%d_%x.dat", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
   if(r3d_access(FN, 0) != 0)
     return;
     
@@ -212,11 +212,11 @@ void CD3DFont::LoadGlyphsFromFile()
 
   char buf[1024];
   fgets(buf, sizeof(buf), f);
-  sscanf(buf, "%f\n", &glyphTexScale); 
+  sscanf_s(buf, "%f\n", &glyphTexScale);
 
   for(int gc=0; gc<GlyphCacheSize; gc++) {
     fgets(buf, sizeof(buf), f);
-    sscanf(buf, "%f %f %f %f\n", 
+    sscanf_s(buf, "%f %f %f %f\n",
       &glyphTexCoords[gc][0], 
       &glyphTexCoords[gc][1], 
       &glyphTexCoords[gc][2], 
@@ -224,7 +224,7 @@ void CD3DFont::LoadGlyphsFromFile()
   }
   fclose(f);
 
-  sprintf(FN, "Data\\Fonts\\%s_%d_%x.tga", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
+  sprintf_s(FN, sizeof(FN), "Data\\Fonts\\%s_%d_%x.tga", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
   glyphTexture = r3dRenderer->LoadTexture(FN, OUT_TEXTURE_TYPE);
 
   return;
@@ -237,7 +237,7 @@ void CD3DFont::SaveGlyphsToFile()
   char fname[MAX_PATH];
 
   _mkdir("Data\\Fonts");
-  sprintf(fname, "Data\\Fonts\\%s_%d_%x.tga", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
+  sprintf_s(fname, sizeof(fname), "Data\\Fonts\\%s_%d_%x.tga", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
   
   // save texture as TGA
   {
@@ -247,7 +247,7 @@ void CD3DFont::SaveGlyphsToFile()
     surf0->Release();
   }
 
-  sprintf(fname, "Data\\Fonts\\%s_%d_%x.dat", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
+  sprintf_s(fname, sizeof(fname), "Data\\Fonts\\%s_%d_%x.dat", fnt_fontName, fnt_fontHeight, fnt_fontFlags);
   FILE *f = fopen_for_write(fname,"wt");
   r3d_assert(f);
   if(!f) 
@@ -517,7 +517,7 @@ const char* CD3DFont::ParseSpecialCodes(const char* in)
       clrstr[6] = 0;
       
       DWORD clr;
-      sscanf(clrstr, "%x", &clr);
+      sscanf_s(clrstr, "%x", &clr);
       clr |= 0xFF000000;
       
       m_curColor.SetPacked(clr);

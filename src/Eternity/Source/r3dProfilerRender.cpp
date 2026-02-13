@@ -61,7 +61,7 @@ static void Text_Print(float x, float y,r3dColor color,char *message, ...)
 	va_list	va;
 	char		buffer[1000];
 	va_start(va, message);
-	vsprintf(buffer, message, va);
+	vsprintf_s(buffer, sizeof(buffer), message, va);
 	va_end(va);
 	_r3dSystemFont->PrintF(x/1280.0f*r3dRenderer->ScreenW,y/720.0f*r3dRenderer->ScreenH, color,buffer);
 }

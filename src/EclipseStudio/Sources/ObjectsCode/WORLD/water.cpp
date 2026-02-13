@@ -520,7 +520,7 @@ void WaterBase::RenderBegin(const r3dCamera& Cam, float waterLevel)
 
 	// WATER[U - underwater][F - follow terrain]_[H-high, N-normal, L-low][P-pixel, V-vertex]
 	char sVS[16];
-	strcpy(sVS, "WATER");
+	strcpy_s(sVS, sizeof(sVS), "WATER");
 
 	if(r3dRenderer->CameraPosition.y <= waterLevel)
 	{
@@ -548,7 +548,7 @@ void WaterBase::RenderBegin(const r3dCamera& Cam, float waterLevel)
 	strcat(sVS, q[r_environment_quality->GetInt()-1]);
 
 	char sPS[16];
-	strcpy(sPS, sVS);
+	strcpy_s(sPS, sizeof(sPS), sVS);
 	strcat(sPS, "P");
 	strcat(sVS, "V");
 	r3dRenderer->SetVertexShader(sVS);

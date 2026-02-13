@@ -125,7 +125,7 @@ int GetXMLVal( const char* Name, pugi::xml_node& node, char* oVal )
 	if( valAtt.empty() )
 		return 0 ;
 
-	strcpy( oVal, valAtt.value() );
+	strcpy_s( oVal, 512, valAtt.value() ); // TODO: verify buffer size
 
 	return 1 ;
 }

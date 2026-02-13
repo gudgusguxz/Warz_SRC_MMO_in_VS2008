@@ -2855,26 +2855,26 @@ StaticSkyPShaderID::StaticSkyPShaderID()
 
 void StaticSkyPShaderID::ToString( char* str )
 {
-	strcpy( str, "PS_STATIC_SKY" );
+	strcpy_s( str, 512, "PS_STATIC_SKY" ); // TODO: verify buffer size
 
 	if( twoTextures )
 	{
-		strcat( str, "_DOUBLE" );
+		strcat_s( str, 512, "_DOUBLE" ); // TODO: verify buffer size
 	}
 
 	if( outputNormals )
 	{
-		strcat( str, "_NORMALS" );
+		strcat_s( str, 512, "_NORMALS" ); // TODO: verify buffer size
 	}
 
 	if( scatterSun )
 	{
-		strcat( str, "_SCATTERSUN" );
+		strcat_s( str, 512, "_SCATTERSUN" ); // TODO: verify buffer size
 	}
 
 	if( hdr )
 	{
-		strcat( str, "_HDR" );
+		strcat_s( str, 512, "_HDR" ); // TODO: verify buffer size
 	}
 }
 
@@ -2912,21 +2912,21 @@ GrassVShaderID::GrassVShaderID()
 
 void GrassVShaderID::ToString( char* str )
 {
-	strcpy( str, "VS_GRASS" );
+	strcpy_s( str, 512, "VS_GRASS" ); // TODO: verify buffer size
 
 	if( masked )
 	{
-		strcat( str, "_MASKED" );
+		strcat_s( str, 512, "_MASKED" ); // TODO: verify buffer size
 	}
-	
+
 	if( has_normals	)
 	{
-		strcat( str, "_HASNORMALS" );
+		strcat_s( str, 512, "_HASNORMALS" ); // TODO: verify buffer size
 	}
 
 	if( is_stiff )
 	{
-		strcat( str, "_ISSTIFF" );
+		strcat_s( str, 512, "_ISSTIFF" ); // TODO: verify buffer size
 	}
 }
 
@@ -2961,21 +2961,21 @@ GrassPShaderID::GrassPShaderID()
 
 void GrassPShaderID::ToString( char* str )
 {
-	strcpy( str, "PS_GRASS" );
+	strcpy_s( str, 512, "PS_GRASS" ); // TODO: verify buffer size
 
 	if( do_clip )
 	{
-		strcat( str, "_CLIP" );
+		strcat_s( str, 512, "_CLIP" ); // TODO: verify buffer size
 	}
 
 	if( aux )
 	{
-		strcat( str, "_AUX" );
+		strcat_s( str, 512, "_AUX" ); // TODO: verify buffer size
 	}
 
 	if( output_depth )
 	{
-		strcat( str, "_OUTPUTDEPTH" );
+		strcat_s( str, 512, "_OUTPUTDEPTH" ); // TODO: verify buffer size
 	}
 }
 
@@ -3010,28 +3010,28 @@ AccumShadowsPShaderID::AccumShadowsPShaderID()
 
 void AccumShadowsPShaderID::ToString( char* str )
 {
-	strcpy( str, "PS_ACCUMSHADOWS" );
-	strcat( str, "_LTYPE" );
-	strcat( str, DigitToCString( light_type ) );
+	strcpy_s( str, 512, "PS_ACCUMSHADOWS" ); // TODO: verify buffer size
+	strcat_s( str, 512, "_LTYPE" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( light_type ) ); // TODO: verify buffer size
 
 	if( fxaa_blur )
 	{
-		strcat( str, "_FXAABLUR" );
+		strcat_s( str, 512, "_FXAABLUR" ); // TODO: verify buffer size
 	}
 
 	if( hw_shadowmaps )
 	{
-		strcat( str, "_HWSHADOWMAPS" );
+		strcat_s( str, 512, "_HWSHADOWMAPS" ); // TODO: verify buffer size
 	}
 
 	if( recticular_warp )
 	{
-		strcat( str, "_RECTIWARP" );
+		strcat_s( str, 512, "_RECTIWARP" ); // TODO: verify buffer size
 	}
 
 	if( use_normals )
 	{
-		strcat( str, "_NORMAL" );
+		strcat_s( str, 512, "_NORMAL" ); // TODO: verify buffer size
 	}
 
 }
@@ -3073,10 +3073,10 @@ LensDirtShaderId::LensDirtShaderId()
 
 void LensDirtShaderId::ToString( char* str )
 {
-	strcpy( str, "PS_LENS_DIRT" );
+	strcpy_s( str, 512, "PS_LENS_DIRT" ); // TODO: verify buffer size
 
-	strcat( str, "_LIGHTS" );
-	strcat( str, DigitToCString( light_count ) );
+	strcat_s( str, 512, "_LIGHTS" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( light_count ) ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -3604,8 +3604,8 @@ void r3dInitShaders()
 	extern char __r3dBaseShaderCachePath[256];
 
 	// Initialize shaders for current rendering path
-	sprintf( __r3dBaseShaderPath, "%s", "Data\\Shaders\\DX9_P1" );
-	sprintf( __r3dBaseShaderCachePath, "%s", R3D_BASE_SHADER_CACHE_PATH "\\DX9_P1" );
+	sprintf_s( __r3dBaseShaderPath, sizeof(__r3dBaseShaderPath), "%s", "Data\\Shaders\\DX9_P1" );
+	sprintf_s( __r3dBaseShaderCachePath, sizeof(__r3dBaseShaderCachePath), "%s", R3D_BASE_SHADER_CACHE_PATH "\\DX9_P1" );
 
 	// THOSE TWO SHOULD BE THE FIRST ONE!!!
 	r3dRenderer->AddVertexShaderFromFile("VS_DRAW3D_SIMPLE", "Render3d_simple_vs.hls");
@@ -5224,7 +5224,7 @@ void RenderEditorPreview()
 	*pChar2 = 0;
 
 	char previewTexturePath[ R3D_MAX_MATERIAL_NAME ];
-	sprintf( previewTexturePath, "%s/Textures", gPreviewCurrSelection );
+	sprintf_s( previewTexturePath, sizeof(previewTexturePath), "%s/Textures", gPreviewCurrSelection );
 	*pChar1 = *pChar2 = '/';
 
 	pMat = gfx_new r3dMaterial( 0 );
@@ -5461,7 +5461,7 @@ void RenderEditorPreview()
 
 		String_T<> sFullPath( gPreviewCurrSelection );
 		char cacheName[ MAX_PATH ];
-		sprintf( cacheName, "Data/Editor/PreviewCache/Materials/%s.dds", sFullPath.GetName().c_str() );
+		sprintf_s( cacheName, sizeof(cacheName), "Data/Editor/PreviewCache/Materials/%s.dds", sFullPath.GetName().c_str() );
 
 		pBuffer->Tex->Save( cacheName );
 
@@ -9486,7 +9486,7 @@ SunHDRLightPShaderId::SunHDRLightPShaderId()
 void
 SunHDRLightPShaderId::ToString( char* str )
 {
-	strcpy( str, "PS_SUNLIGHT_HDR" ) ;
+	strcpy_s( str, 512, "PS_SUNLIGHT_HDR" ) ; // TODO: verify buffer size
 
 	if( ssr )
 	{
@@ -9558,7 +9558,7 @@ PointLightPShaderId::PointLightPShaderId()
 void
 PointLightPShaderId::ToString( char* str )
 {
-	strcpy( str, "PS_POINTLIGHT_HDR" ) ;
+	strcpy_s( str, 512, "PS_POINTLIGHT_HDR" ) ; // TODO: verify buffer size
 
 	if( ssr )
 	{
@@ -9658,7 +9658,7 @@ SpotLightPShaderId::SpotLightPShaderId()
 void
 SpotLightPShaderId::ToString( char* str )
 {
-	strcpy( str, "PS_SPOTLIGHT_HDR" );
+	strcpy_s( str, 512, "PS_SPOTLIGHT_HDR" ); // TODO: verify buffer size
 
 	if( aux_enabled )
 	{
@@ -9725,7 +9725,7 @@ SSAOPShaderId::SSAOPShaderId()
 void
 SSAOPShaderId::ToString( char* str )
 {
-	strcpy( str, "PS_SSAO" ) ;
+	strcpy_s( str, 512, "PS_SSAO" ) ; // TODO: verify buffer size
 
 	if( num_rays )
 		strcat( str, "_16" ) ;

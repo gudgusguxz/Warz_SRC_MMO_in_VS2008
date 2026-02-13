@@ -366,7 +366,7 @@ found:
 
 	// Name=
 	fgets(inbuf, sizeof(inbuf), f);
-	sscanf(inbuf, "%s %s", buf1, Name);	
+	sscanf_s(inbuf, "%s %s", buf1, (unsigned)sizeof(buf1), Name, (unsigned)sizeof(Name));
 	if(stricmp("Name=", buf1))  {
 		r3dArtBug("Invalid SCO\n");
 		return 0;
@@ -376,11 +376,11 @@ found:
 
 	r3dPoint3D CPoint;
 	fgets(inbuf, sizeof(inbuf), f);
-	sscanf(inbuf, "%s %f %f %f", buf1, &CPoint.X, &CPoint.Y, &CPoint.Z);
+	sscanf_s(inbuf, "%s %f %f %f", buf1, (unsigned)sizeof(buf1), &CPoint.X, &CPoint.Y, &CPoint.Z);
 
 	// Verts=
 	fgets(inbuf, sizeof(inbuf), f);
-	sscanf(inbuf, "%s %d", buf1, &NumVertices);
+	sscanf_s(inbuf, "%s %d", buf1, (unsigned)sizeof(buf1), &NumVertices);
 
 	InitVertsList(NumVertices);
 	vPivot        = CPoint;
@@ -396,7 +396,7 @@ found:
 		r3dPoint3D tangent;
 		float      wtangent;
 		int        clrr, clrg, clrb;
-		int scanned = sscanf(inbuf, "%f %f %f %f %f %f %f %f %f %f %d %d %d", 
+		int scanned = sscanf_s(inbuf, "%f %f %f %f %f %f %f %f %f %f %d %d %d",
 			&VertexPositions[i].x, 
 			&VertexPositions[i].y, 
 			&VertexPositions[i].z, 
@@ -456,7 +456,7 @@ found:
 	// Faces=
 	fgets(inbuf, sizeof(inbuf), f);
 	int numFaces = 0;
-	sscanf(inbuf, "%s %d", buf1, &numFaces);
+	sscanf_s(inbuf, "%s %d", buf1, (unsigned)sizeof(buf1), &numFaces);
 
 	InitIndexList(numFaces*3);
 
@@ -472,15 +472,15 @@ found:
 		char	matname[128];
 
 		fgets(inbuf, sizeof(inbuf), f);
-		sscanf(inbuf, "%d %d %d %d %s %f %f %f %f %f %f",
+		sscanf_s(inbuf, "%d %d %d %d %s %f %f %f %f %f %f",
 			&tmp1,
 			&VIdx[0], &VIdx[1], &VIdx[2],
-			matname,
+			matname, (unsigned)sizeof(matname),
 			&TX[0], &TY[0], &TX[1], &TY[1], &TX[2], &TY[2]
 		);
 		if(i==0)
 		{
-			r3dscpy(current_material, matname);
+			r3dscpy_s(current_material, sizeof(current_material), matname);
 			MatChunksNames[NumMatChunks]  = game_new char[128];
 			r3dscpy_s(MatChunksNames[NumMatChunks], 128, matname);
 			MatChunks[NumMatChunks].StartIndex = 0;
@@ -528,7 +528,7 @@ found:
 			{
 				MatChunks[NumMatChunks].Mat = r3dMaterialLibrary::RequestMaterialByMesh(matname, f->GetFileName(), Flags & obfPlayerMesh ? true : false, false );
 			}
-			r3dscpy(current_material, matname);		
+			r3dscpy_s(current_material, sizeof(current_material), matname);
 			MatChunksNames[NumMatChunks]  = game_new char[128];
 			r3dscpy_s(MatChunksNames[NumMatChunks], 128, matname);
 			MatChunks[NumMatChunks].MatName = matname;
@@ -549,7 +549,7 @@ found:
 		{
 			fgets(inbuf, sizeof(inbuf), f);
 
-			int scanned = sscanf(inbuf, "%f %f", &VertexSecondUVs[i].x, &VertexSecondUVs[i].y);
+			int scanned = sscanf_s(inbuf, "%f %f", &VertexSecondUVs[i].x, &VertexSecondUVs[i].y);
 			if(scanned != 2)
 			{
 				MessageBox(0, "Bad UV2 mesh format", f->GetFileName(), MB_OK);

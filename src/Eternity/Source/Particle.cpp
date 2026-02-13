@@ -4088,7 +4088,7 @@ r3dParticleTrailData::r3dParticleTrailData()
 
 void ParticlePShaderId::ToString( char* str )
 {
-	strcpy( str, "PS_PARTICLE" ) ;
+	strcpy_s( str, 512, "PS_PARTICLE" ) ; // TODO: verify buffer size
 	if( normal ) strcat( str, "_NORMAL" ) ;
 	if( distort_buf ) strcat( str, "_DISTBUF" ) ;
 	if( distort_tex ) strcat( str, "_DISTTEX" ) ;

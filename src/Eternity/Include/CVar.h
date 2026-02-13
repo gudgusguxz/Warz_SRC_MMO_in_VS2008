@@ -19,8 +19,8 @@ class CVarFloat : public CVar
   public:
 	CVarFloat(const char* _pName) : CVar(_pName) {};
 	CVarFloat(const char* _pName, float _var, const char* _pComment="") : CVar(_pName, _pComment), var(_var) {};
-	char*		Put(char* buf) { sprintf(buf, "%.3f", var); return buf; }
-	void		Get(char* buf) { float v; if(sscanf(buf, "%f", &v) == 1) var = v; }
+	char*		Put(char* buf) { sprintf_s(buf, 512, "%.3f", var); return buf; } // TODO: verify buffer size - caller passes char[512]
+	void		Get(char* buf) { float v; if(sscanf_s(buf, "%f", &v) == 1) var = v; }
 	__forceinline operator float() const { return var; }
 };
 
@@ -30,8 +30,8 @@ class CVarInt : public CVar
 	int		var;
   public:
 	CVarInt(const char* _pName, int _var, const char* _pComment="") : CVar(_pName, _pComment), var(_var) {};
-	char*		Put(char* buf) { sprintf(buf, "%d", var); return buf; }
-	void		Get(char* buf) { int v; if(sscanf(buf, "%d", &v) == 1) var = v; }
+	char*		Put(char* buf) { sprintf_s(buf, 512, "%d", var); return buf; } // TODO: verify buffer size - caller passes char[512]
+	void		Get(char* buf) { int v; if(sscanf_s(buf, "%d", &v) == 1) var = v; }
 	__forceinline operator int() const { return var; }
 };
 
@@ -42,7 +42,7 @@ class CVarString : public CVar
 	char		var[512];
   public:
 	CVarString(char *_pName, char* _var, char *_pComment="") : CVar(_pName, _pComment) { r3dscpy(var, _var); };
-	char*		Put(char *buf) { sprintf(buf, "%s", var); return buf; }
+	char*		Put(char *buf) { sprintf_s(buf, 512, "%s", var); return buf; } // TODO: verify buffer size - caller passes char[512]
 	void		Get(char *buf) { r3dscpy(var, buf); }	
 	__forceinline operator char*() const { return (char *)&var[0]; }
 };

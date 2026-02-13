@@ -784,7 +784,7 @@ void CClientUserProfile::GenerateSessionKey(char* outKey)
 	str = sessionInfo;
 	str.base64Encode("utf-8");
 	
-	strcpy(outKey, str.getUtf8());
+	strcpy_s(outKey, 512, str.getUtf8()); // TODO: verify buffer size
 	return;
 }
 

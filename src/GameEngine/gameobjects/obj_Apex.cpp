@@ -192,10 +192,10 @@ float obj_ApexDestructible::DrawPropertyEditor(float scrx, float scry, float scr
 		switch (destructibleActor->Type())
 		{
 		case TypeApexDestructible:
-			sprintf(buf, "Convert to %s", "preview object");
+			sprintf_s(buf, sizeof(buf), "Convert to %s", "preview object");
 			break;
 		case TypeApexPreview:
-			sprintf(buf, "Convert to %s", "destructible object");
+			sprintf_s(buf, sizeof(buf), "Convert to %s", "destructible object");
 			break;
 		}
 

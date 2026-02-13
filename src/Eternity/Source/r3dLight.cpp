@@ -190,7 +190,7 @@ BOOL r3dLight::Load(r3dFile *f)
     if(!strnicmp(TempStr,"Position", 8))
     {
       Pointer = &TempStr[9];
-      sscanf(Pointer,"%f %f %f", &vPos.X, &vPos.Y, &vPos.Z);
+      sscanf_s(Pointer,"%f %f %f", &vPos.X, &vPos.Y, &vPos.Z);
     }
     else
     if(!strnicmp(TempStr,"Strength",8))
@@ -202,20 +202,20 @@ BOOL r3dLight::Load(r3dFile *f)
     if(!strnicmp(TempStr,"Radius1",7)) 
     {
       Pointer = &TempStr[8];
-      sscanf(Pointer,"%f", &vRad1);
+      sscanf_s(Pointer,"%f", &vRad1);
     }
     else
     if(!strnicmp(TempStr,"Radius2",7)) 
     {
       Pointer = &TempStr[8];
-      sscanf(Pointer,"%f", &vRad2);
+      sscanf_s(Pointer,"%f", &vRad2);
     }
     else
     if(!strnicmp(TempStr,"Type",4)) 
     {
       int T;
       Pointer = &TempStr[5];
-      sscanf(Pointer,"%d", &T);
+      sscanf_s(Pointer,"%d", &T);
       
       SetType(R3D_DIRECT_LIGHT);
 
@@ -228,7 +228,7 @@ BOOL r3dLight::Load(r3dFile *f)
     if (!strnicmp(TempStr,"Color",5))
     {
       Pointer = &TempStr[6];
-      sscanf(Pointer,"%f %f %f", &vR, &vG, &vB);
+      sscanf_s(Pointer,"%f %f %f", &vR, &vG, &vB);
     }
   }
 

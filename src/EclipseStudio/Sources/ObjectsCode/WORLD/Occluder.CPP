@@ -44,10 +44,10 @@ BOOL obj_Occluder::OnEvent(int event, void *data)
   
   CA->NumCommands = 2;
   CA->Commands[0].CommandID = OBJ_EVENT_USER + 100;
-  strcpy(CA->Commands[0].Name,"Reinitialize");
+  strcpy_s(CA->Commands[0].Name, sizeof(CA->Commands[0].Name), "Reinitialize");
 
   CA->Commands[1].CommandID = OBJ_EVENT_USER + 200;
-  strcpy(CA->Commands[1].Name,"Draw ON/OFF");
+  strcpy_s(CA->Commands[1].Name, sizeof(CA->Commands[1].Name), "Draw ON/OFF");
 
   return TRUE;
  }

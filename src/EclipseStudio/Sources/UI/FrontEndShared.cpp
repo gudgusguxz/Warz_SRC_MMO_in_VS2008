@@ -206,13 +206,13 @@ void FillIniPath( char* target )
 
 	if( CreateConfigPath( target ) )
 	{
-		strcat( target, CUSTOM_INI_FILE );
+		strcat_s( target, MAX_PATH * 2, CUSTOM_INI_FILE );
 		useLocal = false;
 	}
 
 	if( useLocal )
 	{
-		strcpy( target, CUSTOM_INI_FILE );
+		strcpy_s( target, MAX_PATH * 2, CUSTOM_INI_FILE );
 	}
 }
 
@@ -245,9 +245,9 @@ static void CheckOption( const char* line, const CmdVar* var, int* target )
 	int val;
 	char scanfline[ 512 ];
 
-	sprintf( scanfline, "%s %%d", var->GetName() );
+	sprintf_s( scanfline, sizeof(scanfline), "%s %%d", var->GetName() );
 	
-	if( sscanf( line, scanfline, &val ) == 1 ) 
+	if( sscanf_s( line, scanfline, &val ) == 1 )
 		*target = val;
 }
 
@@ -1398,9 +1398,9 @@ const char* getAdditionalDescForItem(uint32_t itemID, int Var1, int Var2, int Va
 			else if(ammoLeft > 0)
 			{
 				if(ammoLeft == 1)
-					sprintf(first_string, gLangMngr.getString("WeaponInfoString_Singular"), clip->m_StoreName, ammoLeft);
+					sprintf_s(first_string, sizeof(first_string), gLangMngr.getString("WeaponInfoString_Singular"), clip->m_StoreName, ammoLeft);
 				else
-					sprintf(first_string, gLangMngr.getString("WeaponInfoString_Regular"), clip->m_StoreName, ammoLeft);
+					sprintf_s(first_string, sizeof(first_string), gLangMngr.getString("WeaponInfoString_Regular"), clip->m_StoreName, ammoLeft);
 			}
 			else
 				r3dscpy(first_string, gLangMngr.getString("WeaponInfoString_NoAmmo"));
@@ -1412,9 +1412,9 @@ const char* getAdditionalDescForItem(uint32_t itemID, int Var1, int Var2, int Va
 		if(ammoLeft > 0)
 		{
 			if(ammoLeft == 1)
-				sprintf(first_string, gLangMngr.getString("AmmoInfoString_Singular"), ammoLeft);
+				sprintf_s(first_string, sizeof(first_string), gLangMngr.getString("AmmoInfoString_Singular"), ammoLeft);
 			else
-				sprintf(first_string, gLangMngr.getString("AmmoInfoString_Regular"), ammoLeft);
+				sprintf_s(first_string, sizeof(first_string), gLangMngr.getString("AmmoInfoString_Regular"), ammoLeft);
 		}
 	}
 
@@ -1427,8 +1427,8 @@ const char* getAdditionalDescForItem(uint32_t itemID, int Var1, int Var2, int Va
 		itemDurability=100.0f;
 		numDigits = 0;
 	}
-	sprintf(second_string, gLangMngr.getString("ItemCondition"), numDigits, itemDurability);
+	sprintf_s(second_string, sizeof(second_string), gLangMngr.getString("ItemCondition"), numDigits, itemDurability);
 
-	sprintf(final_string, "%s\n%s", first_string, second_string);
+	sprintf_s(final_string, sizeof(final_string), "%s\n%s", first_string, second_string);
 	return final_string;
 }

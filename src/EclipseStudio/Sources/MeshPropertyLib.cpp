@@ -263,7 +263,7 @@ MeshPropertyLib::string MeshPropertyLib::ComposeKey( const string& category, con
 
 	r3d_assert( temp );
 
-	strcpy( temp, res.c_str() );
+	strcpy_s( temp, res.size() + 1, res.c_str() );
 	strlwr( temp );
 
 	return temp ;

@@ -103,10 +103,10 @@ FillGBufferConstantId::FillGBufferConstantId()
 
 void FillGBufferConstantId::ToString( char* str )
 {
-	strcpy( str, "PS_FILLBUFFER_CONSTANT" );
+	strcpy_s( str, 512, "PS_FILLBUFFER_CONSTANT" ); // TODO: verify buffer size
 	if( aux )
 	{
-		strcat( str, "_AUX" );
+		strcat_s( str, 512, "_AUX" ); // TODO: verify buffer size
 	}
 }
 
@@ -1031,7 +1031,7 @@ static inline int GetDownScale( TexType ttype )
 
 void r3dMaterial::AdjustLoadPath( char* adjustedPath, const char* fname )
 {
-	sprintf(adjustedPath, "%s\\%s", OriginalDir, fname);
+	sprintf_s(adjustedPath, MAX_PATH, "%s\\%s", OriginalDir, fname); // TODO: verify buffer size
 
 	if(r3d_access(adjustedPath, 0) != 0) {
 		// try .dds
@@ -1153,7 +1153,7 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 	DistortionMapName[0]	= 0;
 	SpecPowMapName[0]		= 0;
 
-	sprintf(OriginalDir,  "%s", szTexPath);
+	sprintf_s(OriginalDir, sizeof(OriginalDir), "%s", szTexPath);
 
 	while(!feof(f))
 	{
@@ -1170,7 +1170,7 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 		param++;
 
 		if(!strnicmp(buf,"Name",4)) {
-			sscanf(param,"%s", Name);
+			sscanf_s(param,"%s", Name, (unsigned)sizeof(Name));
 			//r3dOutToLog("Material: Starting %s\n", Name);
 			continue;
 		}
@@ -1466,7 +1466,7 @@ static void mlCopyTexture(const T* tex, const char* outDir)
 
 	const char* in = mlGetFileNameFromTextureHelper( tex );
 	char out[MAX_PATH];
-	sprintf(out, "%s\\%s", outDir, mlGetFileNameFromTexture(tex));
+	sprintf_s(out, sizeof(out), "%s\\%s", outDir, mlGetFileNameFromTexture(tex));
 	r3dOutToLog("copying %s->%s\n", in, out);
 
 	if(::CopyFile(in, out, FALSE) == 0) {
@@ -2162,7 +2162,7 @@ bool	r3dMaterialLibrary::IsDynamic = false;
 
 void MakeMaterialFileName( char* MatFile, const char* MatName, const char* DepotName )
 {
-	sprintf( MatFile, "%s\\%s\\Materials\\%s.mat", DEPOT_TAG, DepotName, MatName );
+	sprintf_s( MatFile, MAX_PATH, "%s\\%s\\Materials\\%s.mat", DEPOT_TAG, DepotName, MatName ); // TODO: verify buffer size
 }
 
 r3dMaterial* r3dMaterialLibrary::RequestMaterialByMesh(const char* MatName, const char* szMeshNameIn, bool playerMaterial, bool use_thumbnails )
@@ -2240,7 +2240,7 @@ r3dMaterial* r3dMaterialLibrary::RequestMaterialByName(const char* MatName, cons
 
 	// texture dir
 	char texpath[MAX_PATH];
-	sprintf(texpath, "%s/%s/Textures", DEPOT_TAG, depot);
+	sprintf_s(texpath, sizeof(texpath), "%s/%s/Textures", DEPOT_TAG, depot);
 
 	// load it
 	r3dFile* f = r3d_open(matname, "rt");
@@ -2297,7 +2297,7 @@ void r3dMaterialLibrary::UpdateDepotMaterials()
 			continue;
 
 		char matname[MAX_PATH];
-		sprintf(matname, "%s\\%s\\Materials\\%s.mat", DEPOT_TAG, mat->DepotName, mat->Name);
+		sprintf_s(matname, sizeof(matname), "%s\\%s\\Materials\\%s.mat", DEPOT_TAG, mat->DepotName, mat->Name);
 		FILE* f = fopen(matname, "wt");
 		if(f == NULL) {
 			r3dOutToLog("MatLib: can't open %s for writing\n", matname);
@@ -2384,20 +2384,20 @@ SMDepthVShaderID::SMDepthVShaderID()
 
 void SMDepthVShaderID::ToString( char* str )
 {
-	strcpy( str, "VS_SMDEPTH" );
+	strcpy_s( str, 512, "VS_SMDEPTH" ); // TODO: verify buffer size
 
 	if( apex )
 	{
-		strcat( str, "_APEX" );
+		strcat_s( str, 512, "_APEX" ); // TODO: verify buffer size
 	}
 
 	if( intanced )
 	{
-		strcat( str, "_INSTANCED" );
+		strcat_s( str, 512, "_INSTANCED" ); // TODO: verify buffer size
 	}
 
-	strcat( str, "_TYPE" );
-	strcat( str, DigitToCString( type ) );
+	strcat_s( str, 512, "_TYPE" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( type ) ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -2431,10 +2431,10 @@ SkinSMDepthVShaderID::SkinSMDepthVShaderID()
 
 void SkinSMDepthVShaderID::ToString( char* str )
 {
-	strcpy( str, "VS_SKIN_SMDEPTH" );
+	strcpy_s( str, 512, "VS_SKIN_SMDEPTH" ); // TODO: verify buffer size
 
-	strcat( str, "_TYPE" );
-	strcat( str, DigitToCString( type ) );
+	strcat_s( str, 512, "_TYPE" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( type ) ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -2462,25 +2462,25 @@ ForestVShaderID::ForestVShaderID()
 
 void ForestVShaderID::ToString( char* str )
 {
-	strcpy( str, "VS_FOREST" );
+	strcpy_s( str, 512, "VS_FOREST" ); // TODO: verify buffer size
 
 	if( noninstanced )
 	{
-		strcat( str, "_NONINSTANCED" );
+		strcat_s( str, 512, "_NONINSTANCED" ); // TODO: verify buffer size
 	}
 
 	if( animated )
 	{
-		strcat( str, "_ANIMATED" );
+		strcat_s( str, 512, "_ANIMATED" ); // TODO: verify buffer size
 	}
 
 	if( shadows )
 	{
-		strcat( str, "_SHADOWS" );
+		strcat_s( str, 512, "_SHADOWS" ); // TODO: verify buffer size
 	}
 
-	strcat( str, "_SHADOWTYPE" );
-	strcat( str, DigitToCString(shadow_type) );
+	strcat_s( str, 512, "_SHADOWTYPE" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString(shadow_type) ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -2517,10 +2517,10 @@ SMDepthPShaderID::SMDepthPShaderID()
 
 void SMDepthPShaderID::ToString( char* str )
 {
-	strcpy( str, "PS_SMDEPTH" );
+	strcpy_s( str, 512, "PS_SMDEPTH" ); // TODO: verify buffer size
 
-	strcat( str, "_TYPE" );
-	strcat( str, DigitToCString( type ) );
+	strcat_s( str, 512, "_TYPE" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( type ) ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------

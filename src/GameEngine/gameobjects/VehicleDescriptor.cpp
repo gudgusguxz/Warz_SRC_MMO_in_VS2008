@@ -418,7 +418,7 @@ bool VehicleDescriptor::Load(const r3dMesh *m)
 	for(uint32_t i = 0; i < gearsData.mNumRatios; ++i)
 	{
 		char ratio[5];
-		sprintf(ratio, "r%d", i);
+		sprintf_s(ratio, sizeof(ratio), "r%d", i);
 		GetXMLVal(ratio, gearsNode, &gearsData.mRatios[ i ]);
 	}
 	GetXMLVal("final_ratio", gearsNode, &gearsData.mFinalRatio);
@@ -536,7 +536,7 @@ bool VehicleDescriptor::Save(const char *fileName)
 	for(uint32_t i = 0; i < gearsData.mNumRatios; ++i)
 	{
 		char ratio[5];
-		sprintf(ratio, "r%d", i);
+		sprintf_s(ratio, sizeof(ratio), "r%d", i);
 		SetXMLVal(ratio, gears, &gearsData.mRatios[ i ]);
 	}
 	SetXMLVal("final_ratio", gears, &gearsData.mFinalRatio);
@@ -795,7 +795,7 @@ void VehicleDescriptor::ReadSerializedData(pugi::xml_node& node)
 	for(uint32_t i = 0; i < gearsData.mNumRatios; ++i)
 	{
 		char ratio[5];
-		sprintf(ratio, "r%d", i);
+		sprintf_s(ratio, sizeof(ratio), "r%d", i);
 		GetXMLVal(ratio, gearsNode, &gearsData.mRatios[ i ]);
 	}
 	GetXMLVal("final_ratio", gearsNode, &gearsData.mFinalRatio);

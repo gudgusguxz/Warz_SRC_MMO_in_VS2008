@@ -259,18 +259,18 @@ GenerateAtlas3PixelShaderId::FillMacros( ShaderMacros& defines )
 void
 GenerateAtlas3PixelShaderId::ToString( char* oStr )
 {
-	strcpy( oStr, "PS_TERRAIN_GEN_ATLAS_G" );
-	strcat( oStr, "_" );
-	strcat( oStr, DigitToCString( numLayers ));
+	strcpy_s( oStr, 512, "PS_TERRAIN_GEN_ATLAS_G" ); // TODO: verify buffer size
+	strcat_s( oStr, 512, "_" ); // TODO: verify buffer size
+	strcat_s( oStr, 512, DigitToCString( numLayers )); // TODO: verify buffer size
 
 	if( firstBatch )
 	{
-		strcat( oStr, "_FIRST" );
+		strcat_s( oStr, 512, "_FIRST" ); // TODO: verify buffer size
 	}
 
 	if( modulationBatch )
 	{
-		strcat( oStr, "_MODULATION" );
+		strcat_s( oStr, 512, "_MODULATION" ); // TODO: verify buffer size
 	}
 }
 
@@ -322,11 +322,11 @@ GenerateAtlas3VertexShaderId::FillMacros( ShaderMacros& defines )
 void
 GenerateAtlas3VertexShaderId::ToString( char* oStr )
 {
-	strcpy( oStr, "VS_TERRAIN_GEN_ATLAS_G" );
+	strcpy_s( oStr, 512, "VS_TERRAIN_GEN_ATLAS_G" ); // TODO: verify buffer size
 
 	if( unused )
 	{
-		strcat( oStr, "_UNUSED" );
+		strcat_s( oStr, 512, "_UNUSED" ); // TODO: verify buffer size
 	}
 }
 
@@ -417,31 +417,31 @@ Terrain3VertexShaderId::FillMacros( ShaderMacros& defines )
 void
 Terrain3VertexShaderId::ToString( char* oStr )
 {
-	strcpy( oStr, "VS_TERRAIN3" );
+	strcpy_s( oStr, 512, "VS_TERRAIN3" ); // TODO: verify buffer size
 
 	if( shadowPath )
 	{
-		strcat( oStr, "_SHADOWS" );
+		strcat_s( oStr, 512, "_SHADOWS" ); // TODO: verify buffer size
 	}
 
 	if( depthPath )
 	{
-		strcat( oStr, "_DEPTH" );
+		strcat_s( oStr, 512, "_DEPTH" ); // TODO: verify buffer size
 	}
 
 	if( vfetchless )
 	{
-		strcat( oStr, "_VFETCHLESS" );
+		strcat_s( oStr, 512, "_VFETCHLESS" ); // TODO: verify buffer size
 	}
 
 	if( recticular_warp )
 	{
-		strcat( oStr, "_RECTICULARWARP" );
+		strcat_s( oStr, 512, "_RECTICULARWARP" ); // TODO: verify buffer size
 	}
 
 	if( cam_vec )
 	{
-		strcat( oStr, "_CAMVEC" );
+		strcat_s( oStr, 512, "_CAMVEC" ); // TODO: verify buffer size
 	}
 }
 
@@ -483,26 +483,26 @@ Terrain3PixelShaderId::FillMacros( ShaderMacros& defines )
 void
 Terrain3PixelShaderId::ToString( char* oStr )
 {
-	strcpy( oStr, "PS_TERRAIN3" );
+	strcpy_s( oStr, 512, "PS_TERRAIN3" ); // TODO: verify buffer size
 
 	if( aux )
 	{
-		strcat( oStr, "_AUX" );
+		strcat_s( oStr, 512, "_AUX" ); // TODO: verify buffer size
 	}
 
 	if( forward_lighting )
 	{
-		strcat( oStr, "_FORW" );
+		strcat_s( oStr, 512, "_FORW" ); // TODO: verify buffer size
 	}
 
 	if( near_textures )
 	{
-		strcat( oStr, "_NEAR" );
+		strcat_s( oStr, 512, "_NEAR" ); // TODO: verify buffer size
 	}
 
 	if( far_textures )
 	{
-		strcat( oStr, "_FAR" );
+		strcat_s( oStr, 512, "_FAR" ); // TODO: verify buffer size
 	}
 }
 
@@ -2623,11 +2623,11 @@ r3dTerrain3::DrawDebug()
 
 		char* ptr = updates;
 
-		ptr += sprintf( ptr, "%d:", totalAllocated );
+		ptr += sprintf_s( ptr, sizeof(updates) - (ptr - updates), "%d:", totalAllocated );
 
 		for( int i = 0, e = (int)m_TileUpdateLog.Count(); i < e; i ++ )
 		{
-			int n = sprintf( ptr, "%d,", m_TileUpdateLog[ m_TileUpdateLog.Count() - 1 - i ]  );
+			int n = sprintf_s( ptr, sizeof(updates) - (ptr - updates), "%d,", m_TileUpdateLog[ m_TileUpdateLog.Count() - 1 - i ]  );
 
 			if( n > 0 )
 				ptr += n;
@@ -5402,7 +5402,7 @@ int r3dTerrain3::CheckMegaOffsets()
 			outOfBoundsShown = 1;
 
 			char message[ 512 ];
-			sprintf( message, "Mask tile is located beyond atlas file size!" );
+			sprintf_s( message, sizeof(message), "Mask tile is located beyond atlas file size!" );
 
 			MessageBoxA( r3dRenderer->HLibWin, message, "Error", MB_ICONERROR );
 		}
@@ -6116,7 +6116,7 @@ r3dTerrain3::OptimizeLayerMasks( int isAutoSave, r3dTL::TArray< UINT16 > * oTemp
 		{
 			lastInfoFrame = r3dGetTime();
 			char buf[ 512 ];
-			sprintf( buf, "Checking %d of %d", countForReport, (int)m_MegaTexGridFile_Map.size() );
+			sprintf_s( buf, sizeof(buf), "Checking %d of %d", countForReport, (int)m_MegaTexGridFile_Map.size() );
 			ReportProgress( buf );
 		}
 
@@ -6586,7 +6586,7 @@ void r3dTerrain3::DeleteLayer( int lidx, IDirect3DTexture9* packedTempMask, IDir
 					{
 						lastInfoFrame = r3dGetTime();
 						char buf[ 512 ];
-						sprintf( buf, "Updating (%d,%d,%d)", tx, tz, L );
+						sprintf_s( buf, sizeof(buf), "Updating (%d,%d,%d)", tx, tz, L );
 						ReportProgress( buf );
 					}
 
@@ -6787,7 +6787,7 @@ void r3dTerrain3::DeleteLayer( int lidx, IDirect3DTexture9* packedTempMask, IDir
 				{
 					lastInfoFrame = r3dGetTime();
 					char buf[ 512 ];
-					sprintf( buf, "Deleting (%d,%d,%d)", tx, tz, L );
+					sprintf_s( buf, sizeof(buf), "Deleting (%d,%d,%d)", tx, tz, L );
 					ReportProgress( buf );
 				}
 
@@ -7821,7 +7821,7 @@ r3dTerrain3::DoLoad( const char* dir )
 
 	char tempStr[ 1024 ];
 
-	sprintf( tempStr, FNAME_TERRAIN3_INI, dirName );
+	sprintf_s( tempStr, sizeof(tempStr), FNAME_TERRAIN3_INI, dirName );
 
 	Script_c script;
 
@@ -8007,7 +8007,7 @@ r3dTerrain3::DoLoad( const char* dir )
 			{
 				for( int i = 0, e = NUM_QUALITY_LAYERS; i < e; i ++ )
 				{
-					sprintf( tstr, "lod%d_%d:", i, tq );
+					sprintf_s( tstr, sizeof(tstr), "lod%d_%d:", i, tq );
 
 					if( !strcmp( buffer, tstr ) )
 					{
@@ -8022,7 +8022,7 @@ r3dTerrain3::DoLoad( const char* dir )
 			{
 				for( int i = 0, e = NUM_QUALITY_LAYERS; i < e; i ++ )
 				{
-					sprintf( tstr, "lod%d:", i );
+					sprintf_s( tstr, sizeof(tstr), "lod%d:", i );
 
 					if( !strcmp( buffer, tstr ) )
 					{
@@ -8042,7 +8042,7 @@ r3dTerrain3::DoLoad( const char* dir )
 				{
 					for( int i = 0, e = m_BaseQualitySettings[ tq ].TileVertexDensitySteps.COUNT; i < e; i ++ )
 					{
-						sprintf( tstr, "vertex_density_step%d_%d:", i, tq );
+						sprintf_s( tstr, sizeof(tstr), "vertex_density_step%d_%d:", i, tq );
 
 						if( !strcmp( buffer, tstr ) )
 						{
@@ -8058,7 +8058,7 @@ r3dTerrain3::DoLoad( const char* dir )
 			{
 				for( int i = 0, e = m_BaseQualitySettings[ QS_LOW ].TileVertexDensitySteps.COUNT; i < e; i ++ )
 				{
-					sprintf( tstr, "vertex_density_step%d:", i );
+					sprintf_s( tstr, sizeof(tstr), "vertex_density_step%d:", i );
 
 					if( !strcmp( buffer, tstr ) )
 					{
@@ -8146,7 +8146,7 @@ static uint32_t GetHeightFieldDataSize( const PxHeightFieldDesc& desc )
 
 static void PrintSplatLocation( char (& buf ) [ 1024 ], int idx )
 {
-	_snprintf( buf, 1024, "Terrain3\\Mat-Splat%d.dds", idx );
+	_snprintf_s( buf, sizeof(buf), _TRUNCATE, "Terrain3\\Mat-Splat%d.dds", idx );
 }
 
 static void PrintFullSplatPath( const char* levelDir, int i, char (& buf ) [ 1024 ] )
@@ -8155,8 +8155,8 @@ static void PrintFullSplatPath( const char* levelDir, int i, char (& buf ) [ 102
 	PrintSplatLocation( tempStr, i );
 
 	r3dscpy( buf, levelDir );
-	strcat( buf, "\\" );
-	strcat( buf, tempStr );
+	strcat_s( buf, sizeof(buf), "\\" );
+	strcat_s( buf, sizeof(buf), tempStr );
 }
 
 static void SaveScaledTexture( const char* fullPath, r3dTexture* srcTex, int newWidth, int newHeight  )
@@ -8177,8 +8177,8 @@ static void SaveScaledTexture( const char* fullPath, r3dTexture* srcTex, int new
 void r3dTerrain3::MakeSaveDir( const char* dir )
 {
 	char terraDir[ 1024 ];
-	strcpy( terraDir, dir );
-	strcat( terraDir, "\\Terrain3" );
+	strcpy_s( terraDir, sizeof(terraDir), dir );
+	strcat_s( terraDir, sizeof(terraDir), "\\Terrain3" );
 	mkdir( terraDir );
 }
 
@@ -16074,8 +16074,8 @@ int r3dTerrain3::LoadMegaTexFile_OLD( const char* levelPath )
 {
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, levelPath );
-	strcat( fullPath, R3D_MEGATEX_PATH_BASE );
+	strcpy_s( fullPath, sizeof(fullPath), levelPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEX_PATH_BASE );
 
 	if( m_MegaTexAtlasFile )
 	{
@@ -16087,10 +16087,10 @@ int r3dTerrain3::LoadMegaTexFile_OLD( const char* levelPath )
 	if( g_bEditMode )
 	{
 		char checkOldPath[ 1024 ];
-		strcpy( checkOldPath, levelPath );
-		strcat( checkOldPath, R3D_MEGATEX_PATH_BASE );
-		strcat( checkOldPath, "." );
-		strcat( checkOldPath, R3D_MEGATEX_PATH_EXT );
+		strcpy_s( checkOldPath, sizeof(checkOldPath), levelPath );
+		strcat_s( checkOldPath, sizeof(checkOldPath), R3D_MEGATEX_PATH_BASE );
+		strcat_s( checkOldPath, sizeof(checkOldPath), "." );
+		strcat_s( checkOldPath, sizeof(checkOldPath), R3D_MEGATEX_PATH_EXT );
 
 		if( r3dFileExists( checkOldPath ) )
 		{
@@ -16192,7 +16192,7 @@ void r3dTerrain3::GetEditorFilePath( char ( &oPath ) [ 1024 ] )
 {
 	GetTempPath( sizeof oPath - 1, oPath );
 
-	strcat( oPath, R3D_MEGATEX_EDIT_PATH );
+	strcat_s( oPath, sizeof(oPath), R3D_MEGATEX_EDIT_PATH );
 }
 
 //------------------------------------------------------------------------
@@ -16353,8 +16353,8 @@ int r3dTerrain3::LoadMegaTexFile( const char* levelPath )
 
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, levelPath );
-	strcat( fullPath, R3D_MEGATEX_PATH_INFO );
+	strcpy_s( fullPath, sizeof(fullPath), levelPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEX_PATH_INFO );
 
 	r3dFile* megaTexInfoFile = r3d_open( fullPath, "rb" );
 
@@ -16421,8 +16421,8 @@ void r3dTerrain3::CreateMegaTexFile( const char* levelPath, UINT16 initialHeight
 
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, levelPath );
-	strcat( fullPath, R3D_MEGATEX_PATH_BASE );
+	strcpy_s( fullPath, sizeof(fullPath), levelPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEX_PATH_BASE );
 
 	CreateMegaTexInfo( levelPath );
 
@@ -16728,8 +16728,8 @@ int r3dTerrain3::LoadMegaTexMapFile_OLD( const char* levelPath )
 {
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, levelPath );
-	strcat( fullPath, R3D_MEGATEXMAP_PATH_OLD );
+	strcpy_s( fullPath, sizeof(fullPath), levelPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEXMAP_PATH_OLD );
 
 	r3dFile* fin = r3d_open( fullPath );
 
@@ -17067,8 +17067,8 @@ int r3dTerrain3::LoadMegaTexTileInfos_OLD( const char* levelPath )
 {
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, levelPath );
-	strcat( fullPath, R3D_MEGATEXTILEINFOS_PATH );
+	strcpy_s( fullPath, sizeof(fullPath), levelPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEXTILEINFOS_PATH );
 
 	r3dFile* fin = r3d_open( fullPath );
 
@@ -17185,8 +17185,8 @@ void r3dTerrain3::MergeEditedMega( const char* levelPath )
 
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, levelPath );
-	strcat( fullPath, R3D_MEGATEX_PATH_BASE );
+	strcpy_s( fullPath, sizeof(fullPath), levelPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEX_PATH_BASE );
 
 	CloseMegaTexGridFiles();
 
@@ -17575,7 +17575,7 @@ int r3dTerrain3::DeleteLayerMasks( MaskIdSet& masksForDeletion, int startMaskIdx
 				{
 					lastInfoFrame = r3dGetTime();
 					char buf[ 512 ];
-					sprintf( buf, "Saving %d of %d", i, relocatedMasks.Count() );
+					sprintf_s( buf, sizeof(buf), "Saving %d of %d", i, relocatedMasks.Count() );
 					ReportProgress( buf );
 				}
 
@@ -17623,7 +17623,7 @@ int r3dTerrain3::DeleteLayerMasks( MaskIdSet& masksForDeletion, int startMaskIdx
 						{
 							lastInfoFrame = r3dGetTime();
 							char buf[ 512 ];
-							sprintf( buf, "Checking tile info (%d,%d,%d)", tx, tz, L );
+							sprintf_s( buf, sizeof(buf), "Checking tile info (%d,%d,%d)", tx, tz, L );
 							ReportProgress( buf );
 						}
 
@@ -17871,7 +17871,7 @@ void r3dTerrain3::SplitMegaTexFile( const char* levelPath, const char* filePath 
 	for( int ptr = 0, i = 0; ptr < size; ptr += R3D_MEGATEX_CHUNK_SIZE, i ++ )
 	{
 		char fullPath[ 1024 ];
-		sprintf( fullPath, "%s%s_%d.%s", levelPath, R3D_MEGATEX_PATH_BASE, i, R3D_MEGATEX_PATH_EXT );
+		sprintf_s( fullPath, sizeof(fullPath), "%s%s_%d.%s", levelPath, R3D_MEGATEX_PATH_BASE, i, R3D_MEGATEX_PATH_EXT );
 
 		FILE* fout = fopen( fullPath, "wb" );
 
@@ -17929,21 +17929,21 @@ void r3dTerrain3::EncodeGridCoordinates( MegaTexFileGridOffsetBase* oOffset, int
 
 void r3dTerrain3::GetChunkFileName( char* buff, int x, int z )
 {
-	sprintf( buff, "%s/Terrain3/chunk_%d_%d.bin", r3dGameLevel::GetHomeDir(), x, z );
+	sprintf_s( buff, 512, "%s/Terrain3/chunk_%d_%d.bin", r3dGameLevel::GetHomeDir(), x, z ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
 
 void r3dTerrain3::GetTileInfosChunkFileName( char* buff, int x, int z )
 {
-	sprintf( buff, "%s/Terrain3/tileinfos_%d_%d.bin", r3dGameLevel::GetHomeDir(), x, z );
+	sprintf_s( buff, 512, "%s/Terrain3/tileinfos_%d_%d.bin", r3dGameLevel::GetHomeDir(), x, z ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
 
 void r3dTerrain3::GetMegaMapChunkFileName( char* buff, int x, int z )
 {
-	sprintf( buff, "%s/Terrain3/megatexmap_%d_%d.bin", r3dGameLevel::GetHomeDir(), x, z );
+	sprintf_s( buff, 512, "%s/Terrain3/megatexmap_%d_%d.bin", r3dGameLevel::GetHomeDir(), x, z ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -17952,13 +17952,13 @@ void r3dTerrain3::GetMipFileDir( char* buff )
 {
 	SHGetFolderPath( r3dRenderer->HLibWin, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buff );
 
-	strcat( buff, "/Arktos Entertainment/" );
+	strcat_s( buff, 512, "/Arktos Entertainment/" ); // TODO: verify buffer size
 	if( !r3dDirectoryExists( buff ) )
 	{
 		mkdir( buff );
 	}
 
-	strcat( buff, "Infestation/" );
+	strcat_s( buff, 512, "Infestation/" ); // TODO: verify buffer size
 	if( !r3dDirectoryExists( buff ) )
 	{
 		mkdir( buff );
@@ -17973,7 +17973,7 @@ void r3dTerrain3::GetMipFileDir( char* buff )
 		if( homeDir[ c ] == '/' || 
 			homeDir[ c ] == '\\' )
 		{
-			strncat( buff, homeDir.c_str() + lc, c - lc );
+			strncat_s( buff, 512, homeDir.c_str() + lc, c - lc ); // TODO: verify buffer size
 
 			if( !r3dDirectoryExists( buff ) )
 			{
@@ -17986,8 +17986,8 @@ void r3dTerrain3::GetMipFileDir( char* buff )
 
 	if( c > lc )
 	{
-		strncat( buff, homeDir.c_str() + lc, c - lc );
-		strcat( buff, "/" );
+		strncat_s( buff, 512, homeDir.c_str() + lc, c - lc ); // TODO: verify buffer size
+		strcat_s( buff, 512, "/" ); // TODO: verify buffer size
 
 		mkdir( buff );
 	}
@@ -17998,7 +17998,7 @@ void r3dTerrain3::GetMipFileDir( char* buff )
 void r3dTerrain3::GetMipFileName( char* buff )
 {
 	GetMipFileDir( buff );
-	strcat( buff, "terrain.mips" );
+	strcat_s( buff, 512, "terrain.mips" ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -18006,14 +18006,14 @@ void r3dTerrain3::GetMipFileName( char* buff )
 void r3dTerrain3::GetMipFileStampName( char* buff )
 {
 	GetMipFileDir( buff );
-	strcat( buff, "stamp.txt" );
+	strcat_s( buff, 512, "stamp.txt" ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
 
 void r3dTerrain3::GetDistribStampName( const char* levelPath, char* buff )
 {
-	sprintf( buff, "%s%s", levelPath, R3D_MEGATEX_STAMP_FILE );
+	sprintf_s( buff, 512, "%s%s", levelPath, R3D_MEGATEX_STAMP_FILE ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -18033,8 +18033,8 @@ void r3dTerrain3::CreateMegaTexInfo( const char* dirPath )
 
 	char fullPath[ 1024 ];
 
-	strcpy( fullPath, dirPath );
-	strcat( fullPath, R3D_MEGATEX_PATH_INFO );
+	strcpy_s( fullPath, sizeof(fullPath), dirPath );
+	strcat_s( fullPath, sizeof(fullPath), R3D_MEGATEX_PATH_INFO );
 
 	FILE* megaTexInfoFile = fopen_for_write( fullPath, "wb" );
 
@@ -18198,14 +18198,14 @@ int r3dTerrain3::ConvertToFileGrid( const char* dirPath )
 	{
 		char buffer[ 512 ];
 
-		strcpy( buffer, dirPath );
-		strcat( buffer, "/Terrain3/" );
-		strcat( buffer, "megatileinfos.dat" );
+		strcpy_s( buffer, sizeof(buffer), dirPath );
+		strcat_s( buffer, sizeof(buffer), "/Terrain3/" );
+		strcat_s( buffer, sizeof(buffer), "megatileinfos.dat" );
 		remove( buffer );
 
-		strcpy( buffer, dirPath );
-		strcat( buffer, "/Terrain3/" );
-		strcat( buffer, "megatex.map" );
+		strcpy_s( buffer, sizeof(buffer), dirPath );
+		strcat_s( buffer, sizeof(buffer), "/Terrain3/" );
+		strcat_s( buffer, sizeof(buffer), "megatex.map" );
 		remove( buffer );
 
 		int chunkCount = m_MegaTexAtlasFile->GetChunkCount();
@@ -18215,9 +18215,9 @@ int r3dTerrain3::ConvertToFileGrid( const char* dirPath )
 
 		for( int i = 0, e = chunkCount; i < e; i ++ )
 		{
-			strcpy( buffer, dirPath );
-			strcat( buffer, "/Terrain3/" );
-			sprintf( buffer + strlen( buffer ), "megatex_%d.bin", i );
+			strcpy_s( buffer, sizeof(buffer), dirPath );
+			strcat_s( buffer, sizeof(buffer), "/Terrain3/" );
+			sprintf_s( buffer + strlen( buffer ), sizeof(buffer) - strlen( buffer ), "megatex_%d.bin", i );
 			remove( buffer );
 		}
 	}
@@ -18864,7 +18864,7 @@ r3dTerrain3::Bytes r3dTerrain3::GenerateStamp()
 	Bytes res;
 
 	res.Resize( 18 );
-	int n = sprintf( (char*)&res[ 0 ], "%08d:%08d", m_StampID, rand() );
+	int n = sprintf_s( (char*)&res[ 0 ], 18, "%08d:%08d", m_StampID, rand() );
 	r3d_assert( n == 17 );
 	res.Resize( 17 );
 

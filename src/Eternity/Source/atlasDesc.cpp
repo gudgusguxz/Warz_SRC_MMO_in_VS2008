@@ -104,9 +104,9 @@ int ComposeAtlas( const char* basePath, const char* atlasName )
 {
 	char pathWithWildCards[ 512 ];
 
-	strcpy( pathWithWildCards, basePath );
-	strcat( pathWithWildCards, atlasName );
-	strcat( pathWithWildCards, "/*.dds" );
+	strcpy_s( pathWithWildCards, sizeof(pathWithWildCards), basePath );
+	strcat_s( pathWithWildCards, sizeof(pathWithWildCards), atlasName );
+	strcat_s( pathWithWildCards, sizeof(pathWithWildCards), "/*.dds" );
 
 	TextureAtlas atlas;
 
@@ -134,9 +134,9 @@ int ComposeAtlas( const char* basePath, const char* atlasName )
 	FindClose(h);
 
 	char texPath[ 512 ];
-	strcpy( texPath, basePath );
-	strcat( texPath, atlasName );
-	strcat( texPath, "/" );
+	strcpy_s( texPath, sizeof(texPath), basePath );
+	strcat_s( texPath, sizeof(texPath), atlasName );
+	strcat_s( texPath, sizeof(texPath), "/" );
 
 	for( int i = 0, e = (int)files.size(); i < e; i ++ )
 	{
@@ -257,14 +257,14 @@ int ComposeAtlas( const char* basePath, const char* atlasName )
 	//------------------------------------------------------------------------
 
 	char destAtlasFileName[ 512 ];
-	strcpy( destAtlasFileName, basePath );
-	strcat( destAtlasFileName, atlasName );
-	strcat( destAtlasFileName, ".dds.atlas" );
+	strcpy_s( destAtlasFileName, sizeof(destAtlasFileName), basePath );
+	strcat_s( destAtlasFileName, sizeof(destAtlasFileName), atlasName );
+	strcat_s( destAtlasFileName, sizeof(destAtlasFileName), ".dds.atlas" );
 
 	atlasDesc.save( destAtlasFileName );
 
 	char destAtlasTexFileName[ 512 ];
-	strcpy( destAtlasTexFileName, basePath );
+	strcpy_s( destAtlasTexFileName, sizeof(destAtlasTexFileName), basePath );
 	strcat( destAtlasTexFileName, atlasName );
 	strcat( destAtlasTexFileName, ".dds" );
 

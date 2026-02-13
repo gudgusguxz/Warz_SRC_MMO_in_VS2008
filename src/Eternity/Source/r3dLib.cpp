@@ -148,8 +148,8 @@ char* __internal_gnrt_lkey(const char* name, int exp_year, int exp_month, int ex
 	for(int i=0; i<16; ++i)
 		sname[i] = 'a'+i;
 	sname[15] = 0;
-	strncpy(sname, name, R3D_MIN((int)strlen(name), 15));
-	sprintf(raw_key, "%s %8x:%8x", sname, dword1, dword2);
+	strncpy_s(sname, sizeof(sname), name, R3D_MIN((int)strlen(name), 15));
+	sprintf_s(raw_key, 35, "%s %8x:%8x", sname, dword1, dword2);
 	encode(raw_key, result);
 	
 	return result;
@@ -171,7 +171,7 @@ bool __internal_check_license_key()
 			time_t exptime;
 			unsigned int dword1=0, dword2=0;
 			char temp[32];
-			sscanf(gLicenseKey, "%s %x:%x", temp, &dword1, &dword2);
+			sscanf_s(gLicenseKey, "%s %x:%x", temp, (unsigned)sizeof(temp), &dword1, &dword2);
 			exptime = (__int64)dword2;
 			time_t curtime;
 			time(&curtime);

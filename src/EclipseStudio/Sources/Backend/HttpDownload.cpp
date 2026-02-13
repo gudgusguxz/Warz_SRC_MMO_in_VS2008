@@ -107,7 +107,7 @@ bool HttpDownload::Get(const char* full_url, CkByteData& data, DWORD start, DWOR
 			return false;
 		}
 		//r3dOutToLog("->%s\n", reloc_url);
-		strcpy(relocatedUrl_, reloc_url);
+		strcpy_s(relocatedUrl_, sizeof(relocatedUrl_), reloc_url);
 
 		// make a 2nd request.
 		CkHttpRequest req2;

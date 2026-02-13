@@ -35,7 +35,7 @@ void DrawDebugPositions( const Positions& poses )
 
 	for( uint32_t i = 0, e = poses.Count(); i < e; i ++ )
 	{
-		_snprintf( num, sizeof num - 1, "%d", i );
+		_snprintf_s( num, sizeof(num), _TRUNCATE, "%d", i );
 
 		PrintPos( vp, poses[ i ], num );
 	}
@@ -122,18 +122,18 @@ void DrawOverlappingPositions( const Positions& poses )
 					{
 						if( !Visited[ vi ] && (UINT32&)ii->second->y == y )
 						{
-							_snprintf( num, sizeof num - 1, "%d,", (int)( ii->second - start ) );
+							_snprintf_s( num, sizeof(num), _TRUNCATE, "%d,", (int)( ii->second - start ) );
 
 							if( totalLen < 48 && !full )
 							{
-								strcat ( str, num ) ;
+								strcat_s( str, sizeof(str), num ) ;
 								totalLen += strlen( num ) ;
 							}
 							else
 							{
 								full = 1;
 								// kill last comma
-								strcat( str - 1, "..." );
+								strcat_s( str, sizeof(str), "..." );
 								totalLen += 3 ;
 							}
 

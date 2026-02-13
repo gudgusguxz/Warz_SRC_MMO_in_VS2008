@@ -115,7 +115,7 @@ int   r3dPixelShader :: LoadBinaryCache( const char* FName, const char* Path, co
 
 			_splitpath( FName, drive, dir, name, ext );
 
-			sprintf( IncludeName, "%s\\%s\\%s", __r3dBaseShaderPath, dir, Includes[ i ].c_str() );
+			sprintf_s( IncludeName, sizeof(IncludeName), "%s\\%s\\%s", __r3dBaseShaderPath, dir, Includes[ i ].c_str() );
 
 			if( r3d_fstamp( IncludeName ) > r3d_fstamp( FName2 ) )
 			{
@@ -150,7 +150,7 @@ int   r3dPixelShader :: LoadBinaryCache( const char* FName, const char* Path, co
 		if( char* substr = strstr( cbuff, "// approximately" ) )
 		{
 			int icount = 0 ;
-			sscanf( substr, "// approximately %d", &icount ) ;
+			sscanf_s( substr, "// approximately %d", &icount ) ;
 
 			if( icount > 512 )
 			{
@@ -228,13 +228,14 @@ int r3dPixelShader :: Load( const char* FName, int Type, const r3dTL::TArray <D3
 {
 	R3D_ENSURE_MAIN_THREAD();
 
-	sprintf(FileName, "%s\\%s", __r3dBaseShaderPath, FName);
+	sprintf_s(FileName, sizeof(FileName), "%s\\%s", __r3dBaseShaderPath, FName);
 
 	char defines_string[256+128];
 	memset(defines_string, 0, sizeof defines_string);
 	for(unsigned int i=0; i<defines.Count(); ++i)
 	{
-		sprintf(&defines_string[strlen(defines_string)], "%s=%s,", defines[i].Name, defines[i].Definition);
+		size_t curLen = strlen(defines_string);
+		sprintf_s(&defines_string[curLen], sizeof(defines_string) - curLen, "%s=%s,", defines[i].Name, defines[i].Definition);
 	}
 
 #if USE_PROJECT_NAME
@@ -247,14 +248,14 @@ int r3dPixelShader :: Load( const char* FName, int Type, const r3dTL::TArray <D3
 	#endif
 #endif
 
-		sprintf(&defines_string[strlen(defines_string)], "%s=1", RENDER_PROJECT_NAME); 
+		{ size_t curLen = strlen(defines_string); sprintf_s(&defines_string[curLen], sizeof(defines_string) - curLen, "%s=1", RENDER_PROJECT_NAME); }
 #endif 
 
 #ifndef FINAL_BUILD
 	if( r3d_access( FileName, 0 ) )
 	{
 		char msg[ 512 ];
-		sprintf( msg, "Requested shader file '%s' doesn't exist!", FName );
+		sprintf_s( msg, sizeof(msg), "Requested shader file '%s' doesn't exist!", FName );
 		MessageBox( r3dRenderer->HLibWin, msg, "WARNING", MB_ICONEXCLAMATION );
 	}
 #endif

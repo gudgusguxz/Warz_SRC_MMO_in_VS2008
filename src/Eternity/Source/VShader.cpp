@@ -26,7 +26,7 @@ void r3dMakeCompiledShaderName(char* out, const char* shader, const char* define
 
   r3d_assert( dir[ 0 ] == 0 );
   
-  sprintf(out, "%s\\%s_%s.csr", __r3dBaseShaderCachePath, name, defines );
+  sprintf_s(out, 512, "%s\\%s_%s.csr", __r3dBaseShaderCachePath, name, defines ); // TODO: verify buffer size - caller passes char[512]
 }
 
 class r3dDXInclude : public ID3DXInclude
@@ -61,7 +61,7 @@ HRESULT r3dDXInclude::Open(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVO
 
   //r3dOutToLog("r3dDXInclude::Open: %d %s\n", IncludeType, pFileName);
   char fname[MAX_PATH];
-  sprintf(fname, "%s\\%s", basePath, pFileName);
+  sprintf_s(fname, sizeof(fname), "%s\\%s", basePath, pFileName);
   r3dFile* f = r3d_open(fname, "rb");
   if(!f) {
     r3dError("can't open shader include file %s (%s)\n", pFileName, fname);
@@ -130,7 +130,7 @@ int r3dCompileShader(
   }
 
   if(FAILED(hr)) {
-	  _snprintf( LastCompilationError, sizeof LastCompilationError - 1, "Shader compilation Error %s\n%s\n", fname, pError ? pError->GetBufferPointer() : "unknown error" );
+	  _snprintf_s( LastCompilationError, sizeof(LastCompilationError), _TRUNCATE, "Shader compilation Error %s\n%s\n", fname, pError ? pError->GetBufferPointer() : "unknown error" );
     return 0;
   }
   
@@ -229,7 +229,7 @@ int r3dVertexShader :: LoadBinaryCache(const char* FName, const char* Path, cons
 
 			_splitpath( FName, drive, dir, name, ext );
 
-			sprintf( IncludeName, "%s\\%s\\%s", __r3dBaseShaderPath, dir, Includes[ i ].c_str() );
+			sprintf_s( IncludeName, sizeof(IncludeName), "%s\\%s\\%s", __r3dBaseShaderPath, dir, Includes[ i ].c_str() );
 
 			if( r3d_fstamp( IncludeName ) > r3d_fstamp( FName2 ) )
 			{
@@ -311,20 +311,21 @@ int r3dVertexShader :: Load(const char* FName, int Type )
 
 int r3dVertexShader :: Load(const char* FName, int Type, const r3dTL::TArray <D3DXMACRO> & defines )
 {
-	sprintf(FileName, "%s\\%s", __r3dBaseShaderPath, FName);
+	sprintf_s(FileName, sizeof(FileName), "%s\\%s", __r3dBaseShaderPath, FName);
 
 	char defines_string[256];
 	memset(defines_string, 0, 256);
 	for(unsigned int i=0; i<defines.Count(); ++i)
 	{
-		sprintf(&defines_string[strlen(defines_string)], "%s=%s,", defines[i].Name, defines[i].Definition);
+		size_t curLen = strlen(defines_string);
+		sprintf_s(&defines_string[curLen], sizeof(defines_string) - curLen, "%s=%s,", defines[i].Name, defines[i].Definition);
 	}
 
 #ifndef FINAL_BUILD
 	if( r3d_access( FileName, 0 ) )
 	{
 		char msg[ 512 ];
-		sprintf( msg, "Requested shader file '%s' doesn't exist!", FName );
+		sprintf_s( msg, sizeof(msg), "Requested shader file '%s' doesn't exist!", FName );
 		MessageBox( r3dRenderer->HLibWin, msg, "WARNING", MB_ICONEXCLAMATION );
 	}
 #endif

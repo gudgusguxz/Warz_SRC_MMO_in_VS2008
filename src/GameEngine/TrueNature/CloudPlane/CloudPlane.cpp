@@ -32,7 +32,7 @@ bool CloudPlane::NeedSave() const
 void CloudPlane::Save(const char* folder)
 {
 	char fn[256];
-	sprintf(fn, "%s%s", folder, "\\CloudPlane.bin");
+	sprintf_s(fn, sizeof(fn), "%s%s", folder, "\\CloudPlane.bin");
 	FILE* f = fopen(fn, "wb");
 	fwrite(&sceneParam, sizeof(sceneParam), 1, f);
 	fclose(f);
@@ -40,7 +40,7 @@ void CloudPlane::Save(const char* folder)
 	extern bool g_bEditMode ;
 	if( g_bEditMode )
 	{
-		sprintf(fn, "%s%s", folder, "\\ssclouds.bin");
+		sprintf_s(fn, sizeof(fn), "%s%s", folder, "\\ssclouds.bin");
 
 		if( r3dFileExists(fn) )
 		{
@@ -60,10 +60,10 @@ static void FixOldTexturePath( char (&str)[ N ] )
 	{
 		memcpy( temp, str, substr - str ) ;
 		temp[ substr - str ] = 0 ;
-		strcat( temp, "CloudPlane" ) ;
-		strcat( temp, str + (substr - str) + sizeof( oldName ) - 1 ) ;
+		strcat_s( temp, N, "CloudPlane" ) ;
+		strcat_s( temp, N, str + (substr - str) + sizeof( oldName ) - 1 ) ;
 
-		strcpy( str, temp ) ;
+		strcpy_s( str, N, temp ) ;
 	}
 }
 
@@ -71,11 +71,11 @@ void CloudPlane::Load(const char* folder)
 {
 
 	char fn[256];
-	sprintf(fn, "%s%s", folder, "\\CloudPlane.bin");
+	sprintf_s(fn, sizeof(fn), "%s%s", folder, "\\CloudPlane.bin");
 
 	if(!r3dFileExists(fn))
 	{
-		sprintf(fn, "%s%s", folder, "\\ssclouds.bin");
+		sprintf_s(fn, sizeof(fn), "%s%s", folder, "\\ssclouds.bin");
 	}
 
 	if(r3dFileExists(fn))

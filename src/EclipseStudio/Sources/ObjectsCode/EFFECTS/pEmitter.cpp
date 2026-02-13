@@ -24,7 +24,7 @@ BOOL obj_PEmitter::OnCreate()
   char afname[MAX_PATH];
 
   
-  sprintf(buf, "Data\\Particles\\Particles.cfg");
+  strcpy_s(buf, sizeof(buf), "Data\\Particles\\Particles.cfg");
   r3dFile *f = r3d_open(buf, "rt");
   if(!f) { return FALSE; }
 
@@ -36,10 +36,10 @@ BOOL obj_PEmitter::OnCreate()
     
     char pAnimName[MAX_PATH];
     char pAnimFile[MAX_PATH];
-    sscanf(buf, "%s %s", pAnimName, pAnimFile);
+    sscanf_s(buf, "%s %s", pAnimName, (unsigned)sizeof(pAnimName), pAnimFile, (unsigned)sizeof(pAnimFile));
 
     
-    sprintf(afname, "Data\\Particles\\%s", pAnimFile);
+    sprintf_s(afname, sizeof(afname), "Data\\Particles\\%s", pAnimFile);
 
     if(strstr(Name.c_str(),pAnimName))
     {
