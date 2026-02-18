@@ -142,7 +142,7 @@ static bool testForCurrentDir()
   ::GetCurrentDirectory(sizeof(curDir), curDir);
   if(stricmp(exeDir, curDir) != 0) {
     char msg[2048];
-    sprintf(msg, "Updater current directory (%s) is different from working directory (%s)", curDir, exeDir);
+    sprintf_s(msg, sizeof(msg), "Updater current directory (%s) is different from working directory (%s)", curDir, exeDir);
     MessageBox(NULL, msg, "Warning", MB_OK | MB_ICONEXCLAMATION);
   }
   //::SetCurrentDirectory(g_workDir);
@@ -153,7 +153,7 @@ static bool testForCurrentDir()
 static bool testForWriteToDir()
 {
   char buf[MAX_PATH];
-  sprintf(buf, "%s", "test.bin");
+  strcpy_s(buf, sizeof(buf), "test.bin");
   FILE* f  = fopen(buf, "wb");
   if(f == NULL) {
     return false;
@@ -454,8 +454,8 @@ void game::Init(void)
   fake_SetMode(Width, Height);
   
   char title[512];
-  sprintf(title, "SiamNewByManut %s (%s)", UPDATER_VERSION, UPDATER_BUILD);
-  if(!UPDATER_UPDATER_ENABLED) strcat(title, "!!!!SELF_UPDATE_DISABLED!!!");
+  sprintf_s(title, sizeof(title), "SiamNewByManut %s (%s)", UPDATER_VERSION, UPDATER_BUILD);
+  if(!UPDATER_UPDATER_ENABLED) strcat_s(title, sizeof(title), "!!!!SELF_UPDATE_DISABLED!!!");
   ::SetWindowText(win::hWnd, title);
 
   CreateResources();
@@ -556,7 +556,7 @@ static int editTextField(float x, float y, char* editString, bool isFocused, int
 
   // by some weird reason GetTextExtent ignoring last spaces in string.
   char sizemsg[512];
-  sprintf(sizemsg, "%s.", msg);
+  sprintf_s(sizemsg, sizeof(sizemsg), "%s.", msg);
   SIZE ts1 = GetTextExtent(g_font1, sizemsg);
   SIZE ts2 = GetTextExtent(g_font1, ".");
   if(caretOn) {
@@ -606,16 +606,17 @@ static int editTextField(float x, float y, char* editString, bool isFocused, int
       return 0;
     if(len == 4 || len == 9 || len == 14) { // '-' in serial
       if(ch == '-') {
-        sprintf(editString + strlen(editString), "%c", ch);
+        size_t len = strlen(editString); sprintf_s(editString + len, 512 - len, "%c", ch); // TODO: verify buffer size
       }
       return 0;
     }
-    if(ch >= '0' && ch <= '9')
-      sprintf(editString + strlen(editString), "%c", ch);
-    else if(ch >= 'a' && ch <= 'z')
-      sprintf(editString + strlen(editString), "%c", ch - 0x20);
-    else if(ch >= 'A' && ch <= 'Z')
-      sprintf(editString + strlen(editString), "%c", ch);
+    if(ch >= '0' && ch <= '9') {
+      size_t len = strlen(editString); sprintf_s(editString + len, 512 - len, "%c", ch); // TODO: verify buffer size
+    } else if(ch >= 'a' && ch <= 'z') {
+      size_t len = strlen(editString); sprintf_s(editString + len, 512 - len, "%c", ch - 0x20); // TODO: verify buffer size
+    } else if(ch >= 'A' && ch <= 'Z') {
+      size_t len = strlen(editString); sprintf_s(editString + len, 512 - len, "%c", ch); // TODO: verify buffer size
+    }
     else if(ch == 9 || ch == 13)
       return ch;
 
@@ -624,7 +625,7 @@ static int editTextField(float x, float y, char* editString, bool isFocused, int
     
   // normal key
   if(ch >= 0x20 && ch < 0x80) {
-    sprintf(editString + strlen(editString), "%c", ch);
+    size_t len = strlen(editString); sprintf_s(editString + len, 512 - len, "%c", ch); // TODO: verify buffer size
   }
   
   return ch;
@@ -753,10 +754,10 @@ static void drawRegisterButtons(CUpdater& updater)
     g_imBtnRegister->draw(g_rRegisterBtn.left, g_rRegisterBtn.top, g_rRegisterBtn.width, g_rRegisterBtn.height, clr);
     if(g_mb) 
     {
-      strcpy(updater.createAccHelper.username, gEditText[0]);
-      strcpy(updater.createAccHelper.passwd1,  gEditText[1]);
-      strcpy(updater.createAccHelper.passwd2,  gEditText[2]);
-      strcpy(updater.createAccHelper.serial,   updater.checkSerialHelper.serial);
+      strcpy_s(updater.createAccHelper.username, sizeof(updater.createAccHelper.username), gEditText[0]);
+      strcpy_s(updater.createAccHelper.passwd1,  sizeof(updater.createAccHelper.passwd1),  gEditText[1]);
+      strcpy_s(updater.createAccHelper.passwd2,  sizeof(updater.createAccHelper.passwd2),  gEditText[2]);
+      strcpy_s(updater.createAccHelper.serial,   sizeof(updater.createAccHelper.serial),   updater.checkSerialHelper.serial);
       updater.DoCreateAccount();
     }
   }
@@ -887,7 +888,7 @@ static void drawSerialCheckButtons(CUpdater& updater)
     g_imBtnValidate->draw(g_rValidateBtn.left, g_rValidateBtn.top, g_rValidateBtn.width, g_rValidateBtn.height, clr);
     if(g_mb) 
     {
-      strcpy(updater.checkSerialHelper.serial, gEditText[0]);
+      strcpy_s(updater.checkSerialHelper.serial, sizeof(updater.checkSerialHelper.serial), gEditText[0]);
       updater.DoCheckSerial();
     }
   }
@@ -1026,7 +1027,7 @@ static void executeTopMenuButton(const CUpdater& updater, int btnIdx)
     case 0: // my account
     {
       char url[1024];
-      sprintf(url, "https://www.google.com/"); // /?WzLogin=%s", token);
+      sprintf_s(url, sizeof(url), "https://www.google.com/"); // /?WzLogin=%s", token);
       ShellExecute(NULL, "open", url, "", NULL, SW_SHOW);
       break;
     }
@@ -1249,7 +1250,7 @@ static void drawServerStatus(const CUpdater& updater)
 static void showErrorMessageBox(const CUpdater& updater)
 {
   char buf[2048];
-  sprintf(buf, "There was a problem updating the game\n'%s'\n\nPlease retry later", updater.updErr1_);
+  sprintf_s(buf, sizeof(buf), "There was a problem updating the game\n'%s'\n\nPlease retry later", updater.updErr1_);
   MessageBox(win::hWnd, updater.updErr1_, "Error", MB_OK | MB_ICONERROR);
 
   return;
@@ -1327,15 +1328,15 @@ static void startGame(const CUpdater& updater)
   
   // store login token in registry. If successful, indicate it in command line (==) and make some random gibberish
   if(createTokenRegKey(token))
-    sprintf(token, "==%08X%08X", u_random(-1), u_random(-1));
+    sprintf_s(token, 1024, "==%08X%08X", u_random(-1), u_random(-1)); // TODO: verify buffer size
 
   char GAME_START_PARAM[2048];
-  sprintf(GAME_START_PARAM, "-WOUpdatedOk %s -WOLogin \"%s\"", __r3dCmdLine, token);
+  sprintf_s(GAME_START_PARAM, sizeof(GAME_START_PARAM), "-WOUpdatedOk %s -WOLogin \"%s\"", __r3dCmdLine, token);
   if(updater.surveyLinkOut_.length() > 0) {
-    sprintf(GAME_START_PARAM + strlen(GAME_START_PARAM), " -survey \"%s\"", updater.surveyLinkOut_.c_str());
+    size_t len = strlen(GAME_START_PARAM); sprintf_s(GAME_START_PARAM + len, sizeof(GAME_START_PARAM) - len, " -survey \"%s\"", updater.surveyLinkOut_.c_str());
   }
   if(gSteam.steamID > 0) {
-    sprintf(GAME_START_PARAM + strlen(GAME_START_PARAM), " -steam");
+    size_t len = strlen(GAME_START_PARAM); sprintf_s(GAME_START_PARAM + len, sizeof(GAME_START_PARAM) - len, " -steam");
   }
   
   // we don't need to elevate permission here

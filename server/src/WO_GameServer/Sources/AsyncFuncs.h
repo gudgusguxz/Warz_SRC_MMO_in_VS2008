@@ -96,7 +96,7 @@ public:
 public:
 	CJobBanUser(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobBanUser[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobBanUser[%d] %p", CustomerID, this);
 		isPermaBan = 1; // always perma ban
 		BanReason[0] = 0;
 		sendGameblocksEvent = false;
@@ -115,7 +115,7 @@ public:
 public:
 	CJobBanChatUser(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobBanChatUser[%d] %p", CustomerID, this);		
+		sprintf_s(desc, sizeof(desc), "CJobBanChatUser[%d] %p", CustomerID, this);		
 		BanReason[0] = 0;		
 	}
 
@@ -134,7 +134,7 @@ class CJobProcessUserJoin : public CAsyncApiJob
   public:
 	CJobProcessUserJoin(DWORD in_peerId) : CAsyncApiJob(in_peerId)
 	{
-		sprintf(desc, "CJobProcessUserJoin[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobProcessUserJoin[%d] %p", CustomerID, this);
 		JobMaxTries    = 1;	// no need to retry that job
 
 		GameJoinResult = -1;
@@ -152,7 +152,7 @@ class CJobUserPingGame : public CAsyncApiJob
   public:
 	CJobUserPingGame(DWORD in_peerId) : CAsyncApiJob(in_peerId)
 	{
-		sprintf(desc, "CJobPingGame[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobPingGame[%d] %p", CustomerID, this);
 		JobMaxTries = 3;	// no need to retry that job
 	}
 
@@ -170,7 +170,7 @@ class CJobUserLeftGame : public CAsyncApiJob
   public:
 	CJobUserLeftGame(DWORD in_peerId) : CAsyncApiJob(in_peerId)
 	{
-		sprintf(desc, "CJobUserLeftGame[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobUserLeftGame[%d] %p", CustomerID, this);
 		JobMaxTries  = 3;	// no need to retry that job
 
 		GameMapId    = 0;
@@ -200,7 +200,7 @@ class CJobUpdateChar : public CAsyncApiJob
   public:
 	CJobUpdateChar(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobUpdateChar[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobUpdateChar[%d] %p", CustomerID, this);
 		JobMaxTries = 5;	// try to update for 50 sec
 	}
 
@@ -218,7 +218,7 @@ class CJobChangeBackpack : public CAsyncApiJob
   public:
 	CJobChangeBackpack(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobChangeBackpack[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobChangeBackpack[%d] %p", CustomerID, this);
 	}
 
 	int		Exec();
@@ -239,7 +239,7 @@ class CJobAddLogInfo : public CAsyncApiJob //TradeGD
   public:
 	CJobAddLogInfo() : CAsyncApiJob()
 	{
-		sprintf(desc, "CJobAddLogInfo"); // do not modify - it's used for reentrancy checks
+		sprintf_s(desc, sizeof(desc), "CJobAddLogInfo"); // do not modify - it's used for reentrancy checks
 		JobMaxTries = 3;	// no need to retry that job
 		Gamertag[0] = 0;
 	}
@@ -262,7 +262,7 @@ class CJobAddLogTradeInfo : public CAsyncApiJob
   public:
 	CJobAddLogTradeInfo() : CAsyncApiJob()
 	{
-		sprintf(desc, "CJobAddLogTradeInfo"); // do not modify - it's used for reentrancy checks
+		sprintf_s(desc, sizeof(desc), "CJobAddLogTradeInfo"); // do not modify - it's used for reentrancy checks
 		JobMaxTries = 3;	// no need to retry that job
 		Gamertag[0] = 0;
 	}
@@ -279,7 +279,7 @@ class CJobUpdateGameServerStatus : public CAsyncApiJob
   public:
 	CJobUpdateGameServerStatus() : CAsyncApiJob()
 	{
-		sprintf(desc, "CJobUpdateGameServerStatus"); 
+		sprintf_s(desc, sizeof(desc), "CJobUpdateGameServerStatus");
 		JobMaxTries = 5;	
 	}
 
@@ -303,7 +303,7 @@ class CJobBuyItem : public CAsyncApiJob
 
 	CJobBuyItem(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobBuyItem[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobBuyItem[%d] %p", CustomerID, this);
 		JobMaxTries = 1;	// no need to retry that job
 
 		ItemID = 0;
@@ -327,7 +327,7 @@ class CJobBackpackFromInventory : public CAsyncApiJob
 
 	CJobBackpackFromInventory(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobBackpackFromInventory[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobBackpackFromInventory[%d] %p", CustomerID, this);
 		InventoryID = 0;
 		SlotTo      = -1;
 	}
@@ -348,7 +348,7 @@ class CJobBackpackToInventory : public CAsyncApiJob
 
 	CJobBackpackToInventory(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobBackpackToInventory[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobBackpackToInventory[%d] %p", CustomerID, this);
 		SlotFrom = -1;
 	}
 
@@ -364,7 +364,7 @@ class CJobGetLootboxData : public CAsyncApiJob
   public:
 	CJobGetLootboxData() : CAsyncApiJob()
 	{
-		sprintf(desc, "CJobGetLootboxData[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobGetLootboxData[%d] %p", CustomerID, this);
 		JobMaxTries = 1;	// no need to retry that job, we'll get lootbox data on next update
 	}
 
@@ -409,7 +409,7 @@ public:
 
 	CJobExchangeAdd(const obj_ServerPlayer* plr) : CAsyncApiJob(plr)
 	{
-		sprintf(desc, "CJobExchangeAdd[%d] %p", CustomerID, this);
+		sprintf_s(desc, sizeof(desc), "CJobExchangeAdd[%d] %p", CustomerID, this);
 		ExchangeResultCode = -1;
 		ExchangeShowInHUD = 0;
 

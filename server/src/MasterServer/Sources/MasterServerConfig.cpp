@@ -64,7 +64,7 @@ void CMasterServerConfig::LoadConfig()
 void CMasterServerConfig::Temp_Load_WarZGames()
 {
   char group[128];
-  sprintf(group, "WarZGames");
+  strcpy_s(group, sizeof(group), "WarZGames");
 
   int numGames    = r3dReadCFG_I(configFile, group, "numGames", 0);
   int maxPlayers  = r3dReadCFG_I(configFile, group, "maxPlayers", 100);
@@ -96,7 +96,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
     ginfo.maxPlayers = maxPlayers;
     ginfo.channel    = 2; // official server
 
-    sprintf(ginfo.name, "Siam TH SERVER %03d", i + 1);
+    sprintf_s(ginfo.name, sizeof(ginfo.name), "Siam TH SERVER %03d", i + 1);
     AddPermanentGame(10000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -111,7 +111,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = maxPlayers;
 	  ginfo.channel	   = 4; // premium server
 
-	  sprintf(ginfo.name, "Siam TH SERVER PVE %03d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "Siam TH SERVER PVE %03d", i + 1);
 	  AddPermanentGame(14000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -126,7 +126,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
     ginfo.maxPlayers = maxPlayers;
     ginfo.channel    = 7; // trade server
 
-    sprintf(ginfo.name, "Siam PVP ZONE %03d", i + 1);
+    sprintf_s(ginfo.name, sizeof(ginfo.name), "Siam PVP ZONE %03d", i + 1);
     AddPermanentGame(21000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -141,7 +141,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = maxPlayers;
 	  ginfo.channel	   = 1; // trial server
 
-	  sprintf(ginfo.name, "WZ Trial Server %03d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "WZ Trial Server %03d", i + 1);
 	  AddPermanentGame(12000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -156,7 +156,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = numPTEPlayersColorado;
 	  ginfo.channel	   = 6; 
 
-	  sprintf(ginfo.name, "WZ PTE Colorado %03d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "WZ PTE Colorado %03d", i + 1);
 	  AddPermanentGame(15000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -188,7 +188,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = numPTEPlayersStrongholds;
 	  ginfo.channel    = 6; 
 
-	  sprintf(ginfo.name, "WZ PTE Stronghold %03d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "WZ PTE Stronghold %03d", i + 1);
 	  AddPermanentGame(15200 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -204,7 +204,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.gameTimeLimit = 50; // X hours limit
 	  ginfo.channel    = 7; // veteran server
 
-	  sprintf(ginfo.name, "WZ Veteran Server %03d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "WZ Veteran Server %03d", i + 1);
 	  AddPermanentGame(16000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -220,7 +220,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = 100;
 	  ginfo.channel	   = 5; // strongholds
 
-	  sprintf(ginfo.name, "StrongHold %03d", i+1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "StrongHold %03d", i+1);
 	  AddPermanentGame(18000+i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -236,7 +236,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
     ginfo.maxPlayers = maxPlayers;
     ginfo.channel    = 6; // dev event server
 
-    sprintf(ginfo.name, "NORMAL MODE %02d", i + 1);
+    sprintf_s(ginfo.name, sizeof(ginfo.name), "NORMAL MODE %02d", i + 1);
     AddPermanentGame(19000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -253,7 +253,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = maxPlayers;
 	  ginfo.channel = 6;// dev event server
 
-	  sprintf(ginfo.name, "SNIPERS MODE %02d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "SNIPERS MODE %02d", i + 1);
 	  AddPermanentGame(19500 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -270,7 +270,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
 	  ginfo.maxPlayers = maxPlayers;
 	  ginfo.channel = 6;// dev event server
 
-	  sprintf(ginfo.name, "NO SNIPERS MODE %02d", i + 1);
+	  sprintf_s(ginfo.name, sizeof(ginfo.name), "NO SNIPERS MODE %02d", i + 1);
 	  AddPermanentGame(20000 + i, ginfo, GBNET_REGION_US_West);
   }
 
@@ -286,7 +286,7 @@ void CMasterServerConfig::Temp_Load_WarZGames()
     ginfo.maxPlayers = 100;
     ginfo.channel    = 6; // dev event server
 
-    sprintf(ginfo.name, "NO DROP MODE %03d", i + 1);
+    sprintf_s(ginfo.name, sizeof(ginfo.name), "NO DROP MODE %03d", i + 1);
     AddPermanentGame(22000 + i, ginfo, GBNET_REGION_US_West);
   }
   
@@ -306,7 +306,7 @@ void CMasterServerConfig::LoadPermGamesConfig()
   for(int i=0; i<250; i++)
   {
     char group[128];
-    sprintf(group, "PermGame%d", i+1);
+    sprintf_s(group, sizeof(group), "PermGame%d", i+1);
 
     char map[512] = "";
     char data[512] = "";
@@ -331,7 +331,7 @@ void CMasterServerConfig::LoadPermGamesConfig()
 	ClanLimit = r3dReadCFG_I(configFile, group, "ClanLimit", 0);
 
     if(name[0] == 0)
-      sprintf(name, "PermGame%d", i+1);
+      sprintf_s(name, sizeof(name), "PermGame%d", i+1);
 
     if(*map == 0)
       continue;
@@ -447,7 +447,7 @@ void CMasterServerConfig::ParsePermamentGame(int gameServerId, const char* name,
   char region[128];
   int minGames;
   int maxGames;
-  if(5 != sscanf(map, "%s %s %s %d %d", mapid, maptype, region, &minGames, &maxGames)) {
+  if(5 != sscanf_s(map, "%s %s %s %d %d", mapid, (unsigned)sizeof(mapid), maptype, (unsigned)sizeof(maptype), region, (unsigned)sizeof(region), &minGames, &maxGames)) {
     r3dError("bad map format: %s\n", map);
   }
 
@@ -456,7 +456,7 @@ void CMasterServerConfig::ParsePermamentGame(int gameServerId, const char* name,
   int maxLevel = 0;
   int channel = 0;
   int gameTimeLimit = 0;
-  if(5 != sscanf(data, "%d %d %d %d %d", &maxPlayers, &minLevel, &maxLevel, &channel, &gameTimeLimit)) {
+  if(5 != sscanf_s(data, "%d %d %d %d %d", &maxPlayers, &minLevel, &maxLevel, &channel, &gameTimeLimit)) {
     r3dError("bad data format: %s\n", data);
   }
 

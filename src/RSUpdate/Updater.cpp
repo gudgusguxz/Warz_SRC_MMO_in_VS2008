@@ -147,9 +147,9 @@ bool CUpdater::GetUpdaterData()
   for(int retry = 0; retry < 10; retry++)
   {
     if(retry == 0) {
-      sprintf(updMsg1_, "Checking for new updater");
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "Checking for new updater");
     } else {
-      sprintf(updMsg1_, "Checking for new updater (try %d)", retry + 1);
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "Checking for new updater (try %d)", retry + 1);
     }
 
     data.clear();
@@ -170,7 +170,7 @@ bool CUpdater::GetUpdaterData()
     return FailUpdate("Failed to parse new updater information");
   }
   
-  sprintf(updMsg1_, "");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "");
   r3dOutToLog("Checking for new updater - finished\n");
   return true;
 }
@@ -195,9 +195,9 @@ bool CUpdater::InstallNewUpdater()
   for(int retry = 0; retry < 10; retry++)
   {
     if(retry == 0) {
-      sprintf(updMsg1_, "Downloading updater %s", newUpdater_.ver_.c_str());
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "Downloading updater %s", newUpdater_.ver_.c_str());
     } else {
-      sprintf(updMsg1_, "Downloading updater %s (try %d)", newUpdater_.ver_.c_str(), retry + 1);
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "Downloading updater %s (try %d)", newUpdater_.ver_.c_str(), retry + 1);
     }
 
     prgTotal_.set(newUpdater_.size_);
@@ -221,7 +221,7 @@ bool CUpdater::InstallNewUpdater()
     return FailUpdate("Failed to download new updater - CRC mismatch");
   }
   
-  sprintf(updMsg1_, "Restarting updater");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Restarting updater");
   ::Sleep(1000);
   
   selfUpd_StartUpdate(data.getBytes(), data.getSize());
@@ -240,7 +240,7 @@ CUpdater::EUpdaterStatus CUpdater::GetSteamLinkedStatus()
   if(gSteam.steamID == 0) 
     return STATUS_NeedLogin;
     
-  sprintf(updMsg1_, "Checking for linked steam account");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Checking for linked steam account");
   if(gUserProfile.CheckSteamLogin() == false) {
     // failed to check steam acc
     return STATUS_NeedLogin;
@@ -258,7 +258,7 @@ CUpdater::EUpdaterStatus CUpdater::GetSteamLinkedStatus()
 bool CUpdater::GetPackageData()
 {
   r3dOutToLog("Checking for game update\n");
-  sprintf(updMsg1_, "Checking for game update");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Checking for game update");
 
   CkByteData   data;
   HttpDownload http(&prgTotal_);
@@ -270,7 +270,7 @@ bool CUpdater::GetPackageData()
     return FailUpdate("Failed to parse current game build");
   }
   
-  sprintf(updMsg1_, "");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "");
   r3dOutToLog("Checking for game update - finished\n");
  return true;
 }
@@ -278,7 +278,7 @@ bool CUpdater::GetPackageData()
 bool CUpdater::OpenLocalFS()
 {
 	r3dOutToLog("Opening game data\n");
-  sprintf(updMsg1_, "Opening game data");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Opening game data");
 
   r3d_assert(fslocal_.GetNumFiles() == 0);
   r3d_assert(fswork_.GetNumFiles() == 0);
@@ -348,7 +348,7 @@ bool CUpdater::BuildUpdateList()
 {
   r3dOutToLog("Building update list\n");
   char bldDate[64];
-  sprintf(updMsg1_, "Loading update %s", r3dFS_FileList::GetBuildDate(updateData_.version_, bldDate));
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Loading update %s", r3dFS_FileList::GetBuildDate(updateData_.version_, bldDate));
 
   // load remote fss
   const char* baseUrl = updateData_.base_.c_str();
@@ -366,7 +366,7 @@ bool CUpdater::BuildUpdateList()
     }
   }
 
-  sprintf(updMsg1_, "Building update list");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Building update list");
 
   // clear update flags in local sets
   ClearUpdateFlags(fslocal_.fl_);
@@ -384,7 +384,7 @@ bool CUpdater::BuildUpdateList()
 
 void CUpdater::ExtractJobFile(const r3dFS_FileEntry* fe, const CkByteData& cdata)
 {
-  //sprintf(updMsg1_, "Extracting %s\n", fe->name);
+  //sprintf_s(updMsg1_, sizeof(updMsg1_), "Extracting %s\n", fe->name);
 
   // check if file exist and have same crc
   DWORD size;
@@ -400,7 +400,7 @@ void CUpdater::ExtractJobFile(const r3dFS_FileEntry* fe, const CkByteData& cdata
   FILE* f = fopen(fe->name, "wb");
   if(f == NULL) {
     char msg[1024];
-    sprintf(msg, "Can't replace file %s\nPlease delete this file manually", fe->name);
+    sprintf_s(msg, sizeof(msg), "Can't replace file %s\nPlease delete this file manually", fe->name);
     FailUpdate(msg);
     r3dError(msg);
   }
@@ -487,10 +487,10 @@ void CUpdater::AddFirewallException()
   char curDir[MAX_PATH];
   ::GetCurrentDirectory(sizeof(curDir), curDir);
   char fullExe[MAX_PATH];
-  sprintf(fullExe, "%s\\%s", curDir, GAME_EXE_NAME);
+  sprintf_s(fullExe, sizeof(fullExe), "%s\\%s", curDir, GAME_EXE_NAME);
 
   char desc[1024];
-  sprintf(desc, "Allow network traffic for %s", GAME_TITLE);
+  sprintf_s(desc, sizeof(desc), "Allow network traffic for %s", GAME_TITLE);
   
   CFirewallUtil::AddApp(fullExe, GAME_TITLE, desc);
 }
@@ -538,7 +538,7 @@ bool CUpdater::ProcessUpdates()
   
   if(updateJobs_.size() == 0) {
 	  r3dOutToLog("Update not needed\n");
-    sprintf(updMsg1_, "Update not needed");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "Update not needed");
     SetWorkArchiveVersion();
     return true;
   }
@@ -547,7 +547,7 @@ bool CUpdater::ProcessUpdates()
   float nextListWrite = r3dGetTime();
 
   char bldDate[128];
-  sprintf(updMsg1_, "Updating to build '%s'", r3dFS_FileList::GetBuildDate(updateData_.version_, bldDate));  
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Updating to build '%s'", r3dFS_FileList::GetBuildDate(updateData_.version_, bldDate));  
   r3dOutToLog("%s\n", updMsg1_);
   
   const int neededFiles = (int)updateJobs_.size();
@@ -589,7 +589,7 @@ bool CUpdater::ProcessUpdates()
 
     // update message
     float mbLeft = ((float)prgTotal_.total - prgTotal_.cur) / 1024.0f / 1024.0f;
-    sprintf(updMsg1_, "Updating to build '%s', %.0f mb left", r3dFS_FileList::GetBuildDate(updateData_.version_, bldDate), mbLeft);  
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "Updating to build '%s', %.0f mb left", r3dFS_FileList::GetBuildDate(updateData_.version_, bldDate), mbLeft);  
     
     // update file list every few sec
     if(r3dGetTime() > nextListWrite) 
@@ -608,7 +608,7 @@ bool CUpdater::ProcessUpdates()
   // finally set our build version to indicate that we're done.
   SetWorkArchiveVersion();
 
-  sprintf(updMsg1_, "Update finished");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Update finished");
   r3dOutToLog("Processing updates - finished\n");
   return true;
 }
@@ -648,7 +648,7 @@ void CUpdater::MakeSureExtractedFilesExists()
 
     if(!fswork_.ExtractFile(fe, ".\\")) {
       char msg[1024];
-      sprintf(msg, "Can't extract file %s\nPlease delete this file manually", fe->name);
+      sprintf_s(msg, sizeof(msg), "Can't extract file %s\nPlease delete this file manually", fe->name);
       FailUpdate(msg);
       r3dError(msg);
     }
@@ -670,7 +670,7 @@ bool CUpdater::DlThread_ProcessJob(updjob_s& job, int dlIdx)
   // download updated file, loop for N retries
   do 
   {
-    sprintf(dbgmsg, "downloading %s, %d bytes\n", job.fe->name, job.fe->csize);
+    sprintf_s(dbgmsg, sizeof(dbgmsg), "downloading %s, %d bytes\n", job.fe->name, job.fe->csize);
     //OutputDebugStringA(dbgmsg);
 
     job.data.clear();
@@ -750,7 +750,7 @@ void CUpdater::DownloadThreadEntry()
 void CUpdater::ValidateArchive()
 {
 	r3dOutToLog("Validating game data\n");
-  sprintf(updMsg1_, "Validating game data");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Validating game data");
 
   if(!fswork_.ValidateArchive(false, prgTotal_.total, prgTotal_.cur))
   {
@@ -788,15 +788,15 @@ void CUpdater::CompressArchive()
 {
   r3dOutToLog("Optimizing game data\n");
 
-  sprintf(updMsg1_, "Checking game data");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Checking game data");
   float wasted = fswork_.GetArchiveWastedPerc();
-  sprintf(updMsg1_, "");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "");
   
   // optimize data if more that 30% is wasted, keep Steam in mind to avoid build redownloading
   if(wasted < 0.3f)
     return;
 
-  sprintf(updMsg1_, "Optimizing game data");
+  sprintf_s(updMsg1_, sizeof(updMsg1_), "Optimizing game data");
   if(!fswork_.RebuildArchive(prgTotal_.total, prgTotal_.cur))
   {
     // remove archive files and fail update..
@@ -826,9 +826,9 @@ void CUpdater::WaitReadyToPlay()
   {
     ::Sleep(1 * 1000);
     if(IsServerOnline()) {
-      sprintf(updMsg1_, "Press Play to launch game");
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "Press Play to launch game");
     } else {
-      sprintf(updMsg1_, "Update success, waiting for servers");
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "Update success, waiting for servers");
     }
   }
   
@@ -856,7 +856,7 @@ void CUpdater::MainThreadEntry()
 
     // 2nd step - check if we have steam account.
     status_ = GetSteamLinkedStatus();
-    sprintf(updMsg1_, "");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "");
     
     // wait until login is finished
     while(true) {
@@ -906,7 +906,7 @@ void CUpdater::MainThreadEntry()
   catch(char* err)
   {
     r3dOutToLog("Exception! err=%s\n", err);
-    sprintf(updErr1_, "%s", err);
+    sprintf_s(updErr1_, sizeof(updErr1_), "%s", err);
     result_ = RES_ERROR;
     return;
   }
@@ -1024,7 +1024,7 @@ void CUpdater::NewsThreadEntry()
   }
   catch(char* err)
   {
-    sprintf(updErr1_, "%s", err);
+    sprintf_s(updErr1_, sizeof(updErr1_), "%s", err);
     result_ = RES_ERROR;
     return;
   }
@@ -1094,15 +1094,15 @@ void CUpdater::LoginThreadEntry()
 {
   try
   {
-    sprintf(updMsg1_, "Logging in");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "Logging in");
     gUserProfile.DoLogin();
-    sprintf(updMsg1_, "");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "");
     
     ProcessLoginResults();
   }
   catch(char* err)
   {
-    sprintf(updErr1_, "%s", err);
+    sprintf_s(updErr1_, sizeof(updErr1_), "%s", err);
     result_ = RES_ERROR;
   }
   catch(...)
@@ -1138,7 +1138,7 @@ void CUpdater::ProcessLoginResults()
         // SessionID holds ban time
         int hours = (gUserProfile.SessionID / 60) + 1;
         char buf[512];
-        sprintf(buf, "Your account has been temporarily frozen because of violation of the Terms of Service ( Paragraph 2 )\n\nYou will be able to continue to use the service in %d hours", hours);
+        sprintf_s(buf, sizeof(buf), "Your account has been temporarily frozen because of violation of the Terms of Service ( Paragraph 2 )\n\nYou will be able to continue to use the service in %d hours", hours);
         MessageBox(NULL, buf, "Login", MB_OK | MB_ICONEXCLAMATION);
         break;
       }
@@ -1230,16 +1230,16 @@ void CUpdater::CheckSerialThreadEntry()
 {
   try
   {
-    sprintf(updMsg1_, "Please wait");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "Please wait");
     
     if(!checkSerialHelper.DoCheckSerial())
     {
-      sprintf(updMsg1_, "");
+      sprintf_s(updMsg1_, sizeof(updMsg1_), "");
       MessageBox(NULL, "Serial Key check failed, please try again later", "Serial Key Check", MB_OK);
       return;
     }
 
-    sprintf(updMsg1_, "");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "");
     switch(checkSerialHelper.CheckCode)
     {
       case 0:
@@ -1254,7 +1254,7 @@ void CUpdater::CheckSerialThreadEntry()
   }
   catch(char* err)
   {
-    sprintf(updErr1_, "%s", err);
+    sprintf_s(updErr1_, sizeof(updErr1_), "%s", err);
     result_ = RES_ERROR;
   }
   catch(...)
@@ -1335,9 +1335,9 @@ void CUpdater::CreateAccThreadEntry()
 {
   try
   {
-    sprintf(updMsg1_, "Creating Account, please wait");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "Creating Account, please wait");
     int code = createAccHelper.DoCreateAcc();
-    sprintf(updMsg1_, "");
+    sprintf_s(updMsg1_, sizeof(updMsg1_), "");
 
     switch(code)
     {
@@ -1351,16 +1351,16 @@ void CUpdater::CreateAccThreadEntry()
         {
           status_ = STATUS_Checking; // switch to first screen for steam login process
           status_ = GetSteamLinkedStatus();
-          sprintf(updMsg1_, "");
+          sprintf_s(updMsg1_, sizeof(updMsg1_), "");
           break;
         }
         
         // account creating success, perform usual login with username/pwd
-        sprintf(updMsg1_, "Logging in");
+        sprintf_s(updMsg1_, sizeof(updMsg1_), "Logging in");
         r3dscpy(gUserProfile.username, createAccHelper.username);
         r3dscpy(gUserProfile.passwd, createAccHelper.passwd1);
         gUserProfile.DoLogin();
-        sprintf(updMsg1_, "");
+        sprintf_s(updMsg1_, sizeof(updMsg1_), "");
         if(gUserProfile.loginAnswerCode == CLoginHelper::ANS_Logged)
         {
           // login ok, continue to updating
@@ -1398,7 +1398,7 @@ void CUpdater::CreateAccThreadEntry()
   }
   catch(char* err)
   {
-    sprintf(updErr1_, "%s", err);
+    sprintf_s(updErr1_, sizeof(updErr1_), "%s", err);
     result_ = RES_ERROR;
   }
   catch(...)

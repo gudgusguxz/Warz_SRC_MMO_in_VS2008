@@ -410,9 +410,9 @@ IMPL_PACKET_FUNC(ClientGameLogic, PKT_S2C_ShutdownNote)
 	
 	char msg[128];
 	if(n.reason == 2)
-		sprintf(msg, gLangMngr.getString("ServerInstanceIsShuttingDown"), n.timeLeft);
+		sprintf_s(msg, sizeof(msg), gLangMngr.getString("ServerInstanceIsShuttingDown"), n.timeLeft);
 	else
-		sprintf(msg, gLangMngr.getString("ServerShuttingDown"), n.timeLeft);
+		sprintf_s(msg, sizeof(msg), gLangMngr.getString("ServerShuttingDown"), n.timeLeft);
 
 	if(hudMain)
 	{
@@ -1405,7 +1405,7 @@ IMPL_PACKET_FUNC(ClientGameLogic, PKT_S2C_CreatePlayer)
 	}
 
 	char name[128];
-	sprintf(name, "player%02d", n.playerIdx);
+	sprintf_s(name, sizeof(name), "player%02d", n.playerIdx);
 	obj_Player* plr = (obj_Player*)srv_CreateGameObject("obj_Player", name, spawnPos);
 	plr->ViewAngle.Assign(-n.spawnDir, 0, 0);
 	plr->m_fPlayerRotationTarget = n.spawnDir;
@@ -1589,12 +1589,12 @@ IMPL_PACKET_FUNC(ClientGameLogic, PKT_S2C_KillPlayer)
 					return;
 				}
 
-				sprintf(damageType, reason);
+				strcpy_s(damageType, sizeof(damageType), reason);
 
 				if (n.KillFlag != 5)
-					sprintf(killer, n.killer);
+					strcpy_s(killer, sizeof(killer), n.killer);
 				else
-					sprintf(killer, gLangMngr.getString("$HUD_Zombie"));
+					strcpy_s(killer, sizeof(killer), gLangMngr.getString("$HUD_Zombie"));
 
 				hudMain->showKillFeedMessage(killer, damageType, n.victim);					
 			}			
@@ -2241,13 +2241,13 @@ IMPL_PACKET_FUNC(ClientGameLogic, PKT_S2C_GroupNotify)
 		
 		if(n.status == 0)
 		{
-			sprintf(tmpStr, gLangMngr.getString("GroupNotifyAboutToLeave"), n.gamertag);
+			sprintf_s(tmpStr, sizeof(tmpStr), gLangMngr.getString("GroupNotifyAboutToLeave"), n.gamertag);
 			if (gClientLogic().localPlayer_)
 					SoundSys.PlayAndForget(SoundSys.GetEventIDByPath("Sounds/UI Events/Misc/UI_Leave_Group"),gClientLogic().localPlayer_->GetPosition());
 		}
 		else if(n.status == 1)
 		{
-			sprintf(tmpStr, gLangMngr.getString("GroupNotifyAboutToKick"), n.gamertag);
+			sprintf_s(tmpStr, sizeof(tmpStr), gLangMngr.getString("GroupNotifyAboutToKick"), n.gamertag);
 			if (gClientLogic().localPlayer_)
 					SoundSys.PlayAndForget(SoundSys.GetEventIDByPath("Sounds/UI Events/Misc/Group_NotifyAboutToLeave"),gClientLogic().localPlayer_->GetPosition());
 		}

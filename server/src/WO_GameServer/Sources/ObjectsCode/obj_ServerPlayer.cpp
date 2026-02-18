@@ -231,7 +231,7 @@ BOOL obj_ServerPlayer::OnCreate()
 		{
 			if(profile_.ProfileData.Inventory[i].quantity > 0)
 			{
-				sprintf(tmpStr, "%d", profile_.ProfileData.Inventory[i].itemID);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", profile_.ProfileData.Inventory[i].itemID);
 				g_GameBlocks_Client->AddKeyValueInt(tmpStr, profile_.ProfileData.Inventory[i].quantity);
 			}
 		}
@@ -859,7 +859,7 @@ float obj_ServerPlayer::ReduceDamageByGear(int bodyPart, float damage)
 		return damage;
 
 	// chance to fully absorb damage on headgears
-	//if(gslot == SLOT_Headgear && u_GetRandom(0, 100) < gc->m_bulkiness && !wasDisconnected_) //ÂÔ§áÅéÇËÁÇ¡µ¡
+	//if(gslot == SLOT_Headgear && u_GetRandom(0, 100) < gc->m_bulkiness && !wasDisconnected_) //ï¿½Ô§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¡ï¿½ï¿½
 	//{
 	//	if(r3dGetTime() < m_SpawnProtectedUntil)//AlexRedd:: fix drop backpack when player in spawnprotection
 	//	{
@@ -1699,7 +1699,7 @@ void obj_ServerPlayer::OnBackpackChanged(int idx)
 		{
 			if(loadout_->Items[i].quantity > 0)
 			{
-				sprintf(tmpStr, "%d", loadout_->Items[i].itemID);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", loadout_->Items[i].itemID);
 				g_GameBlocks_Client->AddKeyValueInt(tmpStr, loadout_->Items[i].quantity);
 			}
 		}
@@ -2701,7 +2701,7 @@ void obj_ServerPlayer::Trade_Confirm()
 
 		char chatmessage[128] = {0};
 		PKT_C2C_ChatMessage_s n1;
-		sprintf(chatmessage, "Your internet connection is very unstable for trade items");
+		strcpy_s(chatmessage, sizeof(chatmessage), "Your internet connection is very unstable for trade items");
 		r3dscpy(n1.gamertag, "[System]");
 		r3dscpy(n1.msg, chatmessage);
 		n1.msgChannel = 1;
@@ -4607,9 +4607,9 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2C_PlayerHitDynamic_s& n)
 			if(g_GameBlocks_Client && g_GameBlocks_Client->Connected() && isKill)
 			{
 				char tmpStr[32];
-				sprintf(tmpStr, "%d", profile_.CustomerID);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", profile_.CustomerID);
 				char tmpStr2[32];
-				sprintf(tmpStr2, "%d", targetPlr->profile_.CustomerID);
+				sprintf_s(tmpStr2, sizeof(tmpStr2), "%d", targetPlr->profile_.CustomerID);
 				GameBlocks::Event_AimBotDetect_Send(g_GameBlocks_Client, g_GameBlocks_ServerID, tmpStr, tmpStr2);
 
 				Event_WeaponCheatDetect_Send(g_GameBlocks_Client, g_GameBlocks_ServerID, tmpStr);
@@ -4629,11 +4629,11 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2C_PlayerHitDynamic_s& n)
 				if(g_GameBlocks_Client && g_GameBlocks_Client->Connected())
 				{
 					char tmpStr[32];
-					sprintf(tmpStr, "%d", profile_.CustomerID);
+					sprintf_s(tmpStr, sizeof(tmpStr), "%d", profile_.CustomerID);
 					Event_WeaponCheatDetect_Send(g_GameBlocks_Client, g_GameBlocks_ServerID, tmpStr);
 
 					char tmpStr2[32];
-					sprintf(tmpStr2, "Z_%d", z->ZombieUniqueIDForFF);
+					sprintf_s(tmpStr2, sizeof(tmpStr2), "Z_%d", z->ZombieUniqueIDForFF);
 					GameBlocks::Event_AimBotDetect_Send(g_GameBlocks_Client, g_GameBlocks_ServerID, tmpStr, tmpStr2);
 
 				}
@@ -4713,7 +4713,7 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2C_PlayerSwearing_s& n)//AlexRedd:
 		{
 			CJobBanChatUser* job = new CJobBanChatUser(fromPlr);
 			char tmpStr[256];
-			sprintf(tmpStr, "Auto banned chat in-game reason: %d swears", profile_.ProfileData.SwearingCount);
+			sprintf_s(tmpStr, sizeof(tmpStr), "Auto banned chat in-game reason: %d swears", profile_.ProfileData.SwearingCount);
 			gServerLogic.LogInfo(peerId_, "Auto banned chat");
 			r3dscpy(job->BanReason, tmpStr);
 			g_AsyncApiMgr->AddJob(job);
@@ -4723,7 +4723,7 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2C_PlayerSwearing_s& n)//AlexRedd:
 #endif
 			// info player that he was banned from chat
 			PKT_S2C_CustomKickMsg_s n3;
-			sprintf(tmpStr, "You are banned from chat\nReason: %d swears", profile_.ProfileData.SwearingCount);
+			sprintf_s(tmpStr, sizeof(tmpStr), "You are banned from chat\nReason: %d swears", profile_.ProfileData.SwearingCount);
 			r3dscpy(n3.msg, tmpStr);
 			gServerLogic.p2pSendToPeer(peerId_, this, &n3, sizeof(n3));
 			gServerLogic.LogCheat(peerId_, PKT_S2C_CheatWarning_s::CHEAT_Data, 0, "Auto banned chat in-game", "User: '%s' (CustomerID: %d) reason: %d swears", fromPlr->userName, fromPlr->profile_.CustomerID, profile_.ProfileData.SwearingCount);
@@ -4749,7 +4749,7 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2C_PlayerReadyGrenade_s& n)
 		return;
 	}
 
-	//if(loadout_->Items[n.wid].itemID == 596168 && gServerLogic.ginfo_.mapId != GBGameInfo::MAPID_WZ_Colorado){ //ãªé§Ò¹äÍà·Áä´éá¤èáÁ¾¹Ñé¹æ
+	//if(loadout_->Items[n.wid].itemID == 596168 && gServerLogic.ginfo_.mapId != GBGameInfo::MAPID_WZ_Colorado){ //ï¿½ï¿½Ò¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//	gServerLogic.LogCheat(peerId_, PKT_S2C_CheatWarning_s::CHEAT_UseItem, true, "ReadyGrenade BossBone in pvp map", "wid %d", n.wid);
 	//	return;
 	//}
@@ -6560,7 +6560,7 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2S_DisconnectReq_s& n)
 	if(inventoryOpActive_)
 		return;
 
-	//à«¿â«¹´ÔÊ 1 ÇÔ
+	//à«¿â«¹ï¿½ï¿½ï¿½ 1 ï¿½ï¿½
 		if(loadout_->Alive == 0 || loadout_->Alive == 1 && ReqInventoryLogic == true ||
 		loadout_->Alive == 1 && loadout_->GameFlags & wiCharDataFull::GAMEFLAG_NearPostBox)
 	
@@ -6650,15 +6650,15 @@ void obj_ServerPlayer::OnNetPacket(const PKT_C2S_PlayerWeapDataRepAns_s& n)
 			// create diffs string for logging
 			char diffs[4096] = "";
 			if(fabs((float)wc1.m_spread - (float)wc2.m_spread) > 0.01f)
-				sprintf(diffs + strlen(diffs), "s:%.2f/%.2f ", (float)wc1.m_spread, (float)wc2.m_spread);
+			{ size_t len = strlen(diffs); sprintf_s(diffs + len, sizeof(diffs) - len, "s:%.2f/%.2f ", (float)wc1.m_spread, (float)wc2.m_spread); }
 			if(fabs((float)wc1.m_recoil - (float)wc2.m_recoil) > 0.01f)
-				sprintf(diffs + strlen(diffs), "r:%.2f/%.2f ", (float)wc1.m_recoil, (float)wc2.m_recoil);
+			{ size_t len = strlen(diffs); sprintf_s(diffs + len, sizeof(diffs) - len, "r:%.2f/%.2f ", (float)wc1.m_recoil, (float)wc2.m_recoil); }
 			if(fabs((float)wc1.m_reloadTime - (float)wc2.m_reloadTime) > 0.01f)
-				sprintf(diffs + strlen(diffs), "t:%.2f/%.2f ", (float)wc1.m_reloadTime, (float)wc2.m_reloadTime);
+			{ size_t len = strlen(diffs); sprintf_s(diffs + len, sizeof(diffs) - len, "t:%.2f/%.2f ", (float)wc1.m_reloadTime, (float)wc2.m_reloadTime); }
 			if(fabs((float)wc1.m_fireDelay - (float)wc2.m_fireDelay) > 0.01f)
-				sprintf(diffs + strlen(diffs), "d:%.2f/%.2f ", (float)wc1.m_fireDelay, (float)wc2.m_fireDelay);
+			{ size_t len = strlen(diffs); sprintf_s(diffs + len, sizeof(diffs) - len, "d:%.2f/%.2f ", (float)wc1.m_fireDelay, (float)wc2.m_fireDelay); }
 			if(fabs((float)wc1.m_AmmoSpeed - (float)wc2.m_AmmoSpeed) > 0.01f)
-				sprintf(diffs + strlen(diffs), "a:%.2f/%.2f ", (float)wc1.m_AmmoSpeed, (float)wc2.m_AmmoSpeed);
+			{ size_t len = strlen(diffs); sprintf_s(diffs + len, sizeof(diffs) - len, "a:%.2f/%.2f ", (float)wc1.m_AmmoSpeed, (float)wc2.m_AmmoSpeed); }
 			
 			// report it only once per session (for now, because there is no disconnect yet)
 			if(diffs[0] && !weapCheatReported)

@@ -29,15 +29,15 @@ void ValueToText(int category, int value, char* text)
 
 	if(m > 0)
 	{
-		sprintf(text, (K == 1024) ? "%.2f Mb" : "%.2f M", ((float)value) / (K*K) );
+		sprintf_s(text, 512, (K == 1024) ? "%.2f Mb" : "%.2f M", ((float)value) / (K*K) ); // TODO: verify buffer size
 	}
 	else if( k > 0)
 	{
-		sprintf(text, (K == 1024) ? "%.2f Kb" : "%.2f K", ((float)value) / K);
+		sprintf_s(text, 512, (K == 1024) ? "%.2f Kb" : "%.2f K", ((float)value) / K); // TODO: verify buffer size
 	}
 	else
 	{
-		sprintf(text, "%d", value);
+		sprintf_s(text, 512, "%d", value); // TODO: verify buffer size
 	}
 }
 

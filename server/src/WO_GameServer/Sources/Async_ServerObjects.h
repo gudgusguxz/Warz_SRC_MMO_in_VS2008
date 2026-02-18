@@ -12,7 +12,7 @@ class CJobGetServerObjects : public CAsyncApiJob
   public:
 	CJobGetServerObjects() : CAsyncApiJob()
 	{
-		sprintf(desc, "CJobGetServerObjects %p", this);
+		sprintf_s(desc, sizeof(desc), "CJobGetServerObjects %p", this);
 	}
 
 	int		Exec();
@@ -67,7 +67,7 @@ class CJobHibernate : public CAsyncApiJob
   public:
 	CJobHibernate()
 	{
-		sprintf(desc, "CJobHibernate %p", this);
+		sprintf_s(desc, sizeof(desc), "CJobHibernate %p", this);
 	}
 	~CJobHibernate();
 

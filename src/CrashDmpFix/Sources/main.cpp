@@ -102,10 +102,10 @@ void GetMiniDumpModuleName(const char* dmpData, MINIDUMP_MODULE& mm, char* mname
 	fullname[len] = 0;
 	
 	const char* lim = strrchr(fullname, '\\');
-	if(lim) 
-		strcpy(mname, lim + 1);
+	if(lim)
+		strcpy_s(mname, MAX_PATH, lim + 1); // TODO: verify buffer size
 	else
-		strcpy(mname, fullname);
+		strcpy_s(mname, MAX_PATH, fullname); // TODO: verify buffer size
 }
 
 bool GetExceptionModule(const CkByteData& dmpDataF, char* crashmodule)
@@ -137,12 +137,12 @@ bool GetExceptionModule(const CkByteData& dmpDataF, char* crashmodule)
 			char mname[MAX_PATH];
 			GetMiniDumpModuleName(dmpData, ml->Modules[i], mname);
 			
-			sprintf(crashmodule, "%s+%08I64X", mname, exAddr - ml->Modules[i].BaseOfImage);
+			sprintf_s(crashmodule, 512, "%s+%08I64X", mname, exAddr - ml->Modules[i].BaseOfImage); // TODO: verify buffer size
 			return true;
 		}
 	}
 	
-	sprintf(crashmodule, "%08I64X", exAddr);
+	sprintf_s(crashmodule, 512, "%08I64X", exAddr); // TODO: verify buffer size
 	return true;
 }
 
@@ -150,7 +150,7 @@ DWORD GetImageSizeFromSymbol(DWORD TimeDateStamp)
 {
 	WIN32_FIND_DATA ffblk;
 	char fname[MAX_PATH];
-	sprintf(fname, "%s\\Infestation.exe\\%08X*", g_SymbolPath, TimeDateStamp);
+	sprintf_s(fname, sizeof(fname), "%s\\Infestation.exe\\%08X*", g_SymbolPath, TimeDateStamp);
 	HANDLE h = FindFirstFile(fname, &ffblk);
 	if(h == INVALID_HANDLE_VALUE) {
 		r3dOutToLog("no symbol files found in %s\n", fname);
@@ -159,7 +159,7 @@ DWORD GetImageSizeFromSymbol(DWORD TimeDateStamp)
 	
 	// should be only one entry
 	DWORD size;
-	sscanf(ffblk.cFileName + 8, "%X", &size);
+	sscanf_s(ffblk.cFileName + 8, "%X", &size);
 	FindClose(h);
 	
 	return size;
@@ -245,7 +245,7 @@ void ProcessReport(const char* zipfile, const char* crashname)
 	
 	// extract files to new dir
 	char dir[MAX_PATH];
-	sprintf(dir, "%s\\%s\\%s\\", newSize ? g_ValidReports : g_UnfixedReports, ExceptionModule, crashname);
+	sprintf_s(dir, sizeof(dir), "%s\\%s\\%s\\", newSize ? g_ValidReports : g_UnfixedReports, ExceptionModule, crashname);
 	if(!zip.Extract(dir)) {
 		r3dOutToLog("%s - failed to extract to %s\n", zipfile, dir);
 		return;
@@ -254,7 +254,7 @@ void ProcessReport(const char* zipfile, const char* crashname)
 	if(newSize > 0)
 	{
 		char dmpfile[MAX_PATH];
-		sprintf(dmpfile, "%s\\crashdump.dmp", dir);
+		sprintf_s(dmpfile, sizeof(dmpfile), "%s\\crashdump.dmp", dir);
 		FixDumpSize(dmpfile, newSize);
 	}
 	
@@ -271,7 +271,7 @@ int CountDirsInDir(const char* baseDir, const char* dir)
 {
 	WIN32_FIND_DATA ffblk;
 	char fname[MAX_PATH];
-	sprintf(fname, "%s\\%s\\*", baseDir, dir);
+	sprintf_s(fname, sizeof(fname), "%s\\%s\\*", baseDir, dir);
 	HANDLE h = FindFirstFile(fname, &ffblk);
 	if(h == INVALID_HANDLE_VALUE) {
 		return 0;
@@ -291,7 +291,7 @@ void RenameValidReportDirs()
 {
 	WIN32_FIND_DATA ffblk;
 	char fname[MAX_PATH];
-	sprintf(fname, "%s\\*", g_ValidReports);
+	sprintf_s(fname, sizeof(fname), "%s\\*", g_ValidReports);
 	HANDLE h = FindFirstFile(fname, &ffblk);
 	if(h == INVALID_HANDLE_VALUE) {
 		return;
@@ -314,8 +314,8 @@ void RenameValidReportDirs()
 		int numDirs = CountDirsInDir(g_ValidReports, dirs[i].c_str());
 
 		char fname2[MAX_PATH];
-		sprintf(fname,  "%s\\%s", g_ValidReports, dirs[i].c_str());
-		sprintf(fname2, "%s\\(%03d) %s", g_ValidReports, numDirs, dirs[i].c_str());
+		sprintf_s(fname,  sizeof(fname),  "%s\\%s", g_ValidReports, dirs[i].c_str());
+		sprintf_s(fname2, sizeof(fname2), "%s\\(%03d) %s", g_ValidReports, numDirs, dirs[i].c_str());
 		
 		::MoveFile(fname, fname2);
 		r3dOutToLog("%s->%s\n", fname, fname2);
@@ -328,7 +328,7 @@ void ProcessCrashReportFiles()
 
 	WIN32_FIND_DATA ffblk;
 	char fname[MAX_PATH];
-	sprintf(fname, "%s\\*.zip", g_CrashRptFiles);
+	sprintf_s(fname, sizeof(fname), "%s\\*.zip", g_CrashRptFiles);
 	HANDLE h = FindFirstFile(fname, &ffblk);
 	if(h == INVALID_HANDLE_VALUE) {
 		r3dOutToLog("no .zip files found\n");
@@ -337,7 +337,7 @@ void ProcessCrashReportFiles()
 
 	do 
 	{
-		sprintf(fname, "%s\\%s", g_CrashRptFiles, ffblk.cFileName);
+		sprintf_s(fname, sizeof(fname), "%s\\%s", g_CrashRptFiles, ffblk.cFileName);
 
 		char crashname[MAX_PATH];
 		r3dscpy(crashname, ffblk.cFileName);

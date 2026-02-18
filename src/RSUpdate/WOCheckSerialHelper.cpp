@@ -24,7 +24,7 @@ int CCheckSerialHelper::DoCheckSerial()
 	CheckCode  = 99;
 	SerialType = -1;
 	CheckMsg[0]=0;
-	sscanf(req.bodyStr_, "%d %d", &CheckCode, &SerialType);
+	sscanf_s(req.bodyStr_, "%d %d", &CheckCode, &SerialType);
 	if(strchr(req.bodyStr_, ':')) r3dscpy(CheckMsg, strchr(req.bodyStr_, ':') + 1);
 	return 1;
 }

@@ -42,9 +42,9 @@ void CWOBackendReq::Init(const char* url)
 	// create request
 	char fullUrl[512];
 	if(url[0] != '/')
-	  sprintf(fullUrl, "%s%s", gDomainBaseUrl, url);
-	else 
-	  sprintf(fullUrl, "%s", url);
+	  sprintf_s(fullUrl, sizeof(fullUrl), "%s%s", gDomainBaseUrl, url);
+	else
+	  strcpy_s(fullUrl, sizeof(fullUrl), url);
 
 	req.put_HttpVerb("POST");
 	req.put_ContentType("application/x-www-form-urlencoded");
@@ -73,7 +73,7 @@ void CWOBackendReq::AddParam(const char* name, const char* val)
 void CWOBackendReq::AddParam(const char* name, int val)
 {
 	char	buf[1024];
-	sprintf(buf, "%d", val);
+	sprintf_s(buf, sizeof(buf), "%d", val);
 	AddParam(name, buf);
 }
 
@@ -121,7 +121,7 @@ int CWOBackendReq::ParseResult(CkHttpResponse* resp)
 	resultStr[0] = bodyStr_[3];
 	resultStr[1] = 0;
 	int resultCode = 8;
-	sscanf(resultStr, "%x", &resultCode);
+	sscanf_s(resultStr, "%x", &resultCode);
 	
 	// offset body content past header
 	bodyStr_ += 4;

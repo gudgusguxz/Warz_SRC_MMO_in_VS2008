@@ -553,7 +553,7 @@ void DrawBrushesList(float& SliderX, float& SliderY)
 	}
 
 	char path[512];
-	sprintf(path, "%s%s", r3dGameLevel::GetHomeDir(), "/test.brushes");
+	sprintf_s(path, sizeof(path), "%s%s", r3dGameLevel::GetHomeDir(), "/test.brushes");
 
 	if(imgui_Button(SliderX, SliderY, DEFAULT_CONTROLS_WIDTH, DEFAULT_CONTROLS_HEIGHT, "Save"))
 	{
@@ -614,14 +614,14 @@ void DrawDecoratorsChoose(bool flag)
 		static int idx = -1;
 		if (imgui_DrawList(SliderX, SliderY, 360, 200, CatNames, &CatOffset, &idx))
 		{
-			sprintf(CategoryName, "%s", CatNames.at(idx).c_str());
+			strcpy_s(CategoryName, sizeof(CategoryName), CatNames.at(idx).c_str());
 
-			sprintf(ClassName,"");
-			sprintf(FileName, "");
+			ClassName[0] = '\0';
+			FileName[0] = '\0';
 			if(ObjectCategories.at(idx).ObjectsClasses.size() > 0)
 			{
-				sprintf(ClassName, "%s", ObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
-				sprintf(FileName, "%s", ObjectCategories.at(idx).ObjectsNames.at(0).c_str());
+				strcpy_s(ClassName, sizeof(ClassName), ObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
+				strcpy_s(FileName, sizeof(FileName), ObjectCategories.at(idx).ObjectsNames.at(0).c_str());
 			}
 		}
 
@@ -634,18 +634,18 @@ void DrawDecoratorsChoose(bool flag)
 		{
 			if (imgui_DrawList(SliderX, SliderY, 360, 200, ObjectCategories.at(idx).ObjectsNames , &ObjectCategories.at(idx).Offset, &idx1))
 			{
-				sprintf (ClassName,"%s", ObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
-				sprintf (FileName,"%s", ObjectCategories.at(idx).ObjectsNames.at(idx1).c_str());
+				strcpy_s (ClassName, sizeof(ClassName), ObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
+				strcpy_s (FileName, sizeof(FileName), ObjectCategories.at(idx).ObjectsNames.at(idx1).c_str());
 			}
 			SliderY += 205;
 
 			if(ClassName[0] == 0 || FileName[0] == 0)
 				return;
 
-			sprintf (Str,"Data\\ObjectsDepot\\%s\\%s", CategoryName, FileName);
+			sprintf_s (Str, sizeof(Str), "Data\\ObjectsDepot\\%s\\%s", CategoryName, FileName);
 			r3dSTLString fileName = Str;
 
-			sprintf (Str,"%s\\%s", CategoryName, FileName);
+			sprintf_s (Str, sizeof(Str), "%s\\%s", CategoryName, FileName);
 			r3dSTLString uiName = Str;
 
 			if(imgui_Button(SliderX, SliderY, DEFAULT_CONTROLS_WIDTH, DEFAULT_CONTROLS_HEIGHT, "Add Decorator"))

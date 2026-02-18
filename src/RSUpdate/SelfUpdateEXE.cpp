@@ -34,7 +34,7 @@ bool selfUpd_TestIfUpdated()
   if(strstr(exeMain, ".new.exe") == NULL)
   {
     // try to delete new updater file (it was left from previous run)
-    sprintf(exeUpd, "%s.new.exe", exeMain);
+    sprintf_s(exeUpd, sizeof(exeUpd), "%s.new.exe", exeMain);
     DeleteFile(exeUpd);
     return false;
   }
@@ -45,7 +45,7 @@ bool selfUpd_TestIfUpdated()
   r3dOutToLog(".exe updated, moving back\n");
   ::Sleep(500);
 
-  strcpy(exeUpd, exeMain);
+  strcpy_s(exeUpd, sizeof(exeUpd), exeMain);
   r3d_assert(strlen(exeMain) > 8);
   exeMain[strlen(exeMain)-8] = 0;
   r3dOutToLog("exeMain: %s\n", exeMain);
@@ -68,9 +68,9 @@ bool selfUpd_TestIfUpdated()
   if(!movesuccess) 
   {
     char msg[1024];
-    sprintf(msg, 
+    sprintf_s(msg, sizeof(msg),
       "Failed to replace updater file\n\n"\
-      "Please manually rename %s to %s", 
+      "Please manually rename %s to %s",
       exeUpd, exeMain);
       
     MessageBox(NULL, msg, "Updater", MB_OK | MB_ICONEXCLAMATION);
@@ -90,7 +90,7 @@ bool selfUpd_StartUpdate(const BYTE* data, long size)
   GetModuleFileName(NULL, exeMain, sizeof(exeMain));
 
   r3dOutToLog("Trying to update\n");
-  sprintf(exeUpd, "%s.new.exe", exeMain);
+  sprintf_s(exeUpd, sizeof(exeUpd), "%s.new.exe", exeMain);
   FILE* f = fopen(exeUpd, "wb");
   if(f == NULL) {
     r3dError("can't open %s for writing\n", exeUpd);

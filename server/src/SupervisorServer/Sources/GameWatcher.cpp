@@ -61,7 +61,7 @@ void CGameWatcher::Init(DWORD in_GameId, __int64 in_sessionId)
   lastTick  = r3dGetTime();
   
   char mmname[128];
-  sprintf(mmname, "WZ_GServer_%08x", in_GameId);
+  sprintf_s(mmname, sizeof(mmname), "WZ_GServer_%08x", in_GameId);
 	
   // Create the file mapping
   hMapFile = CreateFileMapping(

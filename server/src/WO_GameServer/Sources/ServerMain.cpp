@@ -102,13 +102,13 @@ void gameServerLoop()
   // make unique log name for each game server
   _mkdir("logss");
   char fname[MAX_PATH];
-  sprintf(fname, "logss\\GS_%I64x.txt", cfg_sessionId);
+  sprintf_s(fname, sizeof(fname), "logss\\GS_%I64x.txt", cfg_sessionId);
   r3dChangeLogFile(fname);
-  
-  sprintf(fname, "logss\\GS_%I64x.dmp", cfg_sessionId);
+
+  sprintf_s(fname, sizeof(fname), "logss\\GS_%I64x.dmp", cfg_sessionId);
   SrvSetCrashHandler(fname);
 
-  sprintf(fname, "WarZ GameServer, port %d", cfg_hostPort);
+  sprintf_s(fname, sizeof(fname), "WarZ GameServer, port %d", cfg_hostPort);
   SetConsoleTitle(fname);
 
   //SetCpuAffinity(cfg_hostPort - SBNET_GAME_PORT);
@@ -279,7 +279,7 @@ static void ParseArgs(int argc, char* argv[])
     
     case 6: // normal start
     {
-      if(3 != sscanf(argv[1], "%u %d %u", &cfg_gameId, &cfg_hostPort, &cfg_creatorID))
+      if(3 != sscanf_s(argv[1], "%u %d %u", &cfg_gameId, &cfg_hostPort, &cfg_creatorID))
         throw "can't parse argv[1]";
       
       if(!cfg_ginfo.FromString(argv[2]))
@@ -292,7 +292,7 @@ static void ParseArgs(int argc, char* argv[])
       ckGameName.base64Decode("utf-8");
       r3dscpy(cfg_ginfo.name, ckGameName.getString());
       
-      if(1 != sscanf(argv[5], "%d", &cfg_uploadLogs))
+      if(1 != sscanf_s(argv[5], "%d", &cfg_uploadLogs))
         throw "can't parse argv[5]";
 
       break;

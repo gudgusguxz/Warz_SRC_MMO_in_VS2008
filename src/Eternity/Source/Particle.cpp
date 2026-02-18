@@ -1157,8 +1157,8 @@ int r3dParticleData::Load(const char* FName)
 	int numEmitters = 0;
 	for(int i=0;i<MAX_EMITTER_SLOTS;i++)
 	{ 
-		sprintf(Str1,"ParticleType%d", i+1);
-		sscanf(r3dReadCFG_S(FName, "System", Str1, "-NONE-"), "%s", Str2);
+		sprintf_s(Str1, sizeof(Str1), "ParticleType%d", i+1);
+		sscanf_s(r3dReadCFG_S(FName, "System", Str1, "-NONE-"), "%s", Str2, (unsigned)sizeof(Str2));
 
 		//r3dOutToLog("PSYSTEM %s  LOAD %d  %s\n", FName, i, Str2);
 		if(!strstr(Str2,"-NONE-"))
@@ -1227,7 +1227,7 @@ int r3dParticleData::Load(const char* FName)
 
 	if(bDistort)
 	{
-		sprintf(Str1, "Data\\Particles\\%s", r3dReadCFG_S(FName, "System", "MeshDistortTexture", "Distort.dds"));
+		sprintf_s(Str1, sizeof(Str1), "Data\\Particles\\%s", r3dReadCFG_S(FName, "System", "MeshDistortTexture", "Distort.dds"));
 
 		DistortTextureFileName = r3dReadCFG_S(FName, "System", "MeshDistortTexture", "Distort.dds");
 
@@ -1236,12 +1236,12 @@ int r3dParticleData::Load(const char* FName)
 
 	TextureFileName = r3dReadCFG_S(FName, "System", "Texture", "Texture.dds");
 
-	sprintf(Str1, "Data\\Particles\\%s", r3dReadCFG_S(FName, "System", "Texture", "Texture.dds"));
+	sprintf_s(Str1, sizeof(Str1), "Data\\Particles\\%s", r3dReadCFG_S(FName, "System", "Texture", "Texture.dds"));
 
 	Texture = r3dRenderer->LoadTexture(Str1, D3DFMT_UNKNOWN, false, GetParticleDownScale());
 
 	char Str3[256];
-	sprintf(Str3, "%s%s", Str1, ".Atlas");
+	sprintf_s(Str3, sizeof(Str3), "%s%s", Str1, ".Atlas");
 
 	Atlas.load(Str3);
 	if(r_instanced_particles->GetInt() && Atlas.count > (254 - 64)) // 64 is start of rectangle data in vertex shader
@@ -1253,7 +1253,7 @@ int r3dParticleData::Load(const char* FName)
 	{
 		fBumpPower = r3dReadCFG_F(FName, "System", "BumpPower", 1);
 		NormalTextureFileName = r3dReadCFG_S(FName, "System", "NormalTexture", "Texture.dds");
-		sprintf(Str1, "Data\\Particles\\%s", NormalTextureFileName.c_str());
+		sprintf_s(Str1, sizeof(Str1), "Data\\Particles\\%s", NormalTextureFileName.c_str());
 
 		NormalTexture = r3dRenderer->LoadTexture(Str1, D3DFMT_UNKNOWN, false, GetParticleDownScale());
 	}
@@ -1328,7 +1328,7 @@ void r3dParticleData::Save(const char* FName)
 		if(PType[i] == NULL)
 			continue;
 
-		sprintf(Str1,"ParticleType%d", i+1);
+		sprintf_s(Str1, sizeof(Str1), "ParticleType%d", i+1);
 
 		r3dWriteCFG_S(FName, "System", Str1, PType[i]->Name);
 		PType[i]->Save(FName);
@@ -4089,12 +4089,12 @@ r3dParticleTrailData::r3dParticleTrailData()
 void ParticlePShaderId::ToString( char* str )
 {
 	strcpy_s( str, 512, "PS_PARTICLE" ) ; // TODO: verify buffer size
-	if( normal ) strcat( str, "_NORMAL" ) ;
-	if( distort_buf ) strcat( str, "_DISTBUF" ) ;
-	if( distort_tex ) strcat( str, "_DISTTEX" ) ;
-	if( half_res ) strcat( str, "_HALFRES" ) ;
-	if( shadow_type == 1 ) strcat( str, "_SHADOW" ) ;
-	if( shadow_type == 2 ) strcat( str, "_SHADOW_HW" ) ;
+	if( normal ) strcat_s( str, 512, "_NORMAL" ) ; // TODO: verify buffer size
+	if( distort_buf ) strcat_s( str, 512, "_DISTBUF" ) ; // TODO: verify buffer size
+	if( distort_tex ) strcat_s( str, 512, "_DISTTEX" ) ; // TODO: verify buffer size
+	if( half_res ) strcat_s( str, 512, "_HALFRES" ) ; // TODO: verify buffer size
+	if( shadow_type == 1 ) strcat_s( str, 512, "_SHADOW" ) ; // TODO: verify buffer size
+	if( shadow_type == 2 ) strcat_s( str, 512, "_SHADOW_HW" ) ; // TODO: verify buffer size
 }
 
 void ParticlePShaderId::FillMacros( ShaderMacros& defines )

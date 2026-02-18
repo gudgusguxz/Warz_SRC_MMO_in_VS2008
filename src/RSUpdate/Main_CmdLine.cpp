@@ -44,7 +44,7 @@ void cmdLine_MainLoop(CUpdater& updater)
       break;
       
     char title[512];
-    sprintf(title, "%s: %.1f%%", updater.updMsg1_, updater.prgTotal_.getCoef() * 100.0f);
+    sprintf_s(title, sizeof(title), "%s: %.1f%%", updater.updMsg1_, updater.prgTotal_.getCoef() * 100.0f);
     SetConsoleTitle(title);
   }
   

@@ -183,17 +183,17 @@ void r3dTimeGradient2::LoadGradient(const char* FName, const char* PartName, con
   
   char varName[256];
 
-  sprintf(varName, "%sNum", SectionName);
+  sprintf_s(varName, sizeof(varName), "%sNum", SectionName);
   int maxVars = r3dReadCFG_I(FName, PartName, varName, 8);
 
   for(int i=0;i<maxVars;i++) {
-    sprintf(varName, "%s%d", SectionName, i+1);
+    sprintf_s(varName, sizeof(varName), "%s%d", SectionName, i+1);
 
     float time = -100;
     float v0   = 0;
     float v1   = 0;
     float v2   = 0;
-    sscanf(r3dReadCFG_S(FName, PartName, varName, "-100 0 0 0"), "%f %f %f %f", &time, &v0, &v1, &v2);
+    sscanf_s(r3dReadCFG_S(FName, PartName, varName, "-100 0 0 0"), "%f %f %f %f", &time, &v0, &v1, &v2);
     if(time < 0) continue;
     
     if(!wasResetted) {
@@ -203,7 +203,7 @@ void r3dTimeGradient2::LoadGradient(const char* FName, const char* PartName, con
     AddValue3f(time, v0, v1, v2);
   }
 
-  sprintf( varName, "%sSmooth", SectionName );
+  sprintf_s( varName, sizeof(varName), "%sSmooth", SectionName );
   Smooth = r3dReadCFG_I(FName, PartName, varName, 0 ) ? true : false;
 
   return;
@@ -214,16 +214,16 @@ void r3dTimeGradient2::SaveGradient(const char* FName, const char* PartName, con
   char varName[256];
   char data[256];
 
-  sprintf(varName, "%sNum", SectionName);
+  sprintf_s(varName, sizeof(varName), "%sNum", SectionName);
   r3dWriteCFG_I(FName, PartName, varName, NumValues);
 
   for(int i=0; i<NumValues; i++) {
-    sprintf(varName, "%s%d", SectionName, i+1);
-    sprintf(data, "%.2f %.2f %.2f %.2f", Values[i].time, Values[i].val[0], Values[i].val[1], Values[i].val[2]);
+    sprintf_s(varName, sizeof(varName), "%s%d", SectionName, i+1);
+    sprintf_s(data, sizeof(data), "%.2f %.2f %.2f %.2f", Values[i].time, Values[i].val[0], Values[i].val[1], Values[i].val[2]);
     r3dWriteCFG_S(FName, PartName, varName, data);
   }
 
-  sprintf( varName, "%sSmooth", SectionName );
+  sprintf_s( varName, sizeof(varName), "%sSmooth", SectionName );
   r3dWriteCFG_I(FName, PartName, varName, Smooth );
   
   return;

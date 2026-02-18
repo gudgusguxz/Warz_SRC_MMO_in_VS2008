@@ -246,5 +246,5 @@ void CHWInfo::GetOSInfo()
   osvi.dwOSVersionInfoSize = sizeof(osvi);
   GetVersionEx(&osvi);
   
-  sprintf(OSVersion, "%d.%d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.dwBuildNumber);
+  sprintf_s(OSVersion, sizeof(OSVersion), "%d.%d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion, osvi.dwBuildNumber);
 }

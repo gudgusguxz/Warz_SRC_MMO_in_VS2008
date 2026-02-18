@@ -25,7 +25,7 @@ void GenerateUpdaterXML()
     r3dError("failed to get crc for %s\n", exeMain);
 
   char newExeName[MAX_PATH];
-  sprintf(newExeName, "%s_%s.exe", fname, UPDATER_VERSION);
+  sprintf_s(newExeName, sizeof(newExeName), "%s_%s.exe", fname, UPDATER_VERSION);
   if(CopyFile(fname, newExeName, FALSE) == 0)
     r3dError("unable to copy %s->%s\n", fname, newExeName);
 
@@ -45,7 +45,7 @@ void GenerateUpdaterXML()
   fclose(f);
   
   char msg[1024];
-  sprintf(msg, "XML %s generated\nnew exe:%s", updater_file+1, newExeName);
+  sprintf_s(msg, sizeof(msg), "XML %s generated\nnew exe:%s", updater_file+1, newExeName);
   MessageBox(NULL, msg, "Updater XML", MB_OK);
   return;
 }

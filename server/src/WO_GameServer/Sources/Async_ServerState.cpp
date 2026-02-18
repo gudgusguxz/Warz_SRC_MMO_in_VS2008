@@ -92,7 +92,7 @@ void CJobSetSavedServerState::SaveItemSpawns(pugi::xml_node& xmlNode)
 
 CJobSetSavedServerState::CJobSetSavedServerState()
 {
-	sprintf(desc, "CJobSetSavedServerState %p", this);
+	sprintf_s(desc, sizeof(desc), "CJobSetSavedServerState %p", this);
 	
 	pugi::xml_document xmlFile;
 	pugi::xml_node xmlState = xmlFile.append_child();

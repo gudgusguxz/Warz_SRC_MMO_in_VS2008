@@ -121,7 +121,7 @@ void obj_DroppedItem::SaveServerObjectData()
 	srvObjParams_.ItemID     = m_Item.itemID;
 
 	char strInventoryID[64];
-	sprintf(strInventoryID, "%I64d", m_Item.InventoryID);
+	sprintf_s(strInventoryID, sizeof(strInventoryID), "%I64d", m_Item.InventoryID);
 
 	IServerObject::CSrvObjXmlWriter xml;
 	xml.xmlObj.append_attribute("iid") = strInventoryID;

@@ -88,7 +88,7 @@ r3dXPSObject<vert_s>::r3dXPSObject()
 	pDecl = NULL;
 	pVB = NULL;
 	pIB = NULL;
-	sprintf(Name, "[%p(Not Inited)]", this);
+	sprintf_s(Name, sizeof(Name), "[%p(Not Inited)]", this);
 	RenderType = 0;
 }
 
@@ -139,9 +139,9 @@ int r3dXPSObject<vert_s>::Init(int NumVertices, int NumIndices, int _Flags, char
 
 
 	if(_DebugName)
-		sprintf(Name, "%s", _DebugName);
-	else 
-		sprintf(Name, "[%p(v:%d i:%d)]", this, NumVertices, NumIndices);
+		strcpy_s(Name, sizeof(Name), _DebugName);
+	else
+		sprintf_s(Name, sizeof(Name), "[%p(v:%d i:%d)]", this, NumVertices, NumIndices);
 
 
 	return 1;
@@ -187,7 +187,7 @@ int r3dXPSObject<vert_s>::InitGrid(int StartX, int StartZ,int Width, int Height,
 	pIB = gfx_new r3dIndexBuffer( IndexSize, (dwFlags & D3DUSAGE_DYNAMIC)?true:false, sizeof(DWORD) );
 
 
-	sprintf(Name, "XPS: GRID [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
+	sprintf_s(Name, sizeof(Name), "XPS: GRID [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
 
 	LockAll();
 
@@ -266,7 +266,7 @@ int r3dXPSObject<vert_s>::InitGridSideConnectorUP(int StartX, int StartZ,int Wid
 
 	r3dRenderer->Stats.BufferMem += VertexSize * sizeof(vert_s) + IndexSize * sizeof(DWORD);
 
-	sprintf(Name, "XPS: GRID CONN UP [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
+	sprintf_s(Name, sizeof(Name), "XPS: GRID CONN UP [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
 
 	LockAll();
 
@@ -338,7 +338,7 @@ int r3dXPSObject<vert_s>::InitGridSideConnectorDOWN(int StartX, int StartZ,int W
 
 	r3dRenderer->Stats.BufferMem += VertexSize * sizeof(vert_s) + IndexSize * sizeof(DWORD);
 
-	sprintf(Name, "XPS: GRID CONN DOWN [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
+	sprintf_s(Name, sizeof(Name), "XPS: GRID CONN DOWN [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
 
 	LockAll();
 
@@ -410,7 +410,7 @@ int r3dXPSObject<vert_s>::InitGridSideConnectorLEFT(int StartX, int StartZ,int W
 
 	r3dRenderer->Stats.BufferMem += VertexSize * sizeof(vert_s) + IndexSize * sizeof(DWORD);
 
-	sprintf(Name, "XPS: GRID CONN LEFT [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
+	sprintf_s(Name, sizeof(Name), "XPS: GRID CONN LEFT [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
 
 	LockAll();
 
@@ -483,7 +483,7 @@ int r3dXPSObject<vert_s>::InitGridSideConnectorRIGHT(int StartX, int StartZ,int 
 
 	r3dRenderer->Stats.BufferMem += VertexSize * sizeof(vert_s) + IndexSize * sizeof(DWORD);
 
-	sprintf(Name, "XPS: GRID CONN RIGHT [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
+	sprintf_s(Name, sizeof(Name), "XPS: GRID CONN RIGHT [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
 
 	LockAll();
 
@@ -540,7 +540,7 @@ int r3dXPSObject<vert_s>::InitDome( const float Radius, const float Height, cons
 	pVB = gfx_new r3dVertexBuffer( VertexSize, sizeof(vert_s), 0, (dwFlags & D3DUSAGE_DYNAMIC)?true:false );
 	pIB = gfx_new r3dIndexBuffer( IndexSize, (dwFlags & D3DUSAGE_DYNAMIC)?true:false, sizeof(DWORD) );
 
-	sprintf(Name, "XPS: SKYDOME [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
+	sprintf_s(Name, sizeof(Name), "XPS: SKYDOME [%p(v:%d i:%d)]", this, VertexSize, IndexSize);
 
 	LockAll();
 

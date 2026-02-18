@@ -143,7 +143,7 @@ void CSupervisorServer::StartGame(const SBPKT_M2S_StartGameReq_s& n)
   char arg1[128];
   char arg2[128];
   char arg3[128];
-  sprintf(arg1, "%u %u %u", n.gameId, n.port, n.creatorID);
+  sprintf_s(arg1, sizeof(arg1), "%u %u %u", n.gameId, n.port, n.creatorID);
   n.ginfo.ToString(arg2);
   r3dscpy(arg3, gSupervisorConfig->masterIp_.c_str());
   
@@ -152,9 +152,9 @@ void CSupervisorServer::StartGame(const SBPKT_M2S_StartGameReq_s& n)
   ckGameName.base64Encode("utf-8");
   
   char params[512];
-  sprintf(params, "\"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%d\"", 
-    gSupervisorConfig->gameServerExe_.c_str(), 
-    arg1, 
+  sprintf_s(params, sizeof(params), "\"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%d\"",
+    gSupervisorConfig->gameServerExe_.c_str(),
+    arg1,
     arg2,
     arg3,
     ckGameName.getString(),
@@ -333,11 +333,11 @@ bool CSupervisorServer::Start()
   time_t t1;
   time(&t1);
   char fname[MAX_PATH];
-  sprintf(fname, "logsv\\SV_%x.txt", (DWORD)t1);
+  sprintf_s(fname, sizeof(fname), "logsv\\SV_%x.txt", (DWORD)t1);
   extern void r3dChangeLogFile(const char* fname);
   r3dChangeLogFile(fname);
 
-  sprintf(fname, "logsv\\SV_%x.dmp", (DWORD)t1);
+  sprintf_s(fname, sizeof(fname), "logsv\\SV_%x.dmp", (DWORD)t1);
   SrvSetCrashHandler(fname);
 
   games_ = new CGameWatcher[gSupervisorConfig->maxGames_];
@@ -476,7 +476,7 @@ void CSupervisorServer::Tick()
     //r3dOutToLog("CPU Total usage: %2.2f\n",value.doubleValue);
 
     char buf[1024];
-    sprintf(buf, "WO::Supervisor, %d games, %2.0f%% CPU %s", numGames, value.doubleValue, shuttingDown_ ? "(SHUTTING DOWN)" : "");
+    sprintf_s(buf, sizeof(buf), "WO::Supervisor, %d games, %2.0f%% CPU %s", numGames, value.doubleValue, shuttingDown_ ? "(SHUTTING DOWN)" : "");
     SetConsoleTitle(buf);
   }
   

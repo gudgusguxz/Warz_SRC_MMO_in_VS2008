@@ -151,7 +151,7 @@ const char * UndoHistory::GetTitleUndo()
 		return szNull; 
 
 
-	sprintf( szText, "%s (%d of %d)", m_pActionHistory[ m_nCurrentIndex ]->GetTitle().c_str(), m_nCurrentIndex + 1, m_pActionHistory.Count() );
+	sprintf_s( szText, sizeof(szText), "%s (%d of %d)", m_pActionHistory[ m_nCurrentIndex ]->GetTitle().c_str(), m_nCurrentIndex + 1, m_pActionHistory.Count() );
 
 	return szText;
 }

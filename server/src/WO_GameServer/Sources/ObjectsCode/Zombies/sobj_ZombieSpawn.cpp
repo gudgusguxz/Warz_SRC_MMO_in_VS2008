@@ -156,7 +156,7 @@ bool obj_ZombieSpawn::SpawnZombie()
 	}
 			
 	char name[28];
-	sprintf(name, "Zombie_%d_%p", numSpawnedZombies++, this);
+	sprintf_s(name, sizeof(name), "Zombie_%d_%p", numSpawnedZombies++, this);
 
 	obj_Zombie* z = (obj_Zombie*)srv_CreateGameObject("obj_Zombie", name, pos);
 	z->SetNetworkID(gServerLogic.GetFreeNetId());
@@ -384,7 +384,7 @@ void obj_ZombieSpawn::ReadSerializedData(pugi::xml_node& node)
 	for(uint32_t i=0; i<numZombies; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "z%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "z%d", i);
 		pugi::xml_node zNode = zombieSpawnNode.child(tempStr);
 		r3d_assert(!zNode.empty());
 		ZombieSpawnSelection.push_back(zNode.attribute("id").as_uint());
@@ -394,7 +394,7 @@ void obj_ZombieSpawn::ReadSerializedData(pugi::xml_node& node)
 	for(uint32_t i=0; i<numBrains; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "b%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "b%d", i);
 		pugi::xml_node zNode = zombieSpawnNode.child(tempStr);
 		r3d_assert(!zNode.empty());
 		ZombieBrainSelection.push_back(zNode.attribute("id").as_uint());

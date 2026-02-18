@@ -111,14 +111,14 @@ static const char* GetZombiePartName(int type, int slot, int idx)
 	static char buf[MAX_PATH];
 	if( type == 1 ) // Super Zombie
 	{
-		sprintf(buf, "%s\\Zombie_Super_%s_%02d.sco",
+		sprintf_s(buf, sizeof(buf), "%s\\Zombie_Super_%s_%02d.sco",
 			"Data\\ObjectsDepot\\Characters",
 			names[slot], 
 			idx);
 	}
 	else			// Normal Zombie
 	{
-		sprintf(buf, "%s\\Zombie_%s_%02d.sco",
+		sprintf_s(buf, sizeof(buf), "%s\\Zombie_%s_%02d.sco",
 			"Data\\ObjectsDepot\\Zombie_Test",
 			names[slot], 
 			idx);
@@ -334,10 +334,10 @@ void obj_ZombieDummy::DrawDebugInfo() const
 				char animCurFrame[ 10 ];
 				char animFrames[ 10 ];
 				char animRate[ 10 ];
-				sprintf( animSpeed, "(%.2f", iter->GetSpeed() );
-				sprintf( animCurFrame, "[%.0f/", iter->GetCurFrame() );
-				sprintf( animFrames, "%d,", iter->GetAnim()->GetNumFrames() );
-				sprintf( animRate, "%.2f])", iter->GetAnim()->GetFrameRate() );
+				sprintf_s( animSpeed, sizeof(animSpeed), "(%.2f", iter->GetSpeed() );
+				sprintf_s( animCurFrame, sizeof(animCurFrame), "[%.0f/", iter->GetCurFrame() );
+				sprintf_s( animFrames, sizeof(animFrames), "%d,", iter->GetAnim()->GetNumFrames() );
+				sprintf_s( animRate, sizeof(animRate), "%.2f])", iter->GetAnim()->GetFrameRate() );
 				if( 0 < animsPlaying.Length() )
 					animsPlaying = animsPlaying + r3dString(", ") + r3dString( shortName ) + r3dString( animSpeed ) + r3dString( animCurFrame ) + r3dString( animFrames ) + r3dString( animRate );
 				else
@@ -412,7 +412,7 @@ void obj_ZombieDummy::AppendShadowRenderables(RenderArray &rarr, int sliceIndex,
 int obj_ZombieDummy::AddAnimation(const char* anim)
 {
 	char buf[MAX_PATH];
-	sprintf(buf, "Data\\Animations5\\%s.anm", anim);
+	sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s.anm", anim);
 	int aid = g_zombieAnimPool[ m_typeIndex ]->Add(anim, buf);
 	
 	return aid;
@@ -421,7 +421,7 @@ int obj_ZombieDummy::AddAnimation(const char* anim)
 void obj_ZombieDummy::SwitchToSelectedAnim()
 {
 	char buf[MAX_PATH];
-	sprintf(buf, "Data\\Animations5\\%s", sAnimSelected);
+	sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s", sAnimSelected);
 	int aid = g_zombieAnimPool[ m_typeIndex ]->Add(sAnimSelected, buf);
 	anim_.StartAnimation(aid, ANIMFLAG_RemoveOtherNow | ANIMFLAG_Looped, 1.0f, 1.0f, 0.0f);
 	
@@ -545,7 +545,7 @@ void obj_ZombieDummy::DoHit()
 		const char* hitAnim = anims[u_random(8)];
 		
 		char buf[MAX_PATH];
-		sprintf(buf, "Data\\Animations5\\%s", hitAnim);
+		sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s", hitAnim);
 		int aid = g_zombieAnimPool[ m_typeIndex ]->Add(hitAnim, buf);
 		anim_.StartAnimation(aid, 0, 0.0f, 1.0f, 0.1f);
 	}
@@ -562,7 +562,7 @@ void obj_ZombieDummy::DoHit()
 		const char* hitAnim = anims[u_random(5)];
 		
 		char buf[MAX_PATH];
-		sprintf(buf, "Data\\Animations5\\%s", hitAnim);
+		sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s", hitAnim);
 		int aid = g_zombieAnimPool[ m_typeIndex ]->Add(hitAnim, buf);
 		anim_.StartAnimation(aid, 0, 0.0f, 1.0f, 0.1f);
 	}

@@ -299,7 +299,7 @@ bool imgui2_FileList(float sw, float sh, const char* Dir, char *edit_val, bool b
     return 0;
 
   // something was selected
-  sprintf(edit_val, "%s", imgui2_DirFiles.at(idx).c_str());
+  strcpy_s(edit_val, 512, imgui2_DirFiles.at(idx).c_str()); // TODO: verify buffer size
   CurSel = idx;
 
   return 1;
@@ -314,11 +314,11 @@ bool imgui2_DirList(float sw, float sh, const char* Dir, char* edit_val, bool bU
 
 	imguiAddControl c( sh );
 
-	if(imgui2_DrawList( imgui2_stat.x, imgui2_stat.y, sw, sh, imgui2_DirFiles, CurSel, &imgui2_DirFilesOffset, &idx, bUseDesktop) == false) 
+	if(imgui2_DrawList( imgui2_stat.x, imgui2_stat.y, sw, sh, imgui2_DirFiles, CurSel, &imgui2_DirFilesOffset, &idx, bUseDesktop) == false)
 		return 0;
 
 	// something was selected
-	sprintf(edit_val, "%s", imgui2_DirFiles.at(idx).c_str());
+	strcpy_s(edit_val, 512, imgui2_DirFiles.at(idx).c_str()); // TODO: verify buffer size
 	CurSel = idx;
 
 	return 1;
@@ -569,7 +569,7 @@ static bool Do_Text_Edit(float x, float y, bool bInFocus)
 	assert(imgui2_textEditActive);
 
 	char TempS[128];
-	sprintf(TempS, "%s_", imgui2_editText);
+	sprintf_s(TempS, sizeof(TempS), "%s_", imgui2_editText);
 	MenuFont_Editor->PrintF(x, y, r3dColor(255, 155, 15), TempS);
 
 	if( (!bInFocus && imgui_lbp) || Keyboard->WasPressed(kbsEnter) || Keyboard->WasPressed(kbsNumericEnter)) {
@@ -612,7 +612,7 @@ static bool Do_Text_Edit(float x, float y, bool bInFocus)
 			r3dscpy(imgui2_editText, "");
 			imgui2_textDirty = false;
 		}
-		sprintf(imgui2_editText + strlen(imgui2_editText), "%c", ch);
+		{ size_t len = strlen(imgui2_editText); sprintf_s(imgui2_editText + len, sizeof(imgui2_editText) - len, "%c", ch); }
 	}
 
 	return false;
@@ -640,9 +640,9 @@ bool imgui2_ValueEx(float x, float y, float w, const char* name, void* edit_val,
   r3dDrawBox2D(x+textx-4, y+4, w - (x+textx-8), imgui2_ch-8, r3dColor(0,0,0));
 
   char fmt2[100];
-  sprintf(fmt2, "%s", fmt);
+  strcpy_s(fmt2, sizeof(fmt2), fmt);
   char valtext[100];
-  sprintf(valtext, fmt2, isFloat ? *(float*)edit_val : *(int*)edit_val);
+  sprintf_s(valtext, sizeof(valtext), fmt2, isFloat ? *(float*)edit_val : *(int*)edit_val);
   SIZE sz2;
   MenuFont_Editor->GetTextExtent(valtext, &sz2);
 
@@ -1264,7 +1264,7 @@ bool imgui2_Static(const char* name, ...) {
   
   va_list va;
   va_start(va, name);
-  vsprintf(buf, name, va);
+  vsprintf_s(buf, sizeof(buf), name, va);
   va_end(va);
 
   imguiAddControl c;
@@ -1304,7 +1304,7 @@ bool imgui2_StaticEx(float x, float y, float w, bool bChecked, bool bUseDesktop,
   
   va_list va;
   va_start(va, name);
-  vsprintf(buf, name, va);
+  vsprintf_s(buf, sizeof(buf), name, va);
   va_end(va);
 
   imgui2_DrawBorder(x, y, w, imgui2_ch);

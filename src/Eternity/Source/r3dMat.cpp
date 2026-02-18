@@ -1177,65 +1177,65 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 
 		if(!strnicmp(buf,"Flags",5)) {
 			char FlagsS[128];
-			sscanf(param,"%s",FlagsS);
+			sscanf_s(param,"%s",FlagsS, (unsigned)sizeof(FlagsS));
 			//r3dOutToLog("Material: Material flags are %s\n", FlagsS);
 
 			continue;
 		}
 
 		if(!strnicmp(buf,"matID", 5)) {
-			sscanf(param,"%d", &matID);
+			sscanf_s(param,"%d", &matID);
 			continue;
 		}
 
 		if(!strnicmp(buf,"SpecularPower",13)) {
-			sscanf(param,"%f", &SpecularPower);
+			sscanf_s(param,"%f", &SpecularPower);
 			continue;
 		}
 
 		if(!strnicmp(buf,"DetailScale",11)) {
-			sscanf(param,"%f", &DetailScale);
+			sscanf_s(param,"%f", &DetailScale);
 			continue;
 		}
 
 		if(!strnicmp(buf,"DetailAmmount",13)) {
-			sscanf(param,"%f", &DetailAmmount);
+			sscanf_s(param,"%f", &DetailAmmount);
 			continue;
 		}
 
 		if(!strnicmp(buf,"Specular1Power",14)) {
-			sscanf(param,"%f", &SpecularPower1);
+			sscanf_s(param,"%f", &SpecularPower1);
 			continue;
 		}
 
 		if(!strnicmp(buf,"SnowAmount",10)) {
-			sscanf(param,"%f", &SnowAmount);
+			sscanf_s(param,"%f", &SnowAmount);
 			continue;
 		}
 
 		if(!strnicmp(buf,"displace",8)) 
 		{
 			int n;
-			sscanf(param,"%d", &n);
+			sscanf_s(param,"%d", &n);
 			m_DoDispl = n != 0;
 			continue;
 		}
 
 		if(!strnicmp(buf,"displ_val",9)) 
 		{
-			sscanf(param,"%f", &m_DisplDepthVal);
+			sscanf_s(param,"%f", &m_DisplDepthVal);
 			continue;
 		}
 
 		if(!strnicmp(buf,"ReflectionPower",15)) {
-			sscanf(param, "%f", &ReflectionPower);
+			sscanf_s(param, "%f", &ReflectionPower);
 			continue;
 		}
 
 		if (!strnicmp(buf, "AlphaTransparent", 16))
 		{
 			int transparencyFlag = 0;
-			sscanf(param, "%d", &transparencyFlag);
+			sscanf_s(param, "%d", &transparencyFlag);
 			SetFlag(Flags, R3D_MAT_TRANSPARENT, transparencyFlag == 0);
 			continue;
 		}
@@ -1243,7 +1243,7 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 		if (!strnicmp(buf, "Camouflage", 10))
 		{
 			int camoFlag = 0;
-			sscanf(param, "%d", &camoFlag);
+			sscanf_s(param, "%d", &camoFlag);
 			SetFlag(Flags, R3D_MAT_CAMOUFLAGE, camoFlag == 0);
 			continue;
 		}
@@ -1251,14 +1251,14 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 		if(!strnicmp(buf, "DoubleSided", sizeof "DoubleSided" - 1))
 		{
 			int DoubleSided;
-			sscanf(param, "%d", &DoubleSided);
+			sscanf_s(param, "%d", &DoubleSided);
 			SetFlag(Flags, R3D_MAT_DOUBLESIDED, DoubleSided == 0);
 			continue;
 		}
 
 		if(!strnicmp(buf,"Color24",7)) {
 			int	iR, iG, iB;
-			sscanf(param,"%d %d %d", &iR, &iG, &iB);
+			sscanf_s(param,"%d %d %d", &iR, &iG, &iB);
 			DiffuseColor.R = iR;
 			DiffuseColor.G = iG;
 			DiffuseColor.B = iB;
@@ -1268,20 +1268,20 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 		if( !strnicmp(buf, "Type", 4 ) )
 		{
 			char Buf[ 256 ];
-			sscanf( param, "%s", Buf );
+			sscanf_s( param, "%s", Buf, (unsigned)sizeof(Buf) );
 			r3dscpy( TypeName, Buf );
 			continue;
 		}
 
 		if( !strnicmp(buf, "lowQSelfIllum", 13 ) )
 		{
-			sscanf(param, "%f", &lowQSelfIllum);
+			sscanf_s(param, "%f", &lowQSelfIllum);
 			continue;
 		}
 
 		if( !strnicmp(buf, "lowQMetallness", 14 ) )
 		{
-			sscanf(param, "%f", &lowQMetallness);
+			sscanf_s(param, "%f", &lowQMetallness);
 			continue;
 		}
 
@@ -1290,7 +1290,7 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 			)
 		{
 			int ForceTransparent;
-			sscanf( param, "%d", &ForceTransparent );
+			sscanf_s( param, "%d", &ForceTransparent );
 			SetFlag(Flags, R3D_MAT_FORCEHASALPHA, ForceTransparent == 0);
 			SetAlphaFlag();
 			continue;
@@ -1320,7 +1320,7 @@ int r3dMaterial::LoadAscii(r3dFile *f, const char* szTexPath)
 
 		if(!strnicmp(buf,"SpecPowMap",    10)) { _GetTexName(param, SpecPowMapName);  continue; }
 
-		if(!strnicmp(buf,"SelfIllumMultiplier", 19)) { sscanf(param, "%f", &SelfIllumMultiplier);  continue; }		
+		if(!strnicmp(buf,"SelfIllumMultiplier", 19)) { sscanf_s(param, "%f", &SelfIllumMultiplier);  continue; }		
 
 	} // while not end of material description
 

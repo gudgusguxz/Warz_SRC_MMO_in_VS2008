@@ -19,7 +19,7 @@ CKeepAliveReporter::~CKeepAliveReporter()
 void CKeepAliveReporter::Init(DWORD in_gameId)
 {
   char mmname[128];
-  sprintf(mmname, "WZ_GServer_%08x", in_gameId);
+  sprintf_s(mmname, sizeof(mmname), "WZ_GServer_%08x", in_gameId);
 
   // Open the shared file
   hMapFile = OpenFileMapping(

@@ -18,10 +18,10 @@ DECLARE_CMD( exec )
 	for( int i = 1, e = ev.NumArgs(); i < e; i ++ )
 	{
 		const char * szFileName = ev.GetString( i );
-		strcat( concatFileName, szFileName );
+		strcat_s( concatFileName, sizeof(concatFileName), szFileName );
 
 		if( i != e - 1 )
-			strcat( concatFileName, " " );
+			strcat_s( concatFileName, sizeof(concatFileName), " " );
 	}
 
 	ConPrint( "Reading command file %s...", concatFileName );

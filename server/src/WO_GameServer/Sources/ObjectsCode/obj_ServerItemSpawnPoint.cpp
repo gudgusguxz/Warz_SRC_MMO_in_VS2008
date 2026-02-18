@@ -253,7 +253,7 @@ void obj_ServerItemSpawnPoint::LoadServerObjectData(const pugi::xml_node xmlNode
 		ItemSpawn& spawn = m_SpawnPointsV[i];
 
 		char buf[128];
-		sprintf(buf, "s%d", i);
+		sprintf_s(buf, sizeof(buf), "s%d", i);
 
 		pugi::xml_node xmlSpawn = xmlNode.child(buf);
 
@@ -279,7 +279,7 @@ void obj_ServerItemSpawnPoint::SaveServerObjectData(pugi::xml_node& xmlNode)
 			continue;
 		
 		char buf[128];
-		sprintf(buf, "s%d", i);
+		sprintf_s(buf, sizeof(buf), "s%d", i);
 		pugi::xml_node xmlSpawn = xmlNode.append_child();
 		xmlSpawn.set_name(buf);
 

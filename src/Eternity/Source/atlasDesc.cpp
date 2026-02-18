@@ -265,8 +265,8 @@ int ComposeAtlas( const char* basePath, const char* atlasName )
 
 	char destAtlasTexFileName[ 512 ];
 	strcpy_s( destAtlasTexFileName, sizeof(destAtlasTexFileName), basePath );
-	strcat( destAtlasTexFileName, atlasName );
-	strcat( destAtlasTexFileName, ".dds" );
+	strcat_s( destAtlasTexFileName, sizeof(destAtlasTexFileName), atlasName );
+	strcat_s( destAtlasTexFileName, sizeof(destAtlasTexFileName), ".dds" );
 
 	if( D3DXSaveTextureToFile( destAtlasTexFileName, D3DXIFF_DDS, atlas.result.texture, NULL ) != S_OK )
 		return 0;

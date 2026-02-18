@@ -24,9 +24,9 @@ const char* versionGetString()
 {
   static char version[128];
   #ifdef _DEBUG
-    sprintf(version, "build%d(debug) (%s %s)", BUILD_VERSION, __DATE__, __TIME__);
+    sprintf_s(version, sizeof(version), "build%d(debug) (%s %s)", BUILD_VERSION, __DATE__, __TIME__);
   #else
-    sprintf(version, "build%d (%s %s)", BUILD_VERSION, __DATE__, __TIME__);
+    sprintf_s(version, sizeof(version), "build%d (%s %s)", BUILD_VERSION, __DATE__, __TIME__);
   #endif
   
   return version;

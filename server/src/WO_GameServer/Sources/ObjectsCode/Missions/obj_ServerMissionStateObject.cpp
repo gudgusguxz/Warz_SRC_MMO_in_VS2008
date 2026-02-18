@@ -71,7 +71,7 @@ void obj_ServerMissionStateObject::ReadSerializedData(pugi::xml_node& node)
 	for(uint32_t i=0; i<numMissions; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "m%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "m%d", i);
 		pugi::xml_node mNode = objNode.child(tempStr);
 		r3d_assert(!mNode.empty());
 		m_missionIDs.insert(mNode.attribute("id").as_uint());

@@ -93,7 +93,7 @@ static LONG WINAPI CreateMiniDump( EXCEPTION_POINTERS* pep )
 	char miniDumpPath[1024];
 	if(CreateConfigPath(miniDumpPath))
 	{
-		strcat( miniDumpPath, "MiniDump.dmp" );
+		strcat_s( miniDumpPath, sizeof(miniDumpPath), "MiniDump.dmp" );
 		r3dOutToLog("Minidump path: %s\n", miniDumpPath);
 
 		HANDLE hFile = CreateFile( miniDumpPath, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL ); 
@@ -133,7 +133,7 @@ static LONG WINAPI CreateMiniDump( EXCEPTION_POINTERS* pep )
 		
 		// show message box to user
 		char tempStr[2048];
-		sprintf(tempStr, "Application crashed.\nPlease send '%s' and r3dLog.txt (in install folder of the game) to support along with description of what you were doing at the time of crash.\nThank you and sorry for inconvenience.", miniDumpPath);
+		sprintf_s(tempStr, sizeof(tempStr), "Application crashed.\nPlease send '%s' and r3dLog.txt (in install folder of the game) to support along with description of what you were doing at the time of crash.\nThank you and sorry for inconvenience.", miniDumpPath);
 		MessageBox(0, tempStr, "Crash", MB_OK);
 	}
 	r3dCloseLogFile(); 
@@ -296,10 +296,10 @@ void r3dThreadEntryHelper(threadEntry_fn fn, DWORD in)
 		char filePath[1024];
 		res = crAddFile2(_T("r3dlog.txt"), NULL, _T("Log file"), CR_AF_MAKE_FILE_COPY|CR_AF_MISSING_FILE_OK);
 		CreateConfigPath(filePath);
-		strcat(filePath, "gameSettings.ini");
+		strcat_s(filePath, sizeof(filePath), "gameSettings.ini");
 		res = crAddFile2(filePath, NULL, _T("Game Settings file"), CR_AF_MAKE_FILE_COPY|CR_AF_MISSING_FILE_OK);
 		CreateConfigPath(filePath);
-		strcat(filePath, "GPU.txt");
+		strcat_s(filePath, sizeof(filePath), "GPU.txt");
 		res = crAddFile2(filePath, NULL, _T("GPU information file"), CR_AF_MAKE_FILE_COPY|CR_AF_MISSING_FILE_OK);
 #endif
 	}

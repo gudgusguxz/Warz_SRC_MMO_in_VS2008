@@ -22,7 +22,7 @@ bool pattern_match(const char *str_, const char *pattern)
     };
     
     char str[MAX_PATH];
-    strcpy(str, str_);
+    strcpy_s(str, sizeof(str), str_);
     strlwr(str);
 
     const char *s = str;
@@ -80,9 +80,9 @@ r3dFSBuilder::r3dFSBuilder(const char* path)
   r3dscpy(outputBaseName_, "wz");
 
   if(path == NULL || *path == 0) {
-    sprintf(basePath_, "");
+    basePath_[0] = '\0';
   } else {
-    sprintf(basePath_, "%s\\", path);
+    sprintf_s(basePath_, sizeof(basePath_), "%s\\", path);
   }
 
   SYSTEMTIME t;
@@ -105,9 +105,9 @@ void r3dFSBuilder::AddExclude(const char* name, EMatchType type)
 {
   match_s match;
   match.type = type;
-  strcpy(match.name, name);
+  strcpy_s(match.name, sizeof(match.name), name);
   strlwr(match.name);
-  
+
   excludes_.push_back(match);
 }
 
@@ -115,9 +115,9 @@ void r3dFSBuilder::AddInclude(const char* name, EMatchType type)
 {
   match_s match;
   match.type = type;
-  strcpy(match.name, name);
+  strcpy_s(match.name, sizeof(match.name), name);
   strlwr(match.name);
-  
+
   includes_.push_back(match);
 }
 
@@ -237,9 +237,9 @@ void r3dFSBuilder::ScanDirectory(const char* dir)
     std::vector<HANDLE> threads;
 
     if (dir == NULL)
-        sprintf(buf, "%s%s", basePath_, "*.*");
+        sprintf_s(buf, sizeof(buf), "%s%s", basePath_, "*.*");
     else
-        sprintf(buf, "%s%s\\%s", basePath_, dir, "*.*");
+        sprintf_s(buf, sizeof(buf), "%s%s\\%s", basePath_, dir, "*.*");
 
     hFind = FindFirstFile(buf, &ffblk);
     if (hFind == INVALID_HANDLE_VALUE) {
@@ -251,9 +251,9 @@ void r3dFSBuilder::ScanDirectory(const char* dir)
             continue;
 
         if (dir == NULL)
-            sprintf(buf, "%s%s", basePath_, ffblk.cFileName);
+            sprintf_s(buf, sizeof(buf), "%s%s", basePath_, ffblk.cFileName);
         else
-            sprintf(buf, "%s%s\\%s", basePath_, dir, ffblk.cFileName);
+            sprintf_s(buf, sizeof(buf), "%s%s\\%s", basePath_, dir, ffblk.cFileName);
 
         int isDir = (ffblk.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
         if (ShouldExclude(buf, ffblk.cFileName, isDir)) {
@@ -286,7 +286,7 @@ void r3dFSBuilder::ScanDirectory(const char* dir)
             }
 
             file_s f;
-            strcpy(f.name, buf);
+            strcpy_s(f.name, sizeof(f.name), buf);
             f.size = ffblk.nFileSizeLow;
 
             EnterCriticalSection(&cs);
@@ -581,7 +581,7 @@ DWORD WINAPI ProcessFilesSCO2InThread(LPVOID param)
             continue;
 
         char scb[MAX_PATH];
-        strcpy(scb, sco);
+        strcpy_s(scb, sizeof(scb), sco);
         scb[strlen(scb)-1] = 'b';
         
         FILETIME t1, t2;
@@ -727,7 +727,7 @@ DWORD WINAPI ProcessFilesSCOInThread(LPVOID param)
             continue;
         
         char scb[MAX_PATH];
-        strcpy(scb, fe->name);
+        strcpy_s(scb, sizeof(scb), fe->name);
         scb[strlen(scb)-1] = 'b';
         
         const r3dFS_FileEntry* fe2 = fl.Find(scb);
@@ -842,7 +842,7 @@ void r3dFSBuilder::FilterAndDeleteLostSCB()
       
     // check if we have .scb with same name
     char sco[MAX_PATH];
-    strcpy(sco, scb);
+    strcpy_s(sco, sizeof(sco), scb);
     sco[strlen(sco)-1] = 'o';
     
     const r3dFS_FileEntry* fe2 = fl.Find(sco);
@@ -893,14 +893,14 @@ bool r3dFSBuilder::CreateArchive()
   }
 
   char vname[MAX_PATH];
-  sprintf(vname, "%s\\%s%08X", outputDir_, outputBaseName_, buildVersion_);
+  sprintf_s(vname, sizeof(vname), "%s\\%s%08X", outputDir_, outputBaseName_, buildVersion_);
 
   r3dOutToLog("Creating%s archive %s\n", basefs_ ? " incremental" : "", vname);
   CLOG_INDENT;
   fs_->BuildNewArchive(vname);
 
   char xmlname[MAX_PATH];
-  sprintf(xmlname, "%s\\%s.xml", outputDir_, outputBaseName_);
+  sprintf_s(xmlname, sizeof(xmlname), "%s\\%s.xml", outputDir_, outputBaseName_);
   FILE* f = fopen_for_write(xmlname, "wt");
   
   if(basefs_ != NULL)

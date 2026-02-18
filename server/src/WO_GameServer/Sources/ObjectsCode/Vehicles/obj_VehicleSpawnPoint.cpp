@@ -116,7 +116,7 @@ void obj_VehicleSpawnPoint::CreateSpawnedVehicle(int spawnIndex, const wiInvento
 	ItemSpawn& spawn = m_SpawnPointsV[spawnIndex];
 
 	char name[28];
-	sprintf(name, "Vehicle_%d_%p", numberOfSpawnedVehicles++, this);
+	sprintf_s(name, sizeof(name), "Vehicle_%d_%p", numberOfSpawnedVehicles++, this);
 
 	obj_Vehicle* vehicle = (obj_Vehicle*)srv_CreateGameObject("obj_Vehicle", name, spawn.pos);
 	vehicle->SetNetworkID(gServerLogic.GetFreeNetId());

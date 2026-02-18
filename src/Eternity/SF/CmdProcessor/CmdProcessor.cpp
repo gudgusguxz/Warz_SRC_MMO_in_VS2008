@@ -509,9 +509,9 @@ void CommandProcessor::AppendLine( const char * szLine, CTextBuf * pBuffer )
 		return;
 	}
 
-	strcat( pBuffer->m_szText, szLine );
+	strcat_s( pBuffer->m_szText, sizeof(pBuffer->m_szText), szLine );
 	pBuffer->m_dwSize += dwLine;
-	strcat( pBuffer->m_szText, "\n" );
+	strcat_s( pBuffer->m_szText, sizeof(pBuffer->m_szText), "\n" );
 	pBuffer->m_dwSize++;
 }
 
@@ -651,7 +651,7 @@ void CommandProcessor::ListCmdToConsole( const char * szSubStr, const char * szF
 	int		nFound = 0;
 
 
-	sprintf( buffer, FORMAT_CON_LINE, "Name:", "Type", "Flags:" );
+	sprintf_s( buffer, sizeof(buffer), FORMAT_CON_LINE, "Name:", "Type", "Flags:" );
 	m_pConsole->Print( "" );
 	m_pConsole->Print( buffer );
 	m_pConsole->Print( szSepar );
@@ -668,14 +668,14 @@ void CommandProcessor::ListCmdToConsole( const char * szSubStr, const char * szF
 		if ( ( ( eType == Cmd::eCmdType_None ) || ( pEntry->m_eType == eType ) ) 
 			&& ( ! pEntry->GetFlags() || ( pEntry->GetFlags() & mask ) ) )
 		{
-			sprintf( buffer, FORMAT_CON_LINE, pEntry->GetName(), g_szCmdTypes[ pEntry->m_eType ], ParseCmdFlags( pEntry->GetFlags() ) );
+			sprintf_s( buffer, sizeof(buffer), FORMAT_CON_LINE, pEntry->GetName(), g_szCmdTypes[ pEntry->m_eType ], ParseCmdFlags( pEntry->GetFlags() ) );
 			m_pConsole->Print( buffer );
 			nFound++;
 		}
 	}
 
 	m_pConsole->Print( szSepar );
-	sprintf( buffer, "Total: %d", nFound );
+	sprintf_s( buffer, sizeof(buffer), "Total: %d", nFound );
 	m_pConsole->Print( buffer );
 }
 

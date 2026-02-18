@@ -761,7 +761,7 @@ void ServerGameLogic::OnNetData(DWORD peerId, const r3dNetPacketHeader* packetDa
 int ServerGameLogic::getReputationKillEffect(int repFromPlr, int repKilledPlr)
 {
 	// Reputation system. Splits into three subsystems
-	// CIVILIAN LOGIC (ÊÒÂ¾ÅàÃ×Í¹)
+	// CIVILIAN LOGIC (ï¿½ï¿½Â¾ï¿½ï¿½ï¿½ï¿½Í¹)
 	if(repFromPlr > -20 && repFromPlr < 20)
 	{
 		if(repKilledPlr >= 2000000)
@@ -821,7 +821,7 @@ int ServerGameLogic::getReputationKillEffect(int repFromPlr, int repKilledPlr)
 			repFromPlr -= 1;
 
 	}
-	// BANDIT LOGIC (once you are in bandit section, you cannot come up to be neutral) (ÊÒÂâ¨Ã)
+	// BANDIT LOGIC (once you are in bandit section, you cannot come up to be neutral) (ï¿½ï¿½ï¿½ï¿½ï¿½)
 	else if(repFromPlr <= -20)
 	{
 
@@ -957,8 +957,8 @@ void ServerGameLogic::DoKillPlayer(GameObject* sourceObj, obj_ServerPlayer* targ
 		killedByPlr->numKillWithoutDying++;
 		char deadplayer[64] = { 0 };
 		char killerplayer[64] = { 0 };
-		sprintf(deadplayer, targetPlr->userName);
-		sprintf(killerplayer, killedByPlr->userName);		
+		strcpy_s(deadplayer, sizeof(deadplayer), targetPlr->userName);
+		strcpy_s(killerplayer, sizeof(killerplayer), killedByPlr->userName);		
 		
 		PKT_S2C_KillPlayer_s n;
 		r3dscpy(n.victim, deadplayer);
@@ -1011,7 +1011,7 @@ void ServerGameLogic::DoKillPlayer(GameObject* sourceObj, obj_ServerPlayer* targ
     {
         char buffer[128] = {0};
         PKT_C2C_ChatMessage_s n;
-        sprintf(buffer, "[%s Killed By %s]", targetPlr->userName, sourceObj->Name.c_str());
+        sprintf_s(buffer, sizeof(buffer), "[%s Killed By %s]", targetPlr->userName, sourceObj->Name.c_str());
         r3dscpy(n.gamertag, "[PvP]");
         r3dscpy(n.msg, buffer);
         n.msgChannel = 1;
@@ -1899,7 +1899,7 @@ obj_ServerPlayer* ServerGameLogic::CreateNewPlayer(DWORD peerId, const r3dPoint3
 	// create player
 	char name[128];
 	//sprintf(name, "player%02d", playerIdx);
-	sprintf(name, "%s", peer.temp_profile.ProfileData.ArmorySlots[0].Gamertag);
+	sprintf_s(name, sizeof(name), "%s", peer.temp_profile.ProfileData.ArmorySlots[0].Gamertag);
 	obj_ServerPlayer* plr = (obj_ServerPlayer*)srv_CreateGameObject("obj_ServerPlayer", name, spawnPos);
 	
 	// add to peer-to-player table (need to do before player creation, because of network objects visibility check)
@@ -1912,7 +1912,7 @@ obj_ServerPlayer* ServerGameLogic::CreateNewPlayer(DWORD peerId, const r3dPoint3
 	// fill player info	
 	plr->m_PlayerRotation = spawnDir;
 	if(needsSpawnProtection)
-		plr->m_SpawnProtectedUntil = r3dGetTime() + 30.0f; //»ÃÑºàÇÅÒâ¾à·¤
+		plr->m_SpawnProtectedUntil = r3dGetTime() + 30.0f; //ï¿½ï¿½Ñºï¿½ï¿½ï¿½ï¿½ï¿½à·¤
 	plr->peerId_      = peerId;
 	plr->SetNetworkID(playerIdx + NETID_PLAYERS_START);
 	plr->NetworkLocal = false;
@@ -2379,7 +2379,7 @@ IMPL_PACKET_FUNC(ServerGameLogic, PKT_C2S_StartGameReq)
 				p2pSendRawToPeer(peerId, &n, sizeof(n));
 
 				char String[128];
-				sprintf(String, "Clan limit max on server (func3) Player:%d MaxLimit:%d", clanlimitPlrs, ginfo_.ClanLimitMax);
+				sprintf_s(String, sizeof(String), "Clan limit max on server (func3) Player:%d MaxLimit:%d", clanlimitPlrs, ginfo_.ClanLimitMax);
 				DisconnectPeer(peerId, true, String);
 				return;
 			}
@@ -2446,7 +2446,7 @@ IMPL_PACKET_FUNC(ServerGameLogic, PKT_C2S_StartGameReq)
 		g_GameBlocks_Client->AddKeyValueInt("TrialAccount", peer.temp_profile.IsTrialAccount()?1:0);
 		g_GameBlocks_Client->AddKeyValueInt("IsDeveloper", peer.temp_profile.ProfileData.isDevAccount);
 		char buffer[20] = {0};
-		sprintf(buffer, "%I64d", n.uniqueID);
+		sprintf_s(buffer, sizeof(buffer), "%I64d", n.uniqueID);
 		g_GameBlocks_Client->AddKeyValueString("NIC_ID", buffer);
 		g_GameBlocks_Client->AddKeyValueInt("AccountType", peer.temp_profile.ProfileData.AccountType);
 		g_GameBlocks_Client->SendEvent();
@@ -2556,7 +2556,7 @@ void ServerGameLogic::GetStartSpawnPosition(const wiCharDataFull& loadout, r3dPo
 	//}
 	
 	// revived (alive == 2) - spawn to closest spawn point
-	if(loadout.GameMapId && loadout.Alive == 1 || loadout.Alive == 2) //´ÔÊÂéÒÂ¨Ø´
+	if(loadout.GameMapId && loadout.Alive == 1 || loadout.Alive == 2) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¨Ø´
 	{
 		needsSpawnProtection = true;
 		GetSpawnPositionAfterDeath2(loadout.GamePos, pos, dir);
@@ -3101,10 +3101,10 @@ int ServerGameLogic::ProcessChatCommand(obj_ServerPlayer* plr, const char* cmd)
 		n2.msgChannel = 1;
 		if (plr->m_isAdmin_GodMode)
 		{
-			sprintf(n2.msg, "God Mode ON");
+			sprintf_s(n2.msg, sizeof(n2.msg), "God Mode ON");
 		}
 		else {
-			sprintf(n2.msg, "God Mode OFF");
+			sprintf_s(n2.msg, sizeof(n2.msg), "God Mode OFF");
 		}
 		r3dscpy(n2.gamertag, "[System]");
 		p2pSendToPeer(plr->peerId_, plr, &n2, sizeof(n2));
@@ -3179,7 +3179,7 @@ int ServerGameLogic::Cmd_Teleport(obj_ServerPlayer* plr, const char* cmd)
 	char buf[128];
 	float x, z;
 	
-	if(3 != sscanf(cmd, "%s %f %f", buf, &x, &z))
+	if(3 != sscanf_s(cmd, "%s", buf, (unsigned)sizeof(buf), &x, &z))
 		return 2;
 
 	return admin_TeleportPlayer(plr, x, z);
@@ -3256,7 +3256,7 @@ int ServerGameLogic::Cmd_GiveItem(obj_ServerPlayer* plr, const char* cmd)//AlexR
 	int itemid;
 	int count = 1;
 	
-	if(2 > sscanf(cmd, "%s %d %d", buf, &itemid, &count))
+	if(2 > sscanf_s(cmd, "%s %d %d", buf, (unsigned)sizeof(buf), &itemid, &count))
 		return 2;
 		
 	if(g_pWeaponArmory->getConfig(itemid) == NULL) {
@@ -3325,7 +3325,7 @@ int ServerGameLogic::Cmd_SetVitals(obj_ServerPlayer* plr, const char* cmd)
 	char buf[128];
 	int v1, v2, v3, v4;
 	
-	if(5 != sscanf(cmd, "%s %d %d %d %d", buf, &v1, &v2, &v3, &v4))
+	if(5 != sscanf_s(cmd, "%s %d %d %d %d", buf, (unsigned)sizeof(buf), &v1, &v2, &v3, &v4))
 		return 2;
 		
 	plr->loadout_->Health = (float)v1;
@@ -3421,7 +3421,7 @@ int ServerGameLogic::Cmd_Ban(obj_ServerPlayer* plr, const char* cmd)
 		{
 			CJobBanUser* job = new CJobBanUser(pl);
 			char tmpStr[256];
-			sprintf(tmpStr, "Banned from in-game by dev %s for reason: %s", plr->userName, reason);
+			sprintf_s(tmpStr, sizeof(tmpStr), "Banned from in-game by dev %s for reason: %s", plr->userName, reason);
 			LogInfo(pl->peerId_, "banned by dev", tmpStr);
 			r3dscpy(job->BanReason, tmpStr);
 			g_AsyncApiMgr->AddJob(job);
@@ -3458,7 +3458,7 @@ int ServerGameLogic::Cmd_BanChat(obj_ServerPlayer* plr, const char* cmd)//AlexRe
 			{
 				CJobBanChatUser* job = new CJobBanChatUser(pl);
 				char tmpStr[256];
-				sprintf(tmpStr, "Banned chat in-game by dev %s for reason: %s", plr->userName, reason);
+				sprintf_s(tmpStr, sizeof(tmpStr), "Banned chat in-game by dev %s for reason: %s", plr->userName, reason);
 				LogInfo(pl->peerId_, "banned chat by dev", tmpStr);
 				r3dscpy(job->BanReason, tmpStr);
 				g_AsyncApiMgr->AddJob(job);
@@ -3469,7 +3469,7 @@ int ServerGameLogic::Cmd_BanChat(obj_ServerPlayer* plr, const char* cmd)//AlexRe
 				// info player that he was banned from chat
 				PKT_S2C_CustomKickMsg_s n;
 				if(strlen(reason) > 8)
-					sprintf(n.msg, "You are banned from chat\n%s", reason);
+					sprintf_s(n.msg, sizeof(n.msg), "You are banned from chat\n%s", reason);
 				else
 					r3dscpy(n.msg, "You are banned from chat");
 				p2pSendToPeer(pl->peerId_, pl, &n, sizeof(n));
@@ -3506,7 +3506,7 @@ int ServerGameLogic::Cmd_Loc(obj_ServerPlayer* plr, const char* cmd)
 			locN.userFlag = 2;
 			r3dscpy(locN.gamertag, "<SYSTEM>");
 			char tmpStr[64];
-			sprintf(tmpStr, "Player %s location: x:%.2f, y:%.2f, z:%.2f", pl->userName, pl->GetPosition().x, pl->GetPosition().y, pl->GetPosition().z);
+			sprintf_s(tmpStr, sizeof(tmpStr), "Player %s location: x:%.2f, y:%.2f, z:%.2f", pl->userName, pl->GetPosition().x, pl->GetPosition().y, pl->GetPosition().z);
 			r3dscpy(locN.msg, tmpStr);
 			p2pSendToPeer(plr->peerId_, plr, &locN, sizeof(locN), 1);
 			return 0;
@@ -3548,7 +3548,7 @@ int ServerGameLogic::Cmd_VehicleSpawn(obj_ServerPlayer* plr, const char* cmd)
 	char buf[128];
 	int vehicleType = 0;
 
-	if(2 != sscanf(cmd, "%s %d", buf, &vehicleType))
+	if(2 != sscanf_s(cmd, "%s %d", buf, (unsigned)sizeof(buf), &vehicleType))
 		return 1;
 
 	if (vehicleType < 0 || vehicleType > 7)
@@ -3558,7 +3558,7 @@ int ServerGameLogic::Cmd_VehicleSpawn(obj_ServerPlayer* plr, const char* cmd)
 	position.x += 3.0f;
 
 	char name[28];
-	sprintf(name, "Vehicle_%d_%p", obj_Vehicle::s_ListOfAllActiveVehicles.size() + 1, this);
+	sprintf_s(name, sizeof(name), "Vehicle_%d_%p", obj_Vehicle::s_ListOfAllActiveVehicles.size() + 1, this);
 
 	obj_Vehicle* vehicle = (obj_Vehicle*)srv_CreateGameObject("obj_Vehicle", name, position);
 	vehicle->SetNetworkID(gServerLogic.GetFreeNetId());
@@ -3579,7 +3579,7 @@ int ServerGameLogic::Cmd_VehicleSpawn2(obj_ServerPlayer* plr, const char* cmd)
 	char buf[128];
 	int vehicleType = 0;
 
-	if(2 != sscanf(cmd, "%s %d", buf, &vehicleType))
+	if(2 != sscanf_s(cmd, "%s %d", buf, (unsigned)sizeof(buf), &vehicleType))
 		return 1;
 
 	if (vehicleType < 0 || vehicleType > 2)
@@ -3596,7 +3596,7 @@ int ServerGameLogic::Cmd_VehicleSpawn2(obj_ServerPlayer* plr, const char* cmd)
 		position.x += 3.0f;
 
 		char name[28];
-		sprintf(name, "Vehicle_%d_%p", obj_Vehicle::s_ListOfAllActiveVehicles.size() + 1, this);
+		sprintf_s(name, sizeof(name), "Vehicle_%d_%p", obj_Vehicle::s_ListOfAllActiveVehicles.size() + 1, this);
 
 		obj_Vehicle* vehicle = (obj_Vehicle*)srv_CreateGameObject("obj_Vehicle", name, position);
 		vehicle->SetNetworkID(gServerLogic.GetFreeNetId());
@@ -3619,7 +3619,7 @@ int ServerGameLogic::Cmd_ZombieSpawn(obj_ServerPlayer* plr, const char* cmd, boo
 	char buf[128];
 	int zombieCount = 0;
 
-	if(sscanf(cmd, "%s %d", buf, &zombieCount) != 2)
+	if(sscanf_s(cmd, "%s %d", buf, (unsigned)sizeof(buf), &zombieCount) != 2)
 		zombieCount = 1;	
 
 	if (zombieCount > 50)
@@ -3648,7 +3648,7 @@ int ServerGameLogic::Cmd_ZombieSpawn(obj_ServerPlayer* plr, const char* cmd, boo
 		}
 
 		char name[28];
-		sprintf(name, "Zombie_%d_%p", spawnObject->numSpawnedZombies++, this);
+		sprintf_s(name, sizeof(name), "Zombie_%d_%p", spawnObject->numSpawnedZombies++, this);
 
 		obj_Zombie* z = (obj_Zombie*)srv_CreateGameObject("obj_Zombie", name, position);
 		z->SetNetworkID(gServerLogic.GetFreeNetId());
@@ -3797,7 +3797,7 @@ IMPL_PACKET_FUNC(ServerGameLogic, PKT_C2C_ChatMessage)
 			PKT_C2C_ChatMessage_s n2;
 			n2.userFlag = 0;
 			n2.msgChannel = 1;
-			sprintf(n2.msg, "no such command, %d", res);
+			sprintf_s(n2.msg, sizeof(n2.msg), "no such command, %d", res);
 			r3dscpy(n2.gamertag, "<system>");
 			p2pSendToPeer(peerId, fromPlr, &n2, sizeof(n2));
 		}
@@ -4673,7 +4673,7 @@ void ServerGameLogic::OnPKT_C2S_ScreenshotData(DWORD peerId, const int size, con
 		r3dscpy(ReportDir,r3dReadCFG_S(configFile, group, "ReportDir", ".\\"));
 
 		char Directory[512]="";
-		sprintf(Directory,"%sReports\\%i\\",ReportDir,peer.player->profile_.CustomerID);
+		sprintf_s(Directory, sizeof(Directory), "%sReports\\%i\\",ReportDir,peer.player->profile_.CustomerID);
 		_mkdir(Directory);
 
 		time_t     t;
@@ -4689,7 +4689,7 @@ void ServerGameLogic::OnPKT_C2S_ScreenshotData(DWORD peerId, const int size, con
 		Date[19]='_';
 
 		//sprintf(fname, "%sDate_%.24s_GameServer_%d_PlayerScreen_of_CID_%d_%x.jpg",Directory,Date,ginfo_.gameServerId,peer.player->profile_.CustomerID,GetTickCount());
-		sprintf(fname, "%sReport-%d-%d_%.24s.jpg",Directory, peer.player->profile_.CustomerID, peer.player->loadout_->LoadoutID, Date);//, GetTickCount());
+		sprintf_s(fname, sizeof(fname), "%sReport-%d-%d_%.24s.jpg",Directory, peer.player->profile_.CustomerID, peer.player->loadout_->LoadoutID, Date);//, GetTickCount());
 	}
 
 	r3dOutToLog("peer%02d received screenshot, fname:%s\n", peerId, fname);
@@ -5650,7 +5650,7 @@ void ServerGameLogic::joinPlayerToGroup(obj_ServerPlayer* plr, uint32_t groupID)
 	n2.groupID = groupID;
 	n2.isLeader = 0;
 	r3dscpy(n2.gamertag, plr->userName);
-	n2.GlowName = plr->loadout_->GamertagColor; //à»ÅÕèÂ¹ª×èÍµÑÇá»Ãà»ç¹ ¢Í§µÑÇàÍ§¶éÒäÁèãªè GlowName
+	n2.GlowName = plr->loadout_->GamertagColor; //ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í§ï¿½ï¿½ï¿½ï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GlowName
 	n2.Health = (int)plr->loadout_->Health;
 
 	for(int i=0; i<curPlayers_; ++i)
@@ -5663,7 +5663,7 @@ void ServerGameLogic::joinPlayerToGroup(obj_ServerPlayer* plr, uint32_t groupID)
 			n.groupID = groupID;
 			n.isLeader = pl->isGroupLeader?1:0;
 			r3dscpy(n.gamertag, pl->userName);
-			n.GlowName = pl->loadout_->GamertagColor; //à»ÅÕèÂ¹ª×èÍµÑÇá»Ãà»ç¹ ¢Í§µÑÇàÍ§¶éÒäÁèãªè GlowName
+			n.GlowName = pl->loadout_->GamertagColor; //ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í§ï¿½ï¿½ï¿½ï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GlowName
 			n.Health = (int)pl->loadout_->Health;
 			p2pSendToPeer(plr->peerId_, plr, &n, sizeof(n));
 
@@ -5701,14 +5701,14 @@ void ServerGameLogic::createNewPlayerGroup(obj_ServerPlayer* leader, obj_ServerP
 	n.groupID = groupID;
 	n.isLeader = 1;
 	r3dscpy(n.gamertag, leader->userName);
-	n.GlowName = leader->loadout_->GamertagColor; //à»ÅÕèÂ¹ª×èÍµÑÇá»Ãà»ç¹ ¢Í§µÑÇàÍ§¶éÒäÁèãªè GlowName
+	n.GlowName = leader->loadout_->GamertagColor; //ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í§ï¿½ï¿½ï¿½ï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GlowName
 	n.Health = (int)leader->loadout_->Health;
 	p2pSendToPeer(leader->peerId_, leader, &n, sizeof(n));
 	p2pSendToPeer(plr->peerId_, plr, &n, sizeof(n));
 
 	n.isLeader = 0;
 	r3dscpy(n.gamertag, plr->userName);
-	n.GlowName = leader->loadout_->GamertagColor; //à»ÅÕèÂ¹ª×èÍµÑÇá»Ãà»ç¹ ¢Í§µÑÇàÍ§¶éÒäÁèãªè GlowName
+	n.GlowName = leader->loadout_->GamertagColor; //ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í§ï¿½ï¿½ï¿½ï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GlowName
 	n.Health = (int)leader->loadout_->Health;
 	p2pSendToPeer(leader->peerId_, leader, &n, sizeof(n));
 	p2pSendToPeer(plr->peerId_, plr, &n, sizeof(n));
@@ -5783,7 +5783,7 @@ void ServerGameLogic::leavePlayerFromGroup(obj_ServerPlayer* plr)
 					r3d_assert(pl->isGroupLeader==false);
 					pl->isGroupLeader = true;
 					r3dscpy(n2.gamertag, pl->userName);
-					n2.GlowName = pl->loadout_->GamertagColor; //à»ÅÕèÂ¹ª×èÍµÑÇá»Ãà»ç¹ ¢Í§µÑÇàÍ§¶éÒäÁèãªè GlowName
+					n2.GlowName = pl->loadout_->GamertagColor; //ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í§ï¿½ï¿½ï¿½ï¿½Í§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GlowName
 					n2.Health = (int)pl->loadout_->Health;
 					reassignLeader = false;
 				}
@@ -6087,7 +6087,7 @@ void ServerGameLogic::RespawnPlayer(obj_ServerPlayer* plr) //Respawnfast
 		}
 	}
 
-	float respawnProtection = 30.0f; //»ÃÑºàÇÅÒâ¾à·¤ *µÒÂà¡Ô´
+	float respawnProtection = 30.0f; //ï¿½ï¿½Ñºï¿½ï¿½ï¿½ï¿½ï¿½à·¤ *ï¿½ï¿½ï¿½ï¿½Ô´
 	plr->DoRespawn(pos, dir, respawnProtection);
 
 	PKT_S2C_RespawnPlayer_s n;

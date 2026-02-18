@@ -16,7 +16,7 @@
 
 void CLoginHelper::ParseLoginAnswer(const CWOBackendReq& req)
 {
-	int n = sscanf(req.bodyStr_, "%d %d %d", 
+	int n = sscanf_s(req.bodyStr_, "%d %d %d",
 		&CustomerID, 
 		&SessionID,
 		&AccountStatus);
@@ -88,7 +88,7 @@ char* getMAC() //BanAll
 	{
 		PIP_ADAPTER_INFO pAdapterInfo = AdapterInfo;// Contains pointer to current adapter info
 		do {
-			sprintf(mac_addr, "%02X:%02X:%02X:%02X:%02X:%02X",
+			sprintf_s(mac_addr, 17, "%02X:%02X:%02X:%02X:%02X:%02X",
 			pAdapterInfo->Address[0], pAdapterInfo->Address[1],
 			pAdapterInfo->Address[2], pAdapterInfo->Address[3],
 			pAdapterInfo->Address[4], pAdapterInfo->Address[5]);
@@ -255,7 +255,7 @@ void CLoginHelper::CreateComputerToken()
     {
         CHWInfo g_HardwareInfo;
         g_HardwareInfo.Grab();
-        sprintf(hardwareid, "0x%I64x", g_HardwareInfo.uniqueId); // Hardware ID By Yuri-BR
+        sprintf_s(hardwareid, sizeof(hardwareid), "0x%I64x", g_HardwareInfo.uniqueId); // Hardware ID By Yuri-BR
 
         DWORD size = strlen(hardwareid) + 1;
 
@@ -268,7 +268,7 @@ void CLoginHelper::CreateComputerToken()
 void CLoginHelper::CreateAuthToken(char* token) const
 {
 	char sessionInfo[512];
-	sprintf(sessionInfo, "%d:%d:%d", CustomerID, SessionID, AccountStatus);
+	sprintf_s(sessionInfo, sizeof(sessionInfo), "%d:%d:%d", CustomerID, SessionID, AccountStatus);
 
 	for(size_t i=0; i<strlen(sessionInfo); ++i)
 		sessionInfo[i] = sessionInfo[i] ^ 0x64;
@@ -277,14 +277,14 @@ void CLoginHelper::CreateAuthToken(char* token) const
 	encoded = sessionInfo;
 	encoded.base64Encode("utf-8");
       
-	strcpy(token, encoded.getAnsi());
+	strcpy_s(token, 512, encoded.getAnsi()); // TODO: verify buffer size
 	return;
 }
 
 void CLoginHelper::CreateLoginToken(char* token) const
 {
 	char crlogin[128];
-	strcpy(crlogin, username);
+	strcpy_s(crlogin, sizeof(crlogin), username);
 	
 	CkString s1;
 	s1 = username;
@@ -294,6 +294,6 @@ void CLoginHelper::CreateLoginToken(char* token) const
 	s2 = passwd;
 	s2.base64Encode("utf-8");
       
-	sprintf(token, "-login \"@%s\" -pwd \"@%s\"", s1.getAnsi(), s2.getAnsi());
+	sprintf_s(token, 512, "-login \"@%s\" -pwd \"@%s\"", s1.getAnsi(), s2.getAnsi()); // TODO: verify buffer size
 	return;
 }

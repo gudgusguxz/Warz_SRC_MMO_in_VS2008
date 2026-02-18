@@ -388,7 +388,7 @@ bool MissionManager::Init()
 	// load Mission Map
 	{
 		char fname[MAX_PATH];
-		sprintf(fname, "%s\\Missions.xml", r3dGameLevel::GetHomeDir());
+		sprintf_s(fname, sizeof(fname), "%s\\Missions.xml", r3dGameLevel::GetHomeDir());
 		
 		r3dFile* f = r3d_open(fname, "rb");
 		if ( !f )

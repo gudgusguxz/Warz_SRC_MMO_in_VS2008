@@ -191,7 +191,7 @@ void Editor_Road::ProcessSelect()
       
       if(imgui_lbr) {
         char name[256];
-        sprintf(name, "road_%dx%d", int(roadPnt_[0].x), int(roadPnt_[0].z));
+        sprintf_s(name, sizeof(name), "road_%dx%d", int(roadPnt_[0].x), int(roadPnt_[0].z));
         obj_Road* road = (obj_Road*)srv_CreateGameObject("obj_Road", name, roadPnt_[0]);
 
         road->edCreate(r3dPoint3D(0,0,0), roadPnt_[1] - roadPnt_[0]);
@@ -282,10 +282,10 @@ void Editor_Road::ProcessEditMaterials()
 	fY += imgui_Static(fX, 55, "Materials", 300, true, 25, true );
 	char MatFName[MAX_PATH];
 	char mask[MAX_PATH];
-	sprintf(mask, "%s\\*.mat", obj_Road::BaseMaterialDir);
-	sprintf( MatFName, "Current Material: %s", road->matName );
+	sprintf_s(mask, sizeof(mask), "%s\\*.mat", obj_Road::BaseMaterialDir);
+	sprintf_s( MatFName, sizeof(MatFName), "Current Material: %s", road->matName );
 	SliderY += imgui_Static( SliderX, SliderY, MatFName );
-	sprintf( MatFName, "%s.mat", road->matName );
+	sprintf_s( MatFName, sizeof(MatFName), "%s.mat", road->matName );
 
 	static float offset = 0.f ;
 
@@ -311,7 +311,7 @@ void Editor_Road::ProcessEditMaterials()
 		if ( *szNewMatName != '\0' )
 		{
 			char matname[MAX_PATH];
-			sprintf( matname, "%s\\%s.mat", obj_Road::BaseMaterialDir, szNewMatName );
+			sprintf_s( matname, sizeof(matname), "%s\\%s.mat", obj_Road::BaseMaterialDir, szNewMatName );
 			if ( !r3dFileExists( matname ) )
 			{
 				FILE* f = fopen( matname, "wt" );
@@ -471,7 +471,7 @@ void Editor_Road::ProcessEdit()
 		case POINT_MODIFY:
 		{
 		  char buf[256];
-		  sprintf(buf, "Point: %d/%d", curPoint_ + 1, maxPoint);
+		  sprintf_s(buf, sizeof(buf), "Point: %d/%d", curPoint_ + 1, maxPoint);
 		  SliderY += imgui_Static(SliderX, SliderY, buf);
 		  SliderY += imgui_Value_Slider(SliderX, SliderY, "Height Add", &road->orgPoints_[curPoint_].height, 0, 2,  "%02.2f", 1);
 		  SliderY += imgui_Static(SliderX, SliderY, "select control point with left mouse button");

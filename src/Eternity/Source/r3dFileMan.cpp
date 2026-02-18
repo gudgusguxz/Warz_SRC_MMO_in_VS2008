@@ -106,12 +106,12 @@ void r3dCopyFixedFileName(const char* in_fname, char* out_fname)
   // reconstruct final path
   *out_fname = 0;
   for(int i=0; i<nrdirs; i++) {
-    sprintf(out_fname + strlen(out_fname), "%s\\", rdirs[i]);
+    { size_t len = strlen(out_fname); sprintf_s(out_fname + len, 512 - len, "%s\\", rdirs[i]); } // TODO: verify buffer size
   }
   
   // append filename
   r3d_assert(ndirs);
-  sprintf(out_fname + strlen(out_fname), "%s", pdirs2[ndirs-1] + 1);
+  { size_t len = strlen(out_fname); sprintf_s(out_fname + len, 512 - len, "%s", pdirs2[ndirs-1] + 1); } // TODO: verify buffer size
   
   return;
 }
@@ -134,7 +134,7 @@ r3dFile* r3dFile_IntOpen(const char* fname, const char* mode)
   {
     // init from stream
     r3dFile* f = game_new r3dFile();
-    sprintf(f->Location.FileName, "%s", fname);
+    sprintf_s(f->Location.FileName, sizeof(f->Location.FileName), "%s", fname);
     f->Location.Where  = FILELOC_File;
     f->Location.id     = 0;
 
@@ -161,7 +161,7 @@ r3dFile* r3dFile_IntOpen(const char* fname, const char* mode)
 
     // init from memory
     r3dFile* f = game_new r3dFile();
-    sprintf(f->Location.FileName, "%s", fname);
+    sprintf_s(f->Location.FileName, sizeof(f->Location.FileName), "%s", fname);
     f->Location.Where  = FILELOC_Resource;
     f->Location.id     = (DWORD)fe;
     f->data = data;
@@ -569,7 +569,7 @@ r3dChunkedFileT< T >::GetExt() const
 template < typename T >
 void r3dChunkedFileT< T >::PrintChunkName( char* buffer, int index )
 {
-	sprintf( buffer, "%s_%d.%s", mBaseName.c_str(), index, mExt.c_str() );
+	sprintf_s( buffer, 512, "%s_%d.%s", mBaseName.c_str(), index, mExt.c_str() ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -1119,11 +1119,11 @@ void r3dFullCanonicalPath(const char* relativePath, char* result)
 	{
 		char path[MAX_PATH];
 		GetFullPathNameA(".\\", MAX_PATH, path, NULL);
-		sprintf(fullPath,"%s%s", path, relativePath);
+		sprintf_s(fullPath, sizeof(fullPath), "%s%s", path, relativePath);
 	}
 	else
 	{
-		sprintf(fullPath,"%s", relativePath);
+		strcpy_s(fullPath, sizeof(fullPath), relativePath);
 	}
 
 
@@ -1150,9 +1150,9 @@ bool CreateConfigPath(char* dest)
 {
 	if( SUCCEEDED(SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS | CSIDL_FLAG_CREATE, NULL, 0, dest)) ) 
 	{
-		strcat( dest, "\\WARZ\\" );
+		strcat_s( dest, MAX_PATH, "\\WARZ\\" );
 		mkdir( dest );
-		strcat( dest, "Warz Siam MMO By Gudgusgusxz\\" );
+		strcat_s( dest, MAX_PATH, "Warz Siam MMO By Gudgusgusxz\\" );
 		mkdir( dest );
 
 		return true;
@@ -1163,11 +1163,11 @@ bool CreateConfigPath(char* dest)
 
 bool CreateWorkPath(char* dest)
 {
-	if( SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, dest)) ) 
+	if( SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, dest)) )
 	{
-		strcat( dest, "\\WARZ\\" );
+		strcat_s( dest, MAX_PATH, "\\WARZ\\" );
 		mkdir( dest );
-		strcat( dest, "Warz Siam MMO By Gudgusgusxz\\" );
+		strcat_s( dest, MAX_PATH, "Warz Siam MMO By Gudgusgusxz\\" );
 		mkdir( dest );
 
 		return true;
@@ -1211,8 +1211,8 @@ int r3d_create_path( const char *path )
 	int             status;
 	// we may get trick folder with date (extensionesque) - treat it as a folder
 
-	strcat ( dir, file ) ;
-	strcat ( dir, ext ) ;
+	strcat_s ( dir, sizeof(dir), file ) ;
+	strcat_s ( dir, sizeof(dir), ext ) ;
 	char           *copypath = strdup( dir );
 
 	for( int i = 0, e = strlen( copypath ) ; i < e ; i ++ )
@@ -1393,7 +1393,7 @@ void DEBUG_CheckChunked()
 		for( int ii = 0; ; ii ++ )
 		{
 			char chunkedName[ 1024 ];
-			sprintf( chunkedName, "%s_%d.%s", "testme_ch", ii, "bin" );
+			sprintf_s( chunkedName, sizeof(chunkedName), "%s_%d.%s", "testme_ch", ii, "bin" );
 
 			if( r3dFileExists( chunkedName ) )
 			{
@@ -1743,7 +1743,7 @@ INT64 r3dGetDiskSpace( const char* filePath )
 	char drive[ 64 ], path[ 512 ], filename[ 512 ], ext[ 64 ];
 	_splitpath( filePath, drive, path, filename, ext );
 
-	strcat( drive, "\\");
+	strcat_s( drive, sizeof(drive), "\\");
 
 	DWORD sectorsPerCluster = 0;
 	DWORD bytesPerSector = 0;
