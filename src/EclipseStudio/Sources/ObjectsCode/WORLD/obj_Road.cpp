@@ -738,8 +738,8 @@ obj_Road::AppendRenderables( RenderArray ( & render_arrays  )[ rsCount ], const 
 void obj_Road::ReadSerializedData(pugi::xml_node& node)
 {
 	char dir[MAX_PATH], file[MAX_PATH];
-	sprintf(dir, "%s\\roads", r3dGameLevel::GetHomeDir());
-	sprintf(file, "%s\\%s.dat", dir, Name.c_str());
+	sprintf_s(dir, sizeof(dir), "%s\\roads", r3dGameLevel::GetHomeDir());
+	sprintf_s(file, sizeof(file), "%s\\%s.dat", dir, Name.c_str());
 
 	pugi::xml_node road_child = node.child( "road" ) ;
 
@@ -851,8 +851,8 @@ void obj_Road::WriteSerializedData(pugi::xml_node& node)
 	road_child.append_attribute( "draw_priority" ) = drawPriority ;
 
 	char dir[MAX_PATH], file[MAX_PATH];
-	sprintf(dir, "%s\\roads", r3dGameLevel::GetSaveDir() );
-	sprintf(file, "%s\\%s.dat", dir, Name.c_str());
+	sprintf_s(dir, sizeof(dir), "%s\\roads", r3dGameLevel::GetSaveDir() );
+	sprintf_s(file, sizeof(file), "%s\\%s.dat", dir, Name.c_str());
 
 	CreateDirectory(dir, NULL);
 	FILE* f = fopen_for_write(file, "wb");
@@ -1059,7 +1059,7 @@ void CleanOrphanedRoadFiles()
 	r3dTL::TArray<r3dString> roadFiles;
 	WIN32_FIND_DATA fd;
 	char path[MAX_PATH] = {0};
-	sprintf(path, "%s\\roads\\*.dat", r3dGameLevel::GetHomeDir());
+	sprintf_s(path, sizeof(path), "%s\\roads\\*.dat", r3dGameLevel::GetHomeDir());
 
 	HANDLE h = FindFirstFile(path, &fd);
 	if (h == INVALID_HANDLE_VALUE)
@@ -1092,7 +1092,7 @@ void CleanOrphanedRoadFiles()
 	for (uint32_t i = 0; i < roadFiles.Count(); ++i)
 	{
 		const r3dString &name = roadFiles[i];
-		sprintf(path, "%s\\roads\\%s.dat", r3dGameLevel::GetHomeDir(), name);
+		sprintf_s(path, sizeof(path), "%s\\roads\\%s.dat", r3dGameLevel::GetHomeDir(), name);
 		DeleteFile(path);
 	}
 }

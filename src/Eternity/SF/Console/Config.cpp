@@ -18,7 +18,7 @@ void ExecVarIni( const char* path )
 {
 	char command[ 1024 ];
 
-	_snprintf( command, sizeof command - 1, "exec %s", path );
+	_snprintf_s( command, sizeof(command), _TRUNCATE, "exec %s", path );
 
 	g_pCmdProc->Execute( command, CommandProcessor::eExecPrior_Immediate );
 

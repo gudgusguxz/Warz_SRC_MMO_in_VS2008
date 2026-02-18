@@ -112,7 +112,7 @@ static void onClientConnected(uint64 serverID, anyID clientID, uint64 channelID,
 
 	// validate client, nickname must be a voiceId associated with peer
 	DWORD voiceId = 0;
-	sscanf(clientName, "%u", &voiceId);
+	sscanf_s(clientName, "%u", &voiceId);
 	
 	char newNick[64] = "";
 	int peerId = -1;
@@ -123,7 +123,7 @@ static void onClientConnected(uint64 serverID, anyID clientID, uint64 channelID,
 		{
 			peer.voiceClientId = clientID;
 			peer.voicePeerId   = 0;
-			sprintf(newNick, "i%d", peerId);
+			sprintf_s(newNick, sizeof(newNick), "i%d", peerId);
 			break;
 		}
 	}
@@ -470,7 +470,7 @@ int CTeamSpeakServer::Startup()
 	
 	// generate and set server password
 	m_serverPwd = u_random(0xFFFFFFFE);
-	char pwd[32]; sprintf(pwd, "%u", m_serverPwd);
+	char pwd[32]; sprintf_s(pwd, sizeof(pwd), "%u", m_serverPwd);
 	ts3server_setVirtualServerVariableAsString(serverID, VIRTUALSERVER_PASSWORD, pwd);
 
 	// Flush above two changes to server
@@ -537,10 +537,10 @@ uint64 CTeamSpeakServer::CreateVirtualServer(const char* name, int port, int max
 	uint64 serverID;
 
 	/* Assemble filename: keypair_<port>.txt */
-	strcpy(filename, "ts_keypair_");
-	sprintf(port_str, "%d", port);
-	strcat(filename, port_str);
-	strcat(filename, ".txt");
+	strcpy_s(filename, sizeof(filename), "ts_keypair_");
+	sprintf_s(port_str, sizeof(port_str), "%d", port);
+	strcat_s(filename, sizeof(filename), port_str);
+	strcat_s(filename, sizeof(filename), ".txt");
 
 	/* Try reading keyPair from file */
 	if(readKeyPairFromFile(filename, buffer) == 0) {

@@ -135,8 +135,8 @@ void CMasterUserServer::PrintStats()
 
   FILE* f = fopen("MasterServer_ccu.txt", "wt");
 
-  char buf[1024];    
-  sprintf(buf, "MSINFO: %d (%d max) peers, %d CCU in %d games, PeakCCU: %d, MaxCCU:%d\n",
+  char buf[1024];
+  sprintf_s(buf, sizeof(buf), "MSINFO: %d (%d max) peers, %d CCU in %d games, PeakCCU: %d, MaxCCU:%d\n",
     numConnectedPeers_,
     maxConnectedPeers_,
     numCCU,
@@ -151,11 +151,11 @@ void CMasterUserServer::PrintStats()
   for(int i=0; i<1; i++)
   {
     const static char* regName[1] = { "TH"/*, "EU", "RU", "SA"*/ };
-    sprintf(buf, " [%s] Hosted:%d/%d\tRented:%d/%d\tCapacity:%d\tBalance:%+d\n",
+    sprintf_s(buf, sizeof(buf), " [%s] Hosted:%d/%d\tRented:%d/%d\tCapacity:%d\tBalance:%+d\n",
       regName[i],
       numGamesH[i], gServerConfig->numGamesHosted[i],
       gServerConfig->rentGames_.size(), gServerConfig->numGamesRented[i],
-      maxGames[i], 
+      maxGames[i],
       maxGames[i] - (gServerConfig->numGamesHosted[i] + gServerConfig->numGamesRented[i])
     );
     if(bToLog) r3dOutToLog(buf);
@@ -166,10 +166,10 @@ void CMasterUserServer::PrintStats()
   for(int i=0; i<1; i++)
   {
     const static char* regName[1] = { "TH"/*, "EU", "RU", "SA"*/ };
-    sprintf(buf, " [%s] Strongholds\tRented:%d/%d\tCapacity:%d\tBalance:%+d\n",
+    sprintf_s(buf, sizeof(buf), " [%s] Strongholds\tRented:%d/%d\tCapacity:%d\tBalance:%+d\n",
       regName[i],
       numHoldsR[i], gServerConfig->numStrongholdsRented[i],
-      maxHolds[i], 
+      maxHolds[i],
       maxHolds[i] - (gServerConfig->numStrongholdsRented[i])
     );
     if(bToLog) r3dOutToLog(buf);
@@ -177,10 +177,10 @@ void CMasterUserServer::PrintStats()
   }
 
   // list of supervisors
-  sprintf(buf, "Supervisors: %d%s, Games:%d|%d\n", 
+  sprintf_s(buf, sizeof(buf), "Supervisors: %d%s, Games:%d|%d\n",
     gMasterGameServer.supers_.size(),
     gMasterGameServer.supers_.size() < gServerConfig->minSupersToStartGame_ ? "(need more to start)" : "",
-    gMasterGameServer.games_.size(), 
+    gMasterGameServer.games_.size(),
     gMasterGameServer.gamesByGameServerId_.size());
   r3dOutToLog(buf);
   if(f) fprintf(f, buf);
@@ -198,7 +198,7 @@ void CMasterUserServer::PrintStats()
   const char* regionsName[1] = {"TH"/*, "EU", "RU", "SA"*/};
   for(int curRegion=0; curRegion<1; ++curRegion)
   {
-	  sprintf(buf, "REGION: %s\n", regionsName[curRegion]);
+	  sprintf_s(buf, sizeof(buf), "REGION: %s\n", regionsName[curRegion]);
 	  if(bToLog) r3dOutToLog(buf);
 	  if(f) fprintf(f, buf);
 
@@ -207,7 +207,7 @@ void CMasterUserServer::PrintStats()
 		  const CServerS* super = supers[i];
 		  if(super->region_ == regionsToLog[curRegion])
 		  {
-			  sprintf(buf, "%s(%s), games:%d/%d, players:%d/%d %s %s\n", 
+			  sprintf_s(buf, sizeof(buf), "%s(%s), games:%d/%d, players:%d/%d %s %s\n",
 				  super->GetName(),
 				  inet_ntoa(*(in_addr*)&super->ip_),
 				  super->GetExpectedGames(), super->maxGames_,
@@ -914,7 +914,7 @@ void CMasterUserServer::OnGBPKT_C2M_MyServerSetParams(DWORD peerId, const GBPKT_
   }
     
   // set password in game info
-  strcpy(rg->pwd, n.pwd);
+  strcpy_s(rg->pwd, sizeof(rg->pwd), n.pwd);
   rg->ginfo.flags = n.flags;
   rg->ginfo.gameTimeLimit = n.gameTimeLimit;
 

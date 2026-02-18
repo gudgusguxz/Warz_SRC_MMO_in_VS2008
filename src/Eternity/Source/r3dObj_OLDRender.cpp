@@ -141,7 +141,7 @@ int r3dMesh::LoadLightmapUV(const char* dirname)
  LightmapTex = NULL;
 
  char Str1[512];
- sprintf(Str1,"%s\\%s.sco_uv2", dirname, Name);
+ sprintf_s(Str1, sizeof(Str1), "%s\\%s.sco_uv2", dirname, Name);
  if(r3d_access(Str1, 0) == 0) 
  {
    r3dFile *f = r3d_open(Str1, "rt");
@@ -154,7 +154,7 @@ int r3dMesh::LoadLightmapUV(const char* dirname)
    float u[3], v[3];
 
     fgets(Str1, 500, f);
-    sscanf(Str1, "%f %f %f %f %f %f", &u[0], &v[0], &u[1], &v[1], &u[2], &v[2]);
+    sscanf_s(Str1, "%f %f %f %f %f %f", &u[0], &v[0], &u[1], &v[1], &u[2], &v[2]);
     UV[i*6+0] = u[0];
     UV[i*6+1] = v[0];
     UV[i*6+2] = u[1];
@@ -166,8 +166,8 @@ int r3dMesh::LoadLightmapUV(const char* dirname)
 
   char TLN[4][256];
 
-  sprintf(TLN[0],"%s\\%s_LM.dds", dirname, Name);
-  sprintf(TLN[1],"%s\\%s_LM.tga", dirname, Name);
+  sprintf_s(TLN[0], sizeof(TLN[0]), "%s\\%s_LM.dds", dirname, Name);
+  sprintf_s(TLN[1], sizeof(TLN[1]), "%s\\%s_LM.tga", dirname, Name);
 
   for (int i=0;i<2;i++)
   {
@@ -181,8 +181,8 @@ int r3dMesh::LoadLightmapUV(const char* dirname)
    }
   }
 
-  sprintf(TLN[0],"%s\\%s_AO.dds", dirname, Name);
-  sprintf(TLN[1],"%s\\%s_AO.bmp", dirname, Name);
+  sprintf_s(TLN[0], sizeof(TLN[0]), "%s\\%s_AO.dds", dirname, Name);
+  sprintf_s(TLN[1], sizeof(TLN[1]), "%s\\%s_AO.bmp", dirname, Name);
 
   for (int i=0;i<2;i++)
   {
@@ -223,7 +223,7 @@ int r3dMesh::LoadLightmapUV(const char* dirname, const char* ScoName, const char
  LightmapTex = NULL;
 
  char Str1[512];
- sprintf(Str1,"%s\\%s", dirname, ScoName);
+ sprintf_s(Str1, sizeof(Str1), "%s\\%s", dirname, ScoName);
 
  r3dFile *f = NULL;
  
@@ -236,7 +236,7 @@ int r3dMesh::LoadLightmapUV(const char* dirname, const char* ScoName, const char
   LO = new r3dMesh;
   LO->LoadAscii(Str1);
 
-  sprintf(Str1,"%s\\%s", dirname, TexName);
+  sprintf_s(Str1, sizeof(Str1), "%s\\%s", dirname, TexName);
   LightmapTex = r3dRenderer->LoadTexture(Str1, D3DFMT_A8R8G8B8, 0);
 
   for (int i=0;i<NumFaces;i++)

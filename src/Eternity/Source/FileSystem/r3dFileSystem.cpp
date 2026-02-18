@@ -73,7 +73,7 @@ const char* r3dFS_FileList::GetBuildDate(DWORD buildVersion, char* buf)
 	  break;
   }
   
-  sprintf(buf, "%s %d, %04d %d:%02d", monthName, day, year, hour, min);
+  sprintf_s(buf, 512, "%s %d, %04d %d:%02d", monthName, day, year, hour, min); // TODO: verify buffer size
   return buf;
 }
 
@@ -305,7 +305,7 @@ void r3dFileSystem::GetVolumeName(char* fname, int idx) const
 {
 	r3dCSHolderWithDeviceQueue csHolder(g_FileSysCritSection);
   r3d_assert(baseName_[0] != 0);
-  sprintf(fname, "%s_%02d.bin", baseName_, idx);
+  sprintf_s(fname, 512, "%s_%02d.bin", baseName_, idx); // TODO: verify buffer size
 }
 
 
@@ -585,7 +585,7 @@ bool r3dFileSystem::ExtractFile(const r3dFS_FileEntry* fe, const char* outDir)
   GetFileData(fe, &data, &size);
 
   char fname[MAX_PATH];
-  sprintf(fname, "%s%s", outDir, fe->name);
+  sprintf_s(fname, sizeof(fname), "%s%s", outDir, fe->name);
   ::MakeSureDirectoryPathExists(fname);
 
   FILE* f = fopen(fname, "wb");
@@ -631,7 +631,7 @@ DWORD WINAPI CompressFileInThread(LPVOID param)
 
         OutputDebugStringA(fe.name);
 
-        int cmethod = r3dFSCompress::COMPRESS_INFLATE; //¶éÒãªé µÑÇ COMPRESS ¢Í§ ZSTD ãËéá¡éà»ç¹ ªÍ§ ZSTD
+        int cmethod = r3dFSCompress::COMPRESS_INFLATE; //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ COMPRESS ï¿½Í§ ZSTD ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í§ ZSTD
 
         // Hack: Uncompressed Terrain3 files
         if (strstr(fe.name, "\\Terrain3\\") != NULL) {

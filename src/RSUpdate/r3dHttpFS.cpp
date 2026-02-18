@@ -24,10 +24,10 @@ bool r3dHttpFS::OpenFromWeb(const char* baseUrl, updProgress* upd)
     r3dOutToLog("OpenFromWeb\n");
 
   r3d_assert(baseUrl_[0] == 0);
-  strcpy(baseUrl_, baseUrl);
+  strcpy_s(baseUrl_, sizeof(baseUrl_), baseUrl);
 
   char url[512];
-  sprintf(url, "%s_%02d.bin", baseUrl_, 0);
+  sprintf_s(url, sizeof(url), "%s_%02d.bin", baseUrl_, 0);
 
   CkByteData data;
   HttpDownload http(upd);
@@ -40,7 +40,7 @@ bool r3dHttpFS::OpenFromWeb(const char* baseUrl, updProgress* upd)
 
   // fill basic volume urls
   for(int i=0; i<r3dFileSystem::MAX_VOLUMES; i++)
-    sprintf(volumeUrl_[i], "%s_%02d.bin", baseUrl_, i + 1);
+    sprintf_s(volumeUrl_[i], sizeof(volumeUrl_[i]), "%s_%02d.bin", baseUrl_, i + 1);
     
   // detect max volume file
   int maxVolume = 0;
@@ -63,7 +63,7 @@ bool r3dHttpFS::OpenFromWeb(const char* baseUrl, updProgress* upd)
     const char* reloc_url = http2.RelocatedUrl();
     if(*reloc_url) {
       //r3dOutToLog("volume%d changed to %s\n", i, reloc_url);
-      strcpy(volumeUrl_[i], reloc_url);
+      strcpy_s(volumeUrl_[i], sizeof(volumeUrl_[i]), reloc_url);
     }
   }
   r3dOutToLog("CheckRedirect - finished\n");*/

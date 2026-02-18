@@ -494,13 +494,13 @@ public:
 
 	String_T &				FromInt				( int nVal )
 	{
-		sprintf( sData, "%d", nVal );
+		sprintf_s( sData, sizeof(sData), "%d", nVal );
 		return *this;
 	}
 
 	String_T &				FromFloat			( float fVal )
 	{
-		sprintf( sData, "%f", fVal );
+		sprintf_s( sData, sizeof(sData), "%f", fVal );
 		return *this;
 	}
 
@@ -543,7 +543,7 @@ inline NewString( const char * sFmt, ... )
 
 	va_list ap;
 	va_start( ap, sFmt );
-	_vsnprintf( sRes.GetDataPtr(), sRes.GetMaxLength(), sFmt, ap );
+	_vsnprintf_s( sRes.GetDataPtr(), sRes.GetMaxLength(), _TRUNCATE, sFmt, ap );
 	va_end( ap );
 
 	return sRes;

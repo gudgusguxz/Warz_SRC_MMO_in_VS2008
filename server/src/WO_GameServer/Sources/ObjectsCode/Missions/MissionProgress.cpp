@@ -199,9 +199,9 @@ void MissionsProgress::ParseMissionProgress( pugi::xml_node& xmlItem )
 				for(int i = 0; i < MaxArrSize; ++i)
 				{
 					char val[ 4 ] = { 0, 0, 0, 0 };
-					sprintf( val, "a%d", i );
+					sprintf_s( val, sizeof(val), "a%d", i );
 					Accepted[ i ]	= xmlMissionData.attribute(val).as_uint();
-					sprintf( val, "c%d", i );
+					sprintf_s( val, sizeof(val), "c%d", i );
 					Completed[ i ]	= xmlMissionData.attribute(val).as_uint();
 				}
 			}
@@ -223,10 +223,10 @@ void MissionsProgress::SaveMissionProgress( pugi::xml_node& xmlItem ) const
 	for(int i = 0; i < MaxArrSize; ++i)
 	{
 		char val[ 4 ] = { 0, 0, 0, 0 };
-		sprintf( val, "a%d", i );
+		sprintf_s( val, sizeof(val), "a%d", i );
 		if( Accepted[ i ] > 0 )
 			xmlMissionData.append_attribute(val)	= Accepted[ i ];
-		sprintf( val, "c%d", i );
+		sprintf_s( val, sizeof(val), "c%d", i );
 		if( Completed[ i ] > 0 )
 			xmlMissionData.append_attribute(val)	= Completed[ i ];
 	}

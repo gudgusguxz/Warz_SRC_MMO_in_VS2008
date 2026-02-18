@@ -97,7 +97,7 @@ JobChief::Init()
 
 	for( uint32_t i = 0, e = mThreadHandles.Count(); i < e; i ++ )
 	{
-		_snprintf( EventName, sizeof EventName - 1, "WarInc_Start_Multithreading%u,%u", procID, i );
+		_snprintf_s( EventName, sizeof(EventName), _TRUNCATE, "WarInc_Start_Multithreading%u,%u", procID, i );
 
 		ThreadData& td = gThreadDataVec	[ i ];
 
@@ -106,7 +106,7 @@ JobChief::Init()
 		td.StartEvent				= CreateEvent( NULL, FALSE, FALSE, EventName ) ;
 		td.Idle						= 1 ;
 		
-		_snprintf( EventName, sizeof EventName - 1, "WarInc_Idle_Event%u,%u", procID, i );
+		_snprintf_s( EventName, sizeof(EventName), _TRUNCATE, "WarInc_Idle_Event%u,%u", procID, i );
 		td.IdleEvent				= CreateEvent( NULL, TRUE, TRUE, EventName ) ;
 		gIdleHandles		[ i ]	= td.IdleEvent;
 

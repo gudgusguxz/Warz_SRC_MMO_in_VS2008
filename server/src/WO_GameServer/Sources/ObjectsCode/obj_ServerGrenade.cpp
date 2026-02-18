@@ -288,7 +288,7 @@ void obj_ServerGrenade::OnSpawn()
 		}
 
 		char name[28];
-		sprintf(name, "Zombie_%d_%p", spawnObject->numSpawnedZombies++, this);
+		sprintf_s(name, sizeof(name), "Zombie_%d_%p", spawnObject->numSpawnedZombies++, this);
 
 		obj_Zombie* z = (obj_Zombie*)srv_CreateGameObject("obj_Zombie", name, position);
 		z->SetNetworkID(gServerLogic.GetFreeNetId());

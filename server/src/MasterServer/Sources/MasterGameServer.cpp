@@ -411,7 +411,7 @@ bool CMasterGameServer::DoValidatePeer(DWORD peerId, const r3dNetPacketHeader* P
     DWORD ip = net_->GetPeerIp(peerId);
     blockedIps_.push_back(ip);
     char buf[128];
-    sprintf(buf, "!!!! wrong validate packet %s %d%d%d%d", inet_ntoa(*(in_addr*)&ip), sizeof(n) != PacketSize, n.version != SBNET_VERSION, n.key1 != SBNET_KEY1, n.key2 != SBNET_KEY2);
+    sprintf_s(buf, sizeof(buf), "!!!! wrong validate packet %s %d%d%d%d", inet_ntoa(*(in_addr*)&ip), sizeof(n) != PacketSize, n.version != SBNET_VERSION, n.key1 != SBNET_KEY1, n.key2 != SBNET_KEY2);
     
     DisconnectCheatPeer(peerId, buf);
     return false;
@@ -912,7 +912,7 @@ bool CMasterGameServer::CreateNewGame(const CMSNewGameData& ngd, DWORD* out_ip, 
   ginfo.ToString(strginfo);
 
   char cmd[512];
-  sprintf(cmd, "\"%u %u %u\" \"%s\"", n.gameId, n.port, ngd.CustomerID, strginfo);
+  sprintf_s(cmd, sizeof(cmd), "\"%u %u %u\" \"%s\"", n.gameId, n.port, ngd.CustomerID, strginfo);
   const char* exe = "WZ_GameServer.exe";
   int err;
   if(err = (int)ShellExecute(NULL, "open", exe, cmd, "", SW_SHOW) < 32) {

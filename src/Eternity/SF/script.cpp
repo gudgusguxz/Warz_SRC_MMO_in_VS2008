@@ -129,7 +129,7 @@ void Script_c::OpenMemoryLocation( const char * pData, int iSize )
 	if ( ! m_pStoredFile )
 	{
 //		sprintf( m_szFileName, "Memory mapped: 0x%08X, size: %d", (size_t)pData, iSize );
-		sprintf( m_szFileName, "Memory mapped: %p, size: %d", pData, iSize ); // Intel Compiler version
+		sprintf_s( m_szFileName, sizeof(m_szFileName), "Memory mapped: %p, size: %d", pData, iSize ); // Intel Compiler version
 	}
 }
 

@@ -61,8 +61,8 @@ AUTOREGISTER_CLASS(obj_Zombie);
 	float		_zai_SafeSuicideDist				= 150.0f;	// distance for players check for stucked (ourside of spawn area) zombies
 	float		_zai_PlayerSpawnProtect				= 35.0f;	// radius where zombie won't be spawned because of player presense
 	float		_zai_MaxSpawnDelay					= 9999.0f;
-	float		_zai_AttackDamage					= 0.0f; //´ÒàÁ¨«ÍººÕé
-	float		_zai_SuperZombieSuperAttackDamage	= 0.0f;	//´ÒàÁ¨ºÍÊ // 1.25 * _zai_AttackDamage
+	float		_zai_AttackDamage					= 0.0f; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½
+	float		_zai_SuperZombieSuperAttackDamage	= 0.0f;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // 1.25 * _zai_AttackDamage
 	int		_zai_DebugAI							= 0;
 #endif
 	float		_zai_MaxPatrolDistance				= 30.0f;	// distance to search for navpoints when switchint to patrol
@@ -2322,7 +2322,7 @@ void obj_Zombie::DebugSingleZombie()
 	static KyUInt32 debugVisualId = 0;
 	FILE* f = fopen("zdebug.txt", "rt");
 	if(!f) return;
-	fscanf(f, "%d", &debugVisualId);
+	fscanf_s(f, "%d", &debugVisualId);
 	fclose(f);
 	
 	if(navAgent->m_navBot->GetVisualDebugId() != debugVisualId)

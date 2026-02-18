@@ -135,11 +135,11 @@ int main(int argc, char* argv[])
     time_t t1;
     time(&t1);
     char fname[MAX_PATH];
-    sprintf(fname, "logms\\MS_%x.txt", (DWORD)t1);
+    sprintf_s(fname, sizeof(fname), "logms\\MS_%x.txt", (DWORD)t1);
     extern void r3dChangeLogFile(const char* fname);
     r3dChangeLogFile(fname);
 
-    sprintf(fname, "logms\\MS_%x.dmp", (DWORD)t1);
+    sprintf_s(fname, sizeof(fname), "logms\\MS_%x.dmp", (DWORD)t1);
     SrvSetCrashHandler(fname);
   }
   

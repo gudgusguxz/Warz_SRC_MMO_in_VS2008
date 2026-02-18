@@ -423,7 +423,7 @@ extern bool r3dArtBug(const char* Str, ...)
   char buf2[ 8192 ] ;
   if( gs_Art_Bug_Comment.Length() > 0 )
   {
-    sprintf( buf2, "%s (%s)\n", buf, gs_Art_Bug_Comment.c_str() ) ;
+    sprintf_s( buf2, sizeof(buf2), "%s (%s)\n", buf, gs_Art_Bug_Comment.c_str() ) ;
     gs_Art_Bugs.PushBack( buf2 ) ;
   }
   else
@@ -577,10 +577,10 @@ int r3dToggleScreenShot()
 	char			FileName[128];
 #ifndef FINAL_BUILD
 	_mkdir("ScreenShots");
-	sprintf(FileName, "ScreenShots\\Screen_%02d%02d%04d_%02d%02d%02d.tga", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
+	sprintf_s(FileName, sizeof(FileName), "ScreenShots\\Screen_%02d%02d%04d_%02d%02d%02d.tga", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
 #else
 	_mkdir("ScreenShots");
-	sprintf(FileName, "ScreenShots\\Screen_%02d%02d%04d_%02d%02d%02d.jpg", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
+	sprintf_s(FileName, sizeof(FileName), "ScreenShots\\Screen_%02d%02d%04d_%02d%02d%02d.jpg", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
 #endif
 
 	r_screenshot_name->SetString( FileName );
@@ -589,7 +589,7 @@ int r3dToggleScreenShot()
 	if( r_allow_depth_screenshot->GetInt() )
 	{
 		char DFileName[128];
-		sprintf(DFileName, "Screen_%02d%02d%04d_%02d%02d%02d_depth.tga", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
+		sprintf_s(DFileName, sizeof(DFileName), "Screen_%02d%02d%04d_%02d%02d%02d_depth.tga", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
 
 		r_depth_screenshot_name->SetString( DFileName );
 		r_do_depth_screenshot->SetInt( 1 );

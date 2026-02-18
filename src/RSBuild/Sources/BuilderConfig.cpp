@@ -48,7 +48,7 @@ bool BuilderConfig::ParseNode(const pugi::xml_node& node)
   {
     const char* dir = node.attribute("dir").value();
     if(*dir == 0) r3dError("%s: no dir\n", dir);
-    strcpy(bld_.outputDir_, dir);
+    strcpy_s(bld_.outputDir_, sizeof(bld_.outputDir_), dir);
     const char* base = node.attribute("base").value();
     if(*base) r3dscpy(bld_.outputBaseName_, base);
   } 
@@ -56,7 +56,7 @@ bool BuilderConfig::ParseNode(const pugi::xml_node& node)
   {
     const char* url = node.attribute("url").value();
     if(*url == 0) r3dError("%s: no url\n", url);
-    strcpy(bld_.webCDNDir_, url);
+    strcpy_s(bld_.webCDNDir_, sizeof(bld_.webCDNDir_), url);
   } 
   else if(strcmp(name, "exclude") == 0) 
   {

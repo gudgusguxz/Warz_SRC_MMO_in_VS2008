@@ -275,9 +275,9 @@ public:
 		buffer[ 0 ] = '\0';
 		for ( int i = pos; i < ( int ) evVars.Count(); i++ )
 		{
-			strcat( buffer, evVars[ i ].GetString() );
+			strcat_s( buffer, size, evVars[ i ].GetString() );
 			if ( i < ( int ) evVars.Count() - 1 )
-				strcat( buffer, " " );
+				strcat_s( buffer, size, " " );
 		}
 		return;
 	}

@@ -115,20 +115,20 @@ WeaponConfig* ClientWeaponArmory::loadWeapon(pugi::xml_node& xmlWeapon)
 			char tmpStr[512];
 			if(weapon->m_fireModeAvailable & WPN_FRM_SINGLE)
 			{
-				sprintf(tmpStr, "%s_single", xmlWeapon.child("Sound").attribute("shoot").value());
+				sprintf_s(tmpStr, sizeof(tmpStr), "%s_single", xmlWeapon.child("Sound").attribute("shoot").value());
 				weapon->m_sndFireID_single = SoundSys.GetEventIDByPath(tmpStr);
 				if(weapon->m_sndFireID_single == -1)
 					r3dOutToLog("WEAPON ERROR: %s trying to load non existent sound event %s\n", weapon->m_StoreName, tmpStr);
-				sprintf(tmpStr, "%s_single_Player", xmlWeapon.child("Sound").attribute("shoot").value());
+				sprintf_s(tmpStr, sizeof(tmpStr), "%s_single_Player", xmlWeapon.child("Sound").attribute("shoot").value());
 				weapon->m_sndFireID_single_player = SoundSys.GetEventIDByPath(tmpStr);
 			}
 			if(weapon->m_fireModeAvailable & (WPN_FRM_TRIPLE | WPN_FRM_AUTO))
 			{
-				sprintf(tmpStr, "%s_auto", xmlWeapon.child("Sound").attribute("shoot").value());
+				sprintf_s(tmpStr, sizeof(tmpStr), "%s_auto", xmlWeapon.child("Sound").attribute("shoot").value());
 				weapon->m_sndFireID_auto = SoundSys.GetEventIDByPath(tmpStr);
 				if(weapon->m_sndFireID_auto == -1)
 					r3dOutToLog("WEAPON ERROR: %s trying to load non existent sound event %s\n", weapon->m_StoreName, tmpStr);
-				sprintf(tmpStr, "%s_auto_Player", xmlWeapon.child("Sound").attribute("shoot").value());
+				sprintf_s(tmpStr, sizeof(tmpStr), "%s_auto_Player", xmlWeapon.child("Sound").attribute("shoot").value());
 				weapon->m_sndFireID_auto_player = SoundSys.GetEventIDByPath(tmpStr);
 			}
 		}
@@ -144,13 +144,13 @@ WeaponAttachmentConfig* ClientWeaponArmory::loadWeaponAttachment(pugi::xml_node&
 		if(strlen(xmlWeaponAttachment.child("Model").attribute("FireSound").value())>3)
 		{
 			char tmpStr[512];
-			sprintf(tmpStr, "%s_single", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
+			sprintf_s(tmpStr, sizeof(tmpStr), "%s_single", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
 			attm->m_sndFireID_single = SoundSys.GetEventIDByPath(tmpStr);
-			sprintf(tmpStr, "%s_auto", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
+			sprintf_s(tmpStr, sizeof(tmpStr), "%s_auto", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
 			attm->m_sndFireID_auto = SoundSys.GetEventIDByPath(tmpStr);
-			sprintf(tmpStr, "%s_single_Player", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
+			sprintf_s(tmpStr, sizeof(tmpStr), "%s_single_Player", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
 			attm->m_sndFireID_single_player = SoundSys.GetEventIDByPath(tmpStr);
-			sprintf(tmpStr, "%s_auto_Player", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
+			sprintf_s(tmpStr, sizeof(tmpStr), "%s_auto_Player", xmlWeaponAttachment.child("Model").attribute("FireSound").value());
 			attm->m_sndFireID_auto_player = SoundSys.GetEventIDByPath(tmpStr);
 		}
 	}

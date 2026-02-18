@@ -383,7 +383,7 @@ void r3dFinishBackGroundTasksWithProgressReport()
 			r3dRenderer->SetPixelShader();
 
 			char msg[ 512 ];
-			sprintf( msg, "Waiting for background tasks (%d)", g_pBackgroundTaskDispatcher->GetTaskCount() );
+			sprintf_s( msg, sizeof(msg), "Waiting for background tasks (%d)", g_pBackgroundTaskDispatcher->GetTaskCount() );
 
 			MenuFont_Editor->DrawScaledText( 128.f, 64.f, 2, 2, 1, r3dColor::white, msg, 0 );
 

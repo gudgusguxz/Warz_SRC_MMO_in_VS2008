@@ -1081,7 +1081,7 @@ bool obj_Mech::DrawPossibleElementsChoose(const char *rootDir, const char *ext, 
 
 		if (imgui_DrawList(SliderX, SliderY, 360, 200, globalFileObjectsTree.folders, &CatOffset, &idx))
 		{
-			sprintf(FolderName, "%s", globalFileObjectsTree.folders.at(idx).c_str());
+			strcpy_s(FolderName, sizeof(FolderName), globalFileObjectsTree.folders.at(idx).c_str());
 		}
 		SliderY += 210;
 	}
@@ -1097,7 +1097,7 @@ bool obj_Mech::DrawPossibleElementsChoose(const char *rootDir, const char *ext, 
 		}
 		if (idx == -1) return false;
 
-		sprintf(FolderName, "%s", forceFolder);
+		strcpy_s(FolderName, sizeof(FolderName), forceFolder);
 
 	}
 
@@ -1111,7 +1111,7 @@ bool obj_Mech::DrawPossibleElementsChoose(const char *rootDir, const char *ext, 
 			if(imgui_Button(SliderX, SliderY, DEFAULT_CONTROLS_WIDTH / 2, DEFAULT_CONTROLS_HEIGHT, "Select"))
 			{
 				r3dSTLString s = r3dSTLString(rootDir) + "%s";
-				sprintf (Str, s.c_str(), FolderName);
+				sprintf_s (Str, sizeof(Str), s.c_str(), FolderName);
 				outPath = Str;
 				rv = false;
 			}
@@ -1120,12 +1120,12 @@ bool obj_Mech::DrawPossibleElementsChoose(const char *rootDir, const char *ext, 
 		{
 			if (imgui_DrawList(SliderX, SliderY, 360, 200, globalFileObjectsTree.files[idx] , &CatOffset2, &idx1))
 			{
-				sprintf (FileName,"%s", globalFileObjectsTree.files[idx][idx1].c_str());
+				strcpy_s (FileName, sizeof(FileName), globalFileObjectsTree.files[idx][idx1].c_str());
 			}
 			SliderY += 205;
 
 			r3dSTLString s = r3dSTLString(rootDir) + "%s%s%s";
-			sprintf (Str, s.c_str(), FolderName, intermediateFolder, FileName);
+			sprintf_s (Str, sizeof(Str), s.c_str(), FolderName, intermediateFolder, FileName);
 
 			if (idx1 >= 0)
 			{
@@ -1882,7 +1882,7 @@ void obj_Mech::ReadOwnSerializedData(pugi::xml_node& node)
 	for (int i = MSLOT_Weapon1, wpnIdx = 0; i < MSLOT_Max; ++i, ++wpnIdx) 
 	{
 		char name[16];
-		sprintf(name, "slot%i", i);
+		sprintf_s(name, sizeof(name), "slot%i", i);
 		
 		pugi::xml_node slotNode = mechNode.child(name);
 		if (!slotNode)
@@ -2011,7 +2011,7 @@ void obj_Mech::WriteOwnSerializedData(pugi::xml_node& node)
 			continue;
 
 		char name[16];
-		sprintf(name, "slot%i", i);
+		sprintf_s(name, sizeof(name), "slot%i", i);
 
 		pugi::xml_node slotNode = mechNode.append_child();
 		slotNode.set_name(name);
@@ -2147,7 +2147,7 @@ void obj_Mech::LoadWeaponSlot(EMechSlot wpnSlot, const char *path)
 		if (len > 4)
 		{
 			skelName[len - 4] = 0;
-			strncat(skelName, ".skl", 4);
+			strncat_s(skelName, len + 1, ".skl", 4);
 		}
 
 		if (r3d_access(skelName, 0) == 0)

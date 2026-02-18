@@ -20,7 +20,7 @@ static unsigned int __stdcall PostHWInfoThread(void* in_data)
 	req.AddSessionInfo(hw.CustomerID, hw.SessionID);
 
 	char buf[1024];
-	sprintf(buf, "%I64d", hw.uniqueId);
+	sprintf_s(buf, sizeof(buf), "%I64d", hw.uniqueId);
 	req.AddParam("r00", buf);
 	req.AddParam("r10", hw.CPUString);
 	req.AddParam("r11", hw.CPUBrandString);

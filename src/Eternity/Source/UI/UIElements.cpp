@@ -44,11 +44,11 @@ void UIElements::AddData1(r3dTexture* baseTex, const char** data, int size)
     name = strtok(buf, ";");
 
     token = strtok(NULL, ";");
-    sscanf(token, "%dx%d", &gx, &gy);
+    sscanf_s(token, "%dx%d", &gx, &gy);
     token = strtok(NULL, ";");
-    sscanf(token, "%d,%d", &sy, &sx);	// note: sx/sy was swapped there.
+    sscanf_s(token, "%d,%d", &sy, &sx);	// note: sx/sy was swapped there.
     token = strtok(NULL, ";");
-    sscanf(token, "%dx%d", &ssx, &ssy);
+    sscanf_s(token, "%dx%d", &ssx, &ssy);
     
     UIElm& e = elmData[elmCurSize++]; 
     e.name = name;
@@ -73,7 +73,7 @@ void UIElements::AddData2(r3dTexture* baseTex, const char** data, int size)
   for(int i=0; i<size; i++) {
 
     //"<elm name=mainpane id=0 x=0 y=577 w=1024 h=191 />",
-    int scanned = sscanf(data[i], "<elm name=%s id=0 x=%d y=%d w=%d h=%d", name, &x, &y, &w, &h);
+    int scanned = sscanf_s(data[i], "<elm name=%s id=0 x=%d y=%d w=%d h=%d", name, (unsigned)sizeof(name), &x, &y, &w, &h);
     assert(scanned == 5);
 
     UIElm& e = elmData[elmCurSize++]; 
@@ -121,15 +121,15 @@ void uiDrawFrame(UIElements* ui_elm, float in_x, float in_y, float in_w, float i
 
   // 9 elements (index as number in numeric keyboard layout)
   char elms[10][256];
-  sprintf(elms[7], "%s UL", base);
-  sprintf(elms[8], "%s Top", base);
-  sprintf(elms[9], "%s UR", base);
-  sprintf(elms[4], "%s Left", base);
-  sprintf(elms[5], "%s Center", base);
-  sprintf(elms[6], "%s Right", base);
-  sprintf(elms[1], "%s BL", base);
-  sprintf(elms[2], "%s Bottom", base);
-  sprintf(elms[3], "%s BR", base);
+  sprintf_s(elms[7], sizeof(elms[7]), "%s UL", base);
+  sprintf_s(elms[8], sizeof(elms[8]), "%s Top", base);
+  sprintf_s(elms[9], sizeof(elms[9]), "%s UR", base);
+  sprintf_s(elms[4], sizeof(elms[4]), "%s Left", base);
+  sprintf_s(elms[5], sizeof(elms[5]), "%s Center", base);
+  sprintf_s(elms[6], sizeof(elms[6]), "%s Right", base);
+  sprintf_s(elms[1], sizeof(elms[1]), "%s BL", base);
+  sprintf_s(elms[2], sizeof(elms[2]), "%s Bottom", base);
+  sprintf_s(elms[3], sizeof(elms[3]), "%s BR", base);
   
   const UIElm* sq[10];
   for(int i=1; i<10; i++) {
@@ -179,7 +179,7 @@ void uiDrawButton(UIElements* ui_elm, float x, float y, const char* btnname, boo
 
   if(selected) {
     char name[256];
-    sprintf(name, "HL_%s", btnname);
+    sprintf_s(name, sizeof(name), "HL_%s", btnname);
     ui_elm->Draw(name, x, y, sel_col);
     
     return;

@@ -25,7 +25,7 @@ CFileData::CFileData(const char* in_fname, bool compress)
 	size     = 0;
 	
 	char fullfname[MAX_PATH];
-	sprintf(fullfname, "logss\\%s", in_fname);
+	sprintf_s(fullfname, sizeof(fullfname), "logss\\%s", in_fname);
 	if(!data.loadFile(fullfname)) {
 		r3dOutToLog("!!! can't open file %s\n", fullfname);
 		return;
@@ -56,7 +56,7 @@ void CFileData::DeleteFile()
 		return;
 		
 	char fullfname[MAX_PATH];
-	sprintf(fullfname, "logss\\%s", fname);
+	sprintf_s(fullfname, sizeof(fullfname), "logss\\%s", fname);
 	
 	::DeleteFile(fullfname);
 }
@@ -158,7 +158,7 @@ int CLogUploader::UploadDataToServer(CFileData& logdata, CFileData& dmpdata, CFi
 	
 	CkHttpRequest req;
 	char fullUrl[512];
-	sprintf(fullUrl, "%s%s", gDomainBaseUrl, "api_SrvUploadLogFile.aspx");
+	sprintf_s(fullUrl, sizeof(fullUrl), "%s%s", gDomainBaseUrl, "api_SrvUploadLogFile.aspx");
 
 	req.UseUpload();
 	req.put_Path(fullUrl);
@@ -168,21 +168,21 @@ int CLogUploader::UploadDataToServer(CFileData& logdata, CFileData& dmpdata, CFi
 	if(logdata.IsValid())
 	{
 		req.AddBytesForUpload("logFile", logdata.fname, logdata.data);
-		sprintf(strSize, "%d", logdata.size);
+		sprintf_s(strSize, sizeof(strSize), "%d", logdata.size);
 		req.AddParam("logSize", strSize);
 	}
 
 	if(dmpdata.IsValid())
 	{
 		req.AddBytesForUpload("dmpFile", dmpdata.fname, dmpdata.data);
-		sprintf(strSize, "%d", dmpdata.size);
+		sprintf_s(strSize, sizeof(strSize), "%d", dmpdata.size);
 		req.AddParam("dmpSize", strSize);
 	}
 
 	if(jpgdata.IsValid())
 	{
 		req.AddBytesForUpload("jpgFile", jpgdata.fname, jpgdata.data);
-		sprintf(strSize, "%d", jpgdata.size);
+		sprintf_s(strSize, sizeof(strSize), "%d", jpgdata.size);
 		req.AddParam("jpgSize", strSize);
 	}
 

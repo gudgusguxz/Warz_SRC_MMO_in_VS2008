@@ -96,7 +96,7 @@ void CJobGetServerObjects::OnSuccess()
 
 CJobAddServerObject::CJobAddServerObject(GameObject* obj) : CAsyncApiJob()
 {
-	sprintf(desc, "CJobAddServerObject[%s] %p", obj->Class->Name.c_str(), this);
+	sprintf_s(desc, sizeof(desc), "CJobAddServerObject[%s] %p", obj->Class->Name.c_str(), this);
 	
 	r3d_assert(obj->GetNetworkID() > 0);
 	GameObjID = obj->GetSafeID();
@@ -145,7 +145,7 @@ int CJobAddServerObject::Exec()
 	}
 	
 	// parse returned ObjectID
-	int nargs = sscanf(req.bodyStr_, "%d", &out_ObjectID);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &out_ObjectID);
 	if(nargs != 1) 
 	{
 		r3dOutToLog("!!!! CJobAddServerObject failed - bad answer %s\n", req.bodyStr_);
@@ -179,7 +179,7 @@ void CJobAddServerObject::OnSuccess()
 
 CJobUpdateServerObject::CJobUpdateServerObject(GameObject* obj) : CAsyncApiJob()
 {
-	sprintf(desc, "CJobUpdateServerObject[%s] %p", obj->Class->Name.c_str(), this);
+	sprintf_s(desc, sizeof(desc), "CJobUpdateServerObject[%s] %p", obj->Class->Name.c_str(), this);
 	
 	r3d_assert(obj->GetNetworkID() > 0);
 
@@ -216,7 +216,7 @@ int CJobUpdateServerObject::Exec()
 
 CJobDeleteServerObject::CJobDeleteServerObject(GameObject* obj) : CAsyncApiJob()
 {
-	sprintf(desc, "CJobDeleteServerObject %p", this);
+	sprintf_s(desc, sizeof(desc), "CJobDeleteServerObject %p", this);
 
 	r3d_assert(obj->GetNetworkID() > 0);
 

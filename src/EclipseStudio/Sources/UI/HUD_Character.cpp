@@ -92,12 +92,12 @@ r3dPoint2D CharacterHUD::DrawCurrentAnimInfo(float BaseY)
 	if(a.AnimTracks.size() > 0)
 	{
 		const r3dAnimData* ad = a.AnimTracks[0].pAnim;
-		sprintf(buffer, "Length: %-02.4f sec\nNum Frames: %d\nNum Tracks: %d\nFrameRate: %-02.4f\nAnim Name: %s\nAnim File Name: %s", 
-			ad->GetNumFrames() / ad->GetFrameRate(), 
-			ad->GetNumFrames(), 
-			ad->GetNumTracks(), 
-			ad->GetFrameRate(), 
-			ad->GetAnimName(), 
+		sprintf_s(buffer, sizeof(buffer), "Length: %-02.4f sec\nNum Frames: %d\nNum Tracks: %d\nFrameRate: %-02.4f\nAnim Name: %s\nAnim File Name: %s",
+			ad->GetNumFrames() / ad->GetFrameRate(),
+			ad->GetNumFrames(),
+			ad->GetNumTracks(),
+			ad->GetFrameRate(),
+			ad->GetAnimName(),
 			ad->GetAnimFileName());
 	}		
 
@@ -176,11 +176,11 @@ void CharacterHUD::Draw()
           const r3dAnimation::r3dAnimInfo& ai = a.AnimTracks[i];
           
           char st[256] = "";
-          if(ai.dwStatus & ANIMSTATUS_Playing) strcat(st, "Play ");
-          if(ai.dwStatus & ANIMSTATUS_Paused) strcat(st, "Pause ");
-          if(ai.dwStatus & ANIMSTATUS_Finished) strcat(st, "Finish ");
-          if(ai.dwStatus & ANIMSTATUS_Fading) strcat(st, "Fade ");
-          if(ai.dwStatus & ANIMSTATUS_Expiring) strcat(st, "Expire ");
+          if(ai.dwStatus & ANIMSTATUS_Playing) strcat_s(st, sizeof(st), "Play ");
+          if(ai.dwStatus & ANIMSTATUS_Paused) strcat_s(st, sizeof(st), "Pause ");
+          if(ai.dwStatus & ANIMSTATUS_Finished) strcat_s(st, sizeof(st), "Finish ");
+          if(ai.dwStatus & ANIMSTATUS_Fading) strcat_s(st, sizeof(st), "Fade ");
+          if(ai.dwStatus & ANIMSTATUS_Expiring) strcat_s(st, sizeof(st), "Expire ");
           
 	  _r3dSystemFont->PrintF(ssX, ssY, r3dColor(255, 255, 255), "%s: %.2f, f:%.1f, %04X %s", 
 	    ai.pAnim->pAnimName, ai.fInfluence, ai.fCurFrame, ai.dwStatus, st);

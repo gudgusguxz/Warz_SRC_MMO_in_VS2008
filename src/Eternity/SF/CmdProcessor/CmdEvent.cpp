@@ -45,11 +45,11 @@ const char * CEventVar::GetString()
 		switch( dwType )
 		{
 			case IS_INTEGER:
-				sprintf( szVal, "%d", nVal );
+				sprintf_s( szVal, sizeof(szVal), "%d", nVal );
 				break;
 
 			case IS_FLOAT:
-				sprintf( szVal, "%f", fVal );
+				sprintf_s( szVal, sizeof(szVal), "%f", fVal );
 				break;
 
 			default:
@@ -65,7 +65,7 @@ const char * CEventVar::GetString()
 
 
 //---------------------------------------------------------------------------------------------
-// Name: 
+// Name:
 // Desc: Gets integer from the var
 //---------------------------------------------------------------------------------------------
 int CEventVar::GetInteger()
@@ -136,11 +136,11 @@ const char * CEventVar::GetToken()
 		{
 		
 		case IS_INTEGER:
-			sprintf( szVal, "%d", nVal );
+			sprintf_s( szVal, sizeof(szVal), "%d", nVal );
 			break;
 
 		case IS_FLOAT:
-			sprintf( szVal, "%f", fVal );
+			sprintf_s( szVal, sizeof(szVal), "%f", fVal );
 			break;
 
 		default:
@@ -228,22 +228,22 @@ const char * VarsContainer_c::GetArgsFrom( int pos, int separate ) const
 	{
 		if ( separate == SEP_PARENTHESIS )
 		{
-			strcat( pArgBuf, "(" );
+			strcat_s( pArgBuf, 16384, "(" );
 		}
 
-		strcat( pArgBuf, evVars[ i ].GetToken() );
-		
+		strcat_s( pArgBuf, 16384, evVars[ i ].GetToken() );
+
 		if ( separate == SEP_PARENTHESIS )
 		{
-			strcat( pArgBuf, ") " );
+			strcat_s( pArgBuf, 16384, ") " );
 		}
 		else if ( separate == SEP_SEMICOLON )
 		{
-			strcat( pArgBuf, "; " );
+			strcat_s( pArgBuf, 16384, "; " );
 		}
 		else if ( i < ( int ) evVars.Count() - 1 )
 		{
-			strcat( pArgBuf, " " );
+			strcat_s( pArgBuf, 16384, " " );
 		}
 	}
 

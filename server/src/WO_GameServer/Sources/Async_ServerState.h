@@ -12,7 +12,7 @@ class CJobGetSavedServerState : public CAsyncApiJob
   public:
 	CJobGetSavedServerState()
 	{
-		sprintf(desc, "CJobGetSavedServerState %p", this);
+		sprintf_s(desc, sizeof(desc), "CJobGetSavedServerState %p", this);
 	}
 
 	int		Exec();

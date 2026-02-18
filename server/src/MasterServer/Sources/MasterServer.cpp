@@ -52,7 +52,7 @@ void CServerG::Init(const CMSGameData& in_info)
 const char* CServerG::GetName() const
 {
   static char name[64];
-  sprintf(name, "%d, id:0x%x", info_.ginfo.gameServerId, id_);
+  sprintf_s(name, sizeof(name), "%d, id:0x%x", info_.ginfo.gameServerId, id_);
   return name;
 }
 

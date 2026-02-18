@@ -246,7 +246,7 @@ void CAsyncApiMgr::GetStatus(char* text)
 	for(int i=0; i<NUM_WORKER_THREADS; i++)
 	{
 		r3dCSHolder cs1(workers_[i].csJobs_);
-		sprintf(text + strlen(text), "%d ", workers_[i].jobs_.size());
+		{ size_t len = strlen(text); sprintf_s(text + len, 512 - len, "%d ", workers_[i].jobs_.size()); } // TODO: verify buffer size
 	}
 }
 
@@ -454,7 +454,7 @@ int CJobProcessUserJoin::Exec()
 		// send his new position to fix issue when user disconnect before joining actual game.
 		const wiCharDataFull& slot = prof.ProfileData.ArmorySlots[0];
 		char strGamePos[256];
-		sprintf(strGamePos, "%.3f %.3f %.3f %.0f", slot.GamePos.x, slot.GamePos.y, slot.GamePos.z, slot.GameDir);
+		sprintf_s(strGamePos, sizeof(strGamePos), "%.3f %.3f %.3f %.0f", slot.GamePos.x, slot.GamePos.y, slot.GamePos.z, slot.GameDir);
 		req.AddParam("gSH", strGamePos);
 	}
 
@@ -492,7 +492,7 @@ void CJobProcessUserJoin::DetectServerHop()
 		// get new hopped position
 		r3dPoint3D spawnPos;
 		float      spawnDir;
-		gServerLogic.GetSpawnPositionAfterDeath(loadout.GamePos, &spawnPos, &spawnDir); //´ÔÊÂéÒÂ¨Ø´
+		gServerLogic.GetSpawnPositionAfterDeath(loadout.GamePos, &spawnPos, &spawnDir); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¨Ø´
 
 		// and put into profile
 		loadout.GamePos = spawnPos;
@@ -617,10 +617,10 @@ int CJobUserLeftGame::Exec()
 static void UpdateChar_SetAttachments(CWOBackendReq& req, const wiCharDataFull& w)
 {
 	char attm[2][512];
-	for(int i=0; i<2; i++) 
+	for(int i=0; i<2; i++)
 	{
 		// should match arguments of parseCharAttachments
-		sprintf(attm[i], "%d %d %d %d %d %d %d %d", 
+		sprintf_s(attm[i], sizeof(attm[i]), "%d %d %d %d %d %d %d %d",
 			w.Attachment[i].attachments[0],
 			w.Attachment[i].attachments[1],
 			w.Attachment[i].attachments[2],
@@ -657,10 +657,10 @@ static void UpdateChar_SetBackpack(CWOBackendReq& req, const wiCharDataFull& cur
 			op = 2; // remove
 		else if(w1.itemID == 0 && w2.itemID == 0)
 			continue; // slot was changed, but no items was modified
-		sprintf(value, "%d %d %d %d %d %d %d", i, op, w1.itemID, w1.quantity, w1.Var1, w1.Var2, w1.Var3);
-		
+		sprintf_s(value, sizeof(value), "%d %d %d %d %d %d %d", i, op, w1.itemID, w1.quantity, w1.Var1, w1.Var2, w1.Var3);
+
 		char name[128];
-		sprintf(name, "bp%d", updIdx++);
+		sprintf_s(name, sizeof(name), "bp%d", updIdx++);
 		req.AddParam(name, value);
 	}
 }
@@ -711,7 +711,7 @@ int CJobUpdateChar::Exec()
 
 		// character status
 		char strGamePos[256];
-		sprintf(strGamePos, "%.3f %.3f %.3f %.0f", slot.GamePos.x, slot.GamePos.y, slot.GamePos.z, slot.GameDir);
+		sprintf_s(strGamePos, sizeof(strGamePos), "%.3f %.3f %.3f %.0f", slot.GamePos.x, slot.GamePos.y, slot.GamePos.z, slot.GameDir);
 		req.AddParam("s1",          slot.Alive);
 		req.AddParam("s2",          strGamePos);
 		req.AddParam("s3",          (int)slot.Health);
@@ -850,7 +850,7 @@ int CJobAddLogInfo::Exec()
 	req.AddParam("Data",    Data);
 	
 	char ipstr[128];
-	sprintf(ipstr, "%u", 	IP);
+	sprintf_s(ipstr, sizeof(ipstr), "%u", 	IP);
 	req.AddParam("IP",      ipstr);
 
 	// issue
@@ -878,7 +878,7 @@ int CJobAddLogTradeInfo::Exec() //TradeGD
 	req.AddParam("GameDollar",    GameDollar);
 	
 	char ipstr[128];
-	sprintf(ipstr, "%u", 	IP);
+	sprintf_s(ipstr, sizeof(ipstr), "%u", 	IP);
 	req.AddParam("IP",      ipstr);
 
 	// issue
@@ -902,7 +902,7 @@ void AsyncJobAddServerLogInfo(int CheatID, DWORD CustomerID, DWORD CharID, const
 	job->CustomerID = CustomerID;
 	job->CharID     = CharID;
 	job->IP         = gServerLogic.GetExternalIP();
-	sprintf(job->Msg,  msg);
+	strcpy_s(job->Msg, sizeof(job->Msg), msg);
 	StringCbVPrintfA(job->Data, sizeof(job->Data), data, ap);
 	va_end(ap);
 
@@ -924,7 +924,7 @@ int CJobBuyItem::Exec()
 		return 0;
 	}
 
-	int nargs = sscanf(req.bodyStr_, "%d %I64d", &out_Balance, &out_InventoryID);
+	int nargs = sscanf_s(req.bodyStr_, "%d %I64d", &out_Balance, &out_InventoryID);
 	if(nargs != 2 || out_InventoryID == 0)
 	{
 		r3dOutToLog("!!!! CJobBuyItem failed, bad ans: %s\n", req.bodyStr_);
@@ -949,7 +949,7 @@ void CJobBuyItem::OnSuccess()
 int CJobBackpackFromInventory::Exec()
 {
 	char strInventoryID[128];
-	sprintf(strInventoryID, "%I64d", InventoryID);
+	sprintf_s(strInventoryID, sizeof(strInventoryID), "%I64d", InventoryID);
 
 	CWOBackendReq req("api_CharBackpack.aspx");
 	req.AddSessionInfo(CustomerID, SessionID);
@@ -966,7 +966,7 @@ int CJobBackpackFromInventory::Exec()
 		return 0;
 	}
 
-	int nargs = sscanf(req.bodyStr_, "%I64d", &out_InventoryID);
+	int nargs = sscanf_s(req.bodyStr_, "%I64d", &out_InventoryID);
 	if(nargs != 1 || out_InventoryID == 0)
 	{
 		r3dOutToLog("!!!! CJobBackpackFromInventory failed, bad ans: %s\n", req.bodyStr_);
@@ -991,7 +991,7 @@ void CJobBackpackFromInventory::OnSuccess()
 int CJobBackpackToInventory::Exec()
 {
 	char strInventoryID[128];
-	sprintf(strInventoryID, "%I64d", InventoryID);
+	sprintf_s(strInventoryID, sizeof(strInventoryID), "%I64d", InventoryID);
 
 	CWOBackendReq req("api_CharBackpack.aspx");
 	req.AddSessionInfo(CustomerID, SessionID);
@@ -1011,7 +1011,7 @@ int CJobBackpackToInventory::Exec()
 		return 0;
 	}
 
-	int nargs = sscanf(req.bodyStr_, "%I64d", &out_InventoryID);
+	int nargs = sscanf_s(req.bodyStr_, "%I64d", &out_InventoryID);
 	if(nargs != 1 || out_InventoryID == 0)
 	{
 		r3dOutToLog("!!!! CJobBackpackToInventory failed, bad ans: %s\n", req.bodyStr_);
@@ -1091,7 +1091,7 @@ void CJobGetLootboxData::OnSuccess()
 CJobUpdateMissionsData::CJobUpdateMissionsData(const obj_ServerPlayer* plr)
   : CAsyncApiJob(plr)
 {
-	sprintf(desc, "CJobUpdateMissionsData[%d] %p", CustomerID, this);
+	sprintf_s(desc, sizeof(desc), "CJobUpdateMissionsData[%d] %p", CustomerID, this);
 
 	pugi::xml_document xmlFile;
 	pugi::xml_node xmlMissions = xmlFile; // no need to add another level of indirection, this xml will be embedded into GetProfile()
@@ -1126,7 +1126,7 @@ int CJobUpdateMissionsData::Exec()
 CJobUpdateCharData::CJobUpdateCharData(const obj_ServerPlayer* plr)
   : CAsyncApiJob(plr)
 {
-	sprintf(desc, "CJobUpdateCharData[%d] %p", CustomerID, this);
+	sprintf_s(desc, sizeof(desc), "CJobUpdateCharData[%d] %p", CustomerID, this);
 
 	pugi::xml_document xmlFile;
 	CUserProfile::SaveCharData(*plr->loadout_, xmlFile);
@@ -1164,7 +1164,7 @@ int CJobExchangeAdd::Exec()
 		r3dOutToLog("!!!! CJobExchangeAdd failed, code: %d\n", req.resultCode_);
 		return req.resultCode_;
 	}
-	sscanf(req.bodyStr_, "%d %d", &ExchangeResultCode, &ExchangeShowInHUD);
+	sscanf_s(req.bodyStr_, "%d %d", &ExchangeResultCode, &ExchangeShowInHUD);
 
 	return 0;
 }

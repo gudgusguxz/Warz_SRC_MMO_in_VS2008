@@ -878,7 +878,7 @@ void r3dTexture::LoadTextureInternal( int index, const char* FName )
 		Depth		= 1;
 		TexFormat   = D3DFMT_A8R8G8B8;
 
-		sprintf(Location.FileName, "%s", FName);
+		strcpy_s(Location.FileName, sizeof(Location.FileName), FName);
 		strlwr(&Location.FileName[0]);
 
 		m_TexArray[index].Set( 0 );
@@ -979,7 +979,7 @@ int r3dTexture::Load( const char* fname, D3DFORMAT targetTexFormat, int downScal
 
 void r3dTexture::SetLoadData( const char* fname, int downScale, int maxDim, D3DPOOL pool, D3DFORMAT fmt )
 {
-	sprintf(Location.FileName, "%s", fname);
+	strcpy_s(Location.FileName, sizeof(Location.FileName), fname);
 	strlwr(&Location.FileName[0]);
 
 	m_DownScale = downScale;
@@ -1063,7 +1063,7 @@ int r3dTexture::DoLoad()
 			script.GetLine(tempStr, 1024);
 			if(strlen(tempStr) > 5)
 			{
-				sscanf(tempStr, "%s %d", tempFilenames[numElements], &tempDelays[numElements]);
+				sscanf_s(tempStr, "%s %d", tempFilenames[numElements], (unsigned)sizeof(tempFilenames[numElements]), &tempDelays[numElements]);
 				numElements++;
 				if(numElements>=50)
 				{
@@ -1083,7 +1083,7 @@ int r3dTexture::DoLoad()
 		for(int i=0; i<numElements; ++i)
 		{
 			char fullpath[512];
-			sprintf(fullpath, "%s%s", tempStr, tempFilenames[i]);
+			sprintf_s(fullpath, sizeof(fullpath), "%s%s", tempStr, tempFilenames[i]);
 			LoadTextureInternal( i, fullpath );
 			m_pDelayTextureArray[i] = (float)tempDelays[i]/1000.0f; // ms->seconds
 		}		
@@ -1275,7 +1275,7 @@ int r3dTexture::GetTextureSizeInVideoMemory()
 void r3dTexture::RegisterCreated()
 {
 	Flags     |= fCreated;
-	sprintf(Location.FileName, "$Created");
+	strcpy_s(Location.FileName, sizeof(Location.FileName), "$Created");
 	
 	InterlockedExchange( &Instances, 1 );
 }

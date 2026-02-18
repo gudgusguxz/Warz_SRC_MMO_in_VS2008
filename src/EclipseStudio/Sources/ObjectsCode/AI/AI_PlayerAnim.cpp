@@ -50,9 +50,9 @@ int CUberData::AddAnimation(const char* name, const char* anim_fname)
 	static const char* animDir = "data\\Animations5"; //GLOBAL_ANIM_FOLDER;
 
 	char buf[MAX_PATH];
-	sprintf(buf, "%s\\%s.anm", animDir, anim_fname ? anim_fname : name);
+	sprintf_s(buf, sizeof(buf), "%s\\%s.anm", animDir, anim_fname ? anim_fname : name);
 	int aid = animPool_.Add(name, buf);
-	if(aid == -1) 
+	if(aid == -1)
 		r3dError("can't add %s anim", name);
   
 	return aid;
@@ -63,16 +63,16 @@ void CUberData::AddAnimationWithFPS(const char* name, int& aid, int& fps_aid)
 	static const char* animDir = "data\\Animations5"; //GLOBAL_ANIM_FOLDER;
 
 	char buf[MAX_PATH];
-	sprintf(buf, "%s\\%s.anm", animDir, name);
+	sprintf_s(buf, sizeof(buf), "%s\\%s.anm", animDir, name);
 	aid = animPool_.Add(name, buf);
-	if(aid == -1) 
+	if(aid == -1)
 		r3dError("can't add %s anim", name);
 
-	sprintf(buf, "%s\\FPS_%s.anm", animDir, name);
+	sprintf_s(buf, sizeof(buf), "%s\\FPS_%s.anm", animDir, name);
 	if(r3dFileExists(buf))
 	{
 		char fps_name[128];
-		sprintf(fps_name, "FPS_%s", name);
+		sprintf_s(fps_name, sizeof(fps_name), "FPS_%s", name);
 		fps_aid = animPool_.Add(fps_name, buf);
 	}
 	else
@@ -86,7 +86,7 @@ int CUberData::TryToAddAnimation(const char* name, const char* anim_fname)
 	static const char* animDir = "data\\Animations5"; //GLOBAL_ANIM_FOLDER;
 
 	char buf[MAX_PATH];
-	sprintf(buf, "%s\\%s.anm", animDir, anim_fname ? anim_fname : name);
+	sprintf_s(buf, sizeof(buf), "%s\\%s.anm", animDir, anim_fname ? anim_fname : name);
 	if(!r3dFileExists(buf))
 		return -1;
 	int aid = animPool_.Add(name, buf);
@@ -270,9 +270,9 @@ void CUberData::LoadWeaponAnim(int (&wid)[AIDX_COUNT], int (&wid_fps)[AIDX_COUNT
 			
 		// we need to create dummy upper body anim for idle and stand
 		char aname[128];
-		sprintf(aname, names[i]);
+		strcpy_s(aname, sizeof(aname), names[i]);
 		if(i == AIDX_IdleUpper || i == AIDX_StandUpper)
-			strcat(aname, "_Upper");
+			strcat_s(aname, sizeof(aname), "_Upper");
 		wid[i] = TryToAddAnimation(aname, names[i]);
 		
 		if(i >= AIDX_IdleUpper && wid[i]!=-1)
@@ -283,7 +283,7 @@ void CUberData::LoadWeaponAnim(int (&wid)[AIDX_COUNT], int (&wid_fps)[AIDX_COUNT
 		}
 
 		// load fps anims
-		sprintf(aname, "FPS_%s", names[i]);
+		sprintf_s(aname, sizeof(aname), "FPS_%s", names[i]);
 		wid_fps[i] = TryToAddAnimation(aname);
 
 		if(i >= AIDX_IdleUpper && wid_fps[i]!=-1)
@@ -386,7 +386,7 @@ void CUberData::LoadDeathAnim()
 	aid_.deaths[12] = AddAnimation("Death_02_t1");//AddAnimation("Death_01_v1_s1");
 }
 
-//////////////////////////Í¹ÔàÁªÑè¹
+//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CUberData::LoadTauntAnim()
 {
 	aid_.taunts[0] = AddAnimation("Taunt_t1_Dance");//1+
@@ -631,7 +631,7 @@ void CUberData::LoadAnimations()
 	LoadHandsAnim();
 	LoadAngleAnim();
 
-	//////////////////////////Í¹ÔàÁªÑè¹
+	//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	LoadTauntAnim();
 	LoadPlayerInteractAnim();
 	////////////////////////////////////////////////////////////end
@@ -713,7 +713,7 @@ static void setWeaponAnimByFNAME(const char* FNAME, int* wid, int* wid_fps)
 {
 	// mimic store icon name
 	char FNAME2[256];
-	sprintf(FNAME2, "%s.dds", FNAME);
+	sprintf_s(FNAME2, sizeof(FNAME2), "%s.dds", FNAME);
 
 	// note, there is multiple entries with same FNAME, so set them all
 	int numFounds = 0;
@@ -2480,7 +2480,7 @@ void CUberAnim::StartDeathAnim()
 		anim.StartAnimation(data_->aid_.deaths[11], ANIMFLAG_PauseOnEnd | ANIMFLAG_RemoveOtherFade, 0.0f, 1.0f, 0.1f);
 }
 
-//////////////////////////Í¹ÔàÁªÑè¹
+//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CUberAnim::StartLitterAnim()
 {
 	StopReloadAnim();
