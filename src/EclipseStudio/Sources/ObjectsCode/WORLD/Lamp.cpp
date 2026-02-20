@@ -706,7 +706,7 @@ float	obj_LightHelper :: DrawPropertyEditor(float scrx, float scry, float scrw, 
 
 			_splitpath( LT.ProjectMap->getFileLoc().FileName, drive, full, file, ext );
 
-			sprintf( full, "%s%s", file, ext );
+			sprintf_s( full, sizeof(full), "%s%s", file, ext );
 
 			imgui_Static(scrx + 22 + 100, starty,		full, 220 );
 
@@ -739,7 +739,7 @@ float	obj_LightHelper :: DrawPropertyEditor(float scrx, float scry, float scrw, 
 			char drive[16], dir[ 512 ], name[512], ext[ 512 ] ;
 			_splitpath( LT.ProjectMap->getFileLoc().FileName, drive, dir, name, ext ) ;
 			strcpy_s( sProjTexName, sizeof(sProjTexName), name ) ;
-			strcat( sProjTexName, ext ) ;
+			strcat_s( sProjTexName, sizeof(sProjTexName), ext ) ;
 		}
 
 #define PROJ_TEXTURES_FOLDER "Data\\ProjectionTextures\\"
@@ -751,7 +751,7 @@ float	obj_LightHelper :: DrawPropertyEditor(float scrx, float scry, float scrw, 
 		if (imgui_FileList(5 + 150 + 10, r3dRenderer->ScreenH - 400, 150, 200, PROJ_TEXTURES_FOLDER"*.*", sProjTexName, &offset, false))
 		{
 			char sFull[128];
-			sprintf( sFull, "%s%s", PROJ_TEXTURES_FOLDER, sProjTexName );
+			sprintf_s( sFull, sizeof(sFull), "%s%s", PROJ_TEXTURES_FOLDER, sProjTexName );
 
 			if( LT.ProjectMap )
 				r3dRenderer->DeleteTexture( LT.ProjectMap );

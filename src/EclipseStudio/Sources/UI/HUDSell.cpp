@@ -110,9 +110,9 @@ bool HUDSell::Init()
 
 	char TopText[256] = { 0 };
 	if (gUserProfile.ProfileData.PremiumAcc > 0)
-		sprintf(TopText, "%s  <font size = \"90\">20%%</font>  %s", gLangMngr.getString("$FR_SaleTitle1"), gLangMngr.getString("$FR_SaleTitle2"));
+		sprintf_s(TopText, sizeof(TopText), "%s  <font size = \"90\">20%%</font>  %s", gLangMngr.getString("$FR_SaleTitle1"), gLangMngr.getString("$FR_SaleTitle2"));
 	else
-		sprintf(TopText, "%s  <font size = \"90\">10%%</font>  %s", gLangMngr.getString("$FR_SaleTitle1"), gLangMngr.getString("$FR_SaleTitle2"));
+		sprintf_s(TopText, sizeof(TopText), "%s  <font size = \"90\">10%%</font>  %s", gLangMngr.getString("$FR_SaleTitle1"), gLangMngr.getString("$FR_SaleTitle2"));
 	gfxMovie.SetVariable("_root.api.Main.TopText.Text.htmlText", TopText);
 	gfxMovie.SetVariable("_root.api.Main.IconPremium.visible", gUserProfile.ProfileData.PremiumAcc > 0);
 	//gfxMovie.SetVariable("_root.api.Main.BtnRepairAll.Text.text", gLangMngr.getString("$FR_Sell_all_items_for"));
@@ -211,7 +211,7 @@ void HUDSell::Activate()
 			wiCharDataFull& slot = plr->CurLoadout;
 			char tmpGamertag[128];
 			if (plr->ClanID != 0)
-				sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+				sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 			else
 				r3dscpy(tmpGamertag, slot.Gamertag);
 			var[0].SetString(tmpGamertag);
@@ -278,7 +278,7 @@ void HUDSell::updateSurvivorTotalWeight()
 	wiCharDataFull& slot = plr->CurLoadout;
 	char tmpGamertag[128];
 	if (plr->ClanID != 0)
-		sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+		sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 	else
 		r3dscpy(tmpGamertag, slot.Gamertag);
 

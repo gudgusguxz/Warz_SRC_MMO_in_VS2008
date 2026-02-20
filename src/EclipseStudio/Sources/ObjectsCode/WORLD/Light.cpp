@@ -34,7 +34,7 @@ BOOL obj_LampBulb::OnCreate()
 
   char FName[256];
    
- sprintf(FName,"Levels\\%s\\Scene\\CFG\\ObjectCFG.cfg", MissionInfo.MissionDir);
+ sprintf_s(FName, sizeof(FName), "Levels\\%s\\Scene\\CFG\\ObjectCFG.cfg", MissionInfo.MissionDir);
 
 
  Color = r3dColor(random(255), random(255), random(255));
@@ -237,22 +237,22 @@ BOOL obj_LampBulb::OnEvent(int event, void *data)
 	  CA->Commands[3].CommandID = OBJ_EVENT_USER + 103;
 	  strcpy_s(CA->Commands[3].Name, sizeof(CA->Commands[3].Name), "TURN OFF");
 	  CA->Commands[4].CommandID = OBJ_EVENT_USER + 104;
-	  sprintf(CA->Commands[4].Name,"SHADOWS: %d", bCastShadows);
+	  sprintf_s(CA->Commands[4].Name, sizeof(CA->Commands[4].Name), "SHADOWS: %d", bCastShadows);
 
 	  CA->Commands[5].CommandID = OBJ_EVENT_USER + 105;
-	  sprintf(CA->Commands[5].Name,"LIGHT: %d", bHaveLight);
+	  sprintf_s(CA->Commands[5].Name, sizeof(CA->Commands[5].Name), "LIGHT: %d", bHaveLight);
 
 	  CA->Commands[6].CommandID = OBJ_EVENT_USER + 106;
-	  sprintf(CA->Commands[6].Name,"RADIUS+: %d", int(LT.GetOuterRadius()));
+	  sprintf_s(CA->Commands[6].Name, sizeof(CA->Commands[6].Name), "RADIUS+: %d", int(LT.GetOuterRadius()));
 
 	  CA->Commands[7].CommandID = OBJ_EVENT_USER + 107;
-	  sprintf(CA->Commands[7].Name,"RADIUS-: %d", int(LT.GetOuterRadius()));
+	  sprintf_s(CA->Commands[7].Name, sizeof(CA->Commands[7].Name), "RADIUS-: %d", int(LT.GetOuterRadius()));
 
 	  CA->Commands[8].CommandID = OBJ_EVENT_USER + 108;
-	  sprintf(CA->Commands[8].Name,"LIGHTMAP: %d", LT.bAffectLightmap);
+	  sprintf_s(CA->Commands[8].Name, sizeof(CA->Commands[8].Name), "LIGHTMAP: %d", LT.bAffectLightmap);
 
 	  CA->Commands[9].CommandID = OBJ_EVENT_USER + 109;
-	  sprintf(CA->Commands[9].Name,"STATIC: %d", bStatic);
+	  sprintf_s(CA->Commands[9].Name, sizeof(CA->Commands[9].Name), "STATIC: %d", bStatic);
 
 	  return TRUE;
 	break;
@@ -272,7 +272,7 @@ BOOL obj_LampBulb::OnEvent(int event, void *data)
 	  CA->Commands[5].CommandID = OBJ_EVENT_USER + 105;
 	  strcpy_s(CA->Commands[5].Name, sizeof(CA->Commands[5].Name), "BLUE -");
 	  CA->Commands[6].CommandID = OBJ_EVENT_USER + 106;
-	  sprintf(CA->Commands[6].Name,"BACK %d %d %d", Color.R, Color.G, Color.B );
+	  sprintf_s(CA->Commands[6].Name, sizeof(CA->Commands[6].Name), "BACK %d %d %d", Color.R, Color.G, Color.B );
 	  return TRUE;
 	break;
    }
@@ -288,24 +288,24 @@ BOOL obj_LampBulb::OnEvent(int event, void *data)
    char FName[256];
    char Str[256];
    
-   sprintf(FName,"Levels\\%s\\Scene\\CFG\\ObjectCFG.cfg", MissionInfo.MissionDir);
+   sprintf_s(FName, sizeof(FName), "Levels\\%s\\Scene\\CFG\\ObjectCFG.cfg", MissionInfo.MissionDir);
 
-   sprintf (Str,"%d", bCastShadows);
+   sprintf_s(Str, sizeof(Str), "%d", bCastShadows);
    r3dWriteCFG_S(FName, Name.c_str(), "CastShadows", Str);
 
-   sprintf (Str,"%d", bStatic);
+   sprintf_s(Str, sizeof(Str), "%d", bStatic);
    r3dWriteCFG_S(FName, Name.c_str(), "StaticLight", Str);
 
-   sprintf (Str,"%d", bAffectLightmap);
+   sprintf_s(Str, sizeof(Str), "%d", bAffectLightmap);
    r3dWriteCFG_S(FName, Name.c_str(), "AffectLightmap", Str);
 
-   sprintf (Str,"%d", bHaveLight);
+   sprintf_s(Str, sizeof(Str), "%d", bHaveLight);
    r3dWriteCFG_S(FName, Name.c_str(), "HaveLight", Str);
 
-   sprintf (Str,"%d", int(LT.GetOuterRadius()));
+   sprintf_s(Str, sizeof(Str), "%d", int(LT.GetOuterRadius()));
    r3dWriteCFG_S(FName, Name.c_str(), "LightRadius", Str);
 
-   sprintf (Str,"%d %d %d", Color.R, Color.G, Color.B);
+   sprintf_s(Str, sizeof(Str), "%d %d %d", Color.R, Color.G, Color.B);
    r3dWriteCFG_S(FName, Name.c_str(), "LightColor", Str);
 
  return FALSE;

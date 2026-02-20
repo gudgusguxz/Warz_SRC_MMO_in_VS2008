@@ -1157,7 +1157,7 @@ void WeaponArmory::dumpStats()
 
 		if( int refs = ammo->getModelRefCount() )
 		{
-			sprintf( buf, "Ammo: %s with %d references\n", ammo->getName(), refs ) ;
+			sprintf_s( buf, sizeof(buf), "Ammo: %s with %d references\n", ammo->getName(), refs ) ;
 			fputs( buf, fout ) ;
 			ConPrint( "%s", buf ) ;
 		}
@@ -1172,7 +1172,7 @@ void WeaponArmory::dumpStats()
 		
 		if( refs || cfgRefs )
 		{			
-			sprintf( buf, "Weapon: %s with %d references, %d mesh references\n", cfg->m_StoreName, cfgRefs, refs ) ;
+			sprintf_s( buf, sizeof(buf), "Weapon: %s with %d references, %d mesh references\n", cfg->m_StoreName, cfgRefs, refs ) ;
 			fputs( buf, fout ) ;
 			ConPrint( "%s", buf ) ;
 		}
@@ -1187,7 +1187,7 @@ void WeaponArmory::dumpStats()
 
 		if( refs || aimRefs )
 		{
-			sprintf( buf, "WeaponAttachment: %s with %d references, %d aim references\n", att->m_StoreName, refs, aimRefs ) ;
+			sprintf_s( buf, sizeof(buf), "WeaponAttachment: %s with %d references, %d aim references\n", att->m_StoreName, refs, aimRefs ) ;
 			fputs( buf, fout ) ;
 			ConPrint( "%s", buf ) ;
 		}
@@ -1202,7 +1202,7 @@ void WeaponArmory::dumpStats()
 
 		if( refs || cfgRefs )
 		{
-			sprintf( buf, "Gear: %s with %d references, %d fps references\n", gear->m_StoreName, cfgRefs, refs ) ;
+			sprintf_s( buf, sizeof(buf), "Gear: %s with %d references, %d fps references\n", gear->m_StoreName, cfgRefs, refs ) ;
 			fputs( buf, fout ) ;
 			ConPrint( "%s", buf ) ;
 		}
@@ -1216,7 +1216,7 @@ void WeaponArmory::dumpStats()
 
 		if( refs )
 		{
-			sprintf( buf, "Item: %s with %d references\n", itm->m_StoreName, refs ) ;
+			sprintf_s( buf, sizeof(buf), "Item: %s with %d references\n", itm->m_StoreName, refs ) ;
 			fputs( buf, fout ) ;
 			ConPrint( "%s", buf ) ;
 		}

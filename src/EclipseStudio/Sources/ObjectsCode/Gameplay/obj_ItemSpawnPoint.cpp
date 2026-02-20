@@ -400,7 +400,7 @@ float obj_ItemSpawnPoint::DrawPropertyEditor(float scrx, float scry, float scrw,
 			{
 				// selection button
 				char tempStr[32];
-				sprintf(tempStr, "Location %d", i+1);
+				sprintf_s(tempStr, sizeof(tempStr), "Location %d", i+1);
 				if(imgui_Button(scrx, starty, 100, 25, tempStr, i==m_SelectedSpawnPoint))
 				{
 					// shift click on location will set camera to it
@@ -744,7 +744,7 @@ void obj_ItemSpawnPoint::AnalyzeLootBoxData(float analyzeWindowInHours)
 		for(std::vector<ItemLoot_Stat>::iterator it = Stats_By_Lootboxes.begin(); it!=Stats_By_Lootboxes.end(); ++it)
 		{
 			char tmpStr[2048];
-			sprintf(tmpStr, "Lootbox (%d): %s, Item: %s, Spawned: %d\n", it->numLootboxesSpawns, g_pWeaponArmory->getConfig(it->lootBoxID)->m_StoreName, it->itemID=='GOLD'?"GOLD":g_pWeaponArmory->getConfig(it->itemID)->m_StoreName, it->numSpawns);
+			sprintf_s(tmpStr, sizeof(tmpStr), "Lootbox (%d): %s, Item: %s, Spawned: %d\n", it->numLootboxesSpawns, g_pWeaponArmory->getConfig(it->lootBoxID)->m_StoreName, it->itemID=='GOLD'?"GOLD":g_pWeaponArmory->getConfig(it->itemID)->m_StoreName, it->numSpawns);
 			fwrite(tmpStr, 1, strlen(tmpStr), resf);
 		}
 		fclose(resf);
@@ -755,7 +755,7 @@ void obj_ItemSpawnPoint::AnalyzeLootBoxData(float analyzeWindowInHours)
 		for(std::vector<Item_Stat>::iterator it = Stats_By_ItemID.begin(); it!=Stats_By_ItemID.end(); ++it)
 		{
 			char tmpStr[2048];
-			sprintf(tmpStr, "Item: %s, Spawned: %d\n", it->itemID=='GOLD'?"GOLD":g_pWeaponArmory->getConfig(it->itemID)->m_StoreName, it->numSpawns);
+			sprintf_s(tmpStr, sizeof(tmpStr), "Item: %s, Spawned: %d\n", it->itemID=='GOLD'?"GOLD":g_pWeaponArmory->getConfig(it->itemID)->m_StoreName, it->numSpawns);
 			fwrite(tmpStr, 1, strlen(tmpStr), resf);
 		}
 		fclose(resf);

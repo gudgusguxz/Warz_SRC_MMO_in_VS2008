@@ -271,7 +271,7 @@ bool ParseXMLFile(const char *xmlFileName, pugi::xml_document &outXml, char *& o
 int LoadLevel_Objects( float BarRange, bool JustForBuilding_FastLoading )
 {
 	char fname[MAX_PATH];
-	sprintf(fname, "%s\\LevelData.xml", r3dGameLevel::GetHomeDir());
+	sprintf_s(fname, sizeof(fname), "%s\\LevelData.xml", r3dGameLevel::GetHomeDir());
 
 	pugi::xml_document xmlLevelFile;
 	char *levelData = 0;
@@ -316,7 +316,7 @@ int LoadLevel_Objects( float BarRange, bool JustForBuilding_FastLoading )
 
 	//	Sound data (do not load on server)
 #ifndef WO_SERVER
-	sprintf(fname, "%s\\SoundData.xml", r3dGameLevel::GetHomeDir());
+	sprintf_s(fname, sizeof(fname), "%s\\SoundData.xml", r3dGameLevel::GetHomeDir());
 
 	pugi::xml_document xmlSoundFile;
 	char *soundData = 0;
@@ -335,7 +335,7 @@ int LoadLevel_Objects( float BarRange, bool JustForBuilding_FastLoading )
 		if(g_bEditMode)
 		{
 			//	Server data
-			sprintf(fname, "%s\\ServerData.xml", r3dGameLevel::GetHomeDir());
+			sprintf_s(fname, sizeof(fname), "%s\\ServerData.xml", r3dGameLevel::GetHomeDir());
 
 			pugi::xml_document xmlServerFile;
 			char *serverData = 0;
@@ -354,13 +354,13 @@ int LoadLevel_Objects( float BarRange, bool JustForBuilding_FastLoading )
 		//	Server data
 		//AlexRedd:: improved!
 		if(gServerLogic.ginfo_.channel == 4) //if(gServerLogic.ginfo_.channel == 3 || gServerLogic.ginfo_.channel == 4)
-			sprintf(fname, "%s\\ServerDataPremium.xml", r3dGameLevel::GetHomeDir());
+			sprintf_s(fname, sizeof(fname), "%s\\ServerDataPremium.xml", r3dGameLevel::GetHomeDir());
 		else if (gServerLogic.ginfo_.channel == 6 && (gServerLogic.ginfo_.flags & GBGameInfo::SFLAGS_DisableSNP))
-			sprintf(fname, "%s\\ServerDataDevNoSnipers.xml", r3dGameLevel::GetHomeDir());
+			sprintf_s(fname, sizeof(fname), "%s\\ServerDataDevNoSnipers.xml", r3dGameLevel::GetHomeDir());
 		else if (gServerLogic.ginfo_.channel == 6 && (gServerLogic.ginfo_.flags & GBGameInfo::SFLAGS_DisableASR))
-			sprintf(fname, "%s\\ServerDataDevSnipers.xml", r3dGameLevel::GetHomeDir());
+			sprintf_s(fname, sizeof(fname), "%s\\ServerDataDevSnipers.xml", r3dGameLevel::GetHomeDir());
 		else
-			sprintf(fname, "%s\\ServerData.xml", r3dGameLevel::GetHomeDir());
+			sprintf_s(fname, sizeof(fname), "%s\\ServerData.xml", r3dGameLevel::GetHomeDir());
 
 		pugi::xml_document xmlServerFile;
 		char *serverData = 0;
@@ -387,7 +387,7 @@ int LoadLevel_Objects( float BarRange, bool JustForBuilding_FastLoading )
 int LoadLevel_Groups ()
 {
 	char fname[MAX_PATH];
-	sprintf(fname, "Data\\ObjectsDepot\\LevelGroups.xml", r3dGameLevel::GetHomeDir());
+	sprintf_s(fname, sizeof(fname), "Data\\ObjectsDepot\\LevelGroups.xml", r3dGameLevel::GetHomeDir());
 	obj_Group::LoadFromFile(fname);
 	return 1;
 }
@@ -402,7 +402,7 @@ int LoadLevel_MatLibs()
   }
 
   char fname[MAX_PATH];
-  sprintf(fname, "%s\\room.mat", r3dGameLevel::GetHomeDir());
+  sprintf_s(fname, sizeof(fname), "%s\\room.mat", r3dGameLevel::GetHomeDir());
 
   r3dFile* f = r3d_open(fname, "rt");
   if(!f) {
@@ -412,8 +412,8 @@ int LoadLevel_MatLibs()
   }
 
   char Str2[256], Str3[256];
-  sprintf(Str2,"%s\\room.mat", r3dGameLevel::GetHomeDir());
-  sprintf(Str3,"%s\\Textures\\", r3dGameLevel::GetHomeDir());
+  sprintf_s(Str2, sizeof(Str2), "%s\\room.mat", r3dGameLevel::GetHomeDir());
+  sprintf_s(Str3, sizeof(Str3), "%s\\Textures\\", r3dGameLevel::GetHomeDir());
 	
   r3dMaterialLibrary::LoadLibrary(Str2, Str3);
   return 1;

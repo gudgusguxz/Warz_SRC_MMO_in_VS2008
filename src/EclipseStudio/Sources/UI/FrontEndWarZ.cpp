@@ -84,7 +84,7 @@ const char* getTimePlayedString(int timePlayed)
 	int days = (timePlayed/86400);
 
 	static char tmpStr[64];
-	sprintf(tmpStr, "%d:%02d:%02d", days, hours, minutes);
+	sprintf_s(tmpStr, sizeof(tmpStr), "%d:%02d:%02d", days, hours, minutes);
 	return tmpStr;
 }
 
@@ -391,8 +391,8 @@ unsigned int WINAPI FrontendWarZ::LoginProcessThread(void* in_data)
 		return 0;
 	}
 
-	int n = sscanf(req.bodyStr_, "%d %d %d", 
-		&gUserProfile.CustomerID, 
+	int n = sscanf_s(req.bodyStr_, "%d %d %d",
+		&gUserProfile.CustomerID,
 		&gUserProfile.SessionID,
 		&gUserProfile.AccountStatus);
 	if(n != 3)
@@ -492,7 +492,7 @@ bool FrontendWarZ::DecodeAuthParams()
 	DWORD CustomerID = 0;
 	DWORD SessionID = 0;
 	DWORD AccountStatus = 0;
-	int n = sscanf(authToken, "%d:%d:%d", &CustomerID, &SessionID, &AccountStatus);
+	int n = sscanf_s(authToken, "%d:%d:%d", &CustomerID, &SessionID, &AccountStatus);
 	if(n != 3)
 	{
 		r3dError("unable to get session data");
@@ -1552,14 +1552,14 @@ void FrontendWarZ::SetAsyncError(int apiCode, const char* msg)
 {
 	if(gMasterServerLogic.shuttingDown_)
 	{
-		sprintf(asyncErr_, "%s", gLangMngr.getString("MSShutdown1"));
+		strcpy_s(asyncErr_, sizeof(asyncErr_), gLangMngr.getString("MSShutdown1"));
 		return;
 	}
 
 	if(apiCode == 0) {
-		sprintf(asyncErr_, "%s", msg);
+		strcpy_s(asyncErr_, sizeof(asyncErr_), msg);
 	} else {
-		sprintf(asyncErr_, "%s, code:%d", msg, apiCode);
+		sprintf_s(asyncErr_, sizeof(asyncErr_), "%s, code:%d", msg, apiCode);
 	}
 }
 
@@ -1603,7 +1603,7 @@ void FrontendWarZ::addClientSurvivor(const wiCharDataFull& slot, int slotIndex)
 	Scaleform::GFx::Value var[27];
 	char tmpGamertag[128];
 	if(slot.ClanID != 0)
-		sprintf(tmpGamertag, "[%s] %s", slot.ClanTag, slot.Gamertag);
+		sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", slot.ClanTag, slot.Gamertag);
 	else
 		r3dscpy(tmpGamertag, slot.Gamertag);
 	var[0].SetString(tmpGamertag);
@@ -1632,7 +1632,7 @@ void FrontendWarZ::addClientSurvivor(const wiCharDataFull& slot, int slotIndex)
 	var[17].SetNumber(slot.Stats.KilledBandits);		// bandits killed
 	var[18].SetNumber(slot.Stats.KilledSurvivors);		// civilians killed
 	char repS[64];
-	sprintf(repS, "%s : %d", getReputationString(slot.Stats.Reputation), slot.Stats.Reputation);
+	sprintf_s(repS, sizeof(repS), "%s : %d", getReputationString(slot.Stats.Reputation), slot.Stats.Reputation);
 	var[19].SetString(repS);	// alignment
 
 	const char* lastMap = getMapName(slot.GameMapId);
@@ -1772,15 +1772,15 @@ void FrontendWarZ::initFrontend()
 		for(int i=0; i<34; ++i)
 		{
 			var[0].SetUInt(i);
-			sprintf(tmpStr, "SkillName%d", i);
+			sprintf_s(tmpStr, sizeof(tmpStr), "SkillName%d", i);
 			var[1].SetString(gLangMngr.getString(tmpStr));
-			sprintf(tmpStr, "SkillDesc%d", i);
+			sprintf_s(tmpStr, sizeof(tmpStr), "SkillDesc%d", i);
 			var[2].SetString(gLangMngr.getString(tmpStr));
 			char iconPath[512];
-			sprintf(iconPath, "$Data/Menu/skillIcons/Skill%d.dds", i);
+			sprintf_s(iconPath, sizeof(iconPath), "$Data/Menu/skillIcons/Skill%d.dds", i);
 			var[3].SetString(iconPath);
 			char iconPathBW[512];
-			sprintf(iconPathBW, "$Data/Menu/skillIcons/Skill%dBW.dds", i);
+			sprintf_s(iconPathBW, sizeof(iconPathBW), "$Data/Menu/skillIcons/Skill%dBW.dds", i);
 			var[4].SetString(iconPathBW);
 			var[5].SetUInt(gUserProfile.ShopSkillCosts[i][0]);
 			gfxMovie.Invoke("_root.api.addSkillInfo", var, 6);
@@ -2065,7 +2065,7 @@ void FrontendWarZ::eventCreateCharacter(r3dScaleformMovie* pMovie, const Scalefo
 		}
 	}
 
-	if(strpbrk(m_CreateGamerTag, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½ ¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒ ÓÔÕÖ×ØÙÚàáâãäåæçèéêëìíî")!=NULL) // do not allow this symbols
+	if(strpbrk(m_CreateGamerTag, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")!=NULL) // do not allow this symbols
 	{
 		Scaleform::GFx::Value var[2];
 		var[0].SetString(gLangMngr.getString("CharacterNameCannotContaintSpecialSymbols"));
@@ -2117,7 +2117,7 @@ void FrontendWarZ::eventRenameCharacter(r3dScaleformMovie* pMovie, const Scalefo
 {
 	r3dscpy(m_CreateGamerTag, args[0].GetString()); // gamertag
 
-	if(strpbrk(m_CreateGamerTag, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½ ¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒ ÓÔÕÖ×ØÙÚàáâãäåæçèéêëìíî")!=NULL) // do not allow this symbols
+	if(strpbrk(m_CreateGamerTag, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")!=NULL) // do not allow this symbols
 	{
 		Scaleform::GFx::Value var[2];
 		var[0].SetString(gLangMngr.getString("CharacterNameCannotContaintSpecialSymbols"));
@@ -2186,12 +2186,12 @@ void FrontendWarZ::eventShowSurvivorsMap(r3dScaleformMovie* pMovie, const Scalef
 	}
 
 	char HomeDir[512];
-	sprintf(HomeDir, "Levels\\%s\\minimap.dds", getLevelDirBasedOnLevelID(w.GameMapId));
+	sprintf_s(HomeDir, sizeof(HomeDir), "Levels\\%s\\minimap.dds", getLevelDirBasedOnLevelID(w.GameMapId));
 
 	if(r3dFileExists(HomeDir))
 	{
 		char HomeDir2[512];
-		sprintf(HomeDir2, "$%s", HomeDir);
+		sprintf_s(HomeDir2, sizeof(HomeDir2), "$%s", HomeDir);
 		gfxMovie.Invoke("_root.api.Main.SurvivorsAnim.loadSurvivorMap", HomeDir2);
 	}
 	else
@@ -2207,7 +2207,7 @@ void FrontendWarZ::eventShowSurvivorsMap(r3dScaleformMovie* pMovie, const Scalef
 	r3dPoint3D minimapOrigin(0,0,0), minimapSize(0,0,0);
 	{
 		char fname[MAX_PATH];
-		sprintf(fname, "Levels\\%s\\LevelData.xml", getLevelDirBasedOnLevelID(w.GameMapId));
+		sprintf_s(fname, sizeof(fname), "Levels\\%s\\LevelData.xml", getLevelDirBasedOnLevelID(w.GameMapId));
 		r3d_assert(r3dFileExists(fname));
 
 		pugi::xml_document xmlLevelFile;
@@ -2452,7 +2452,7 @@ bool FrontendWarZ::ParseGameJoinAnswer()
 	}
 
 	char buf[128];
-	sprintf(buf, gLangMngr.getString("UnableToJoinGameCode"), gMasterServerLogic.gameJoinAnswer_.result);
+	sprintf_s(buf, sizeof(buf), gLangMngr.getString("UnableToJoinGameCode"), gMasterServerLogic.gameJoinAnswer_.result);
 	SetAsyncError(0, buf);
 	return  false;
 }
@@ -3082,7 +3082,7 @@ void FrontendWarZ::updateSurvivorTotalWeight(int survivor)
 	Scaleform::GFx::Value var[2];
 	char tmpGamertag[128];
 	if(slot.ClanID != 0)
-		sprintf(tmpGamertag, "[%s] %s", slot.ClanTag, slot.Gamertag);
+		sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", slot.ClanTag, slot.Gamertag);
 	else
 		r3dscpy(tmpGamertag, slot.Gamertag);
 
@@ -3333,7 +3333,7 @@ void FrontendWarZ::updateClientSurvivor(const wiCharDataFull& slot)
 	Scaleform::GFx::Value var[11];
 	char tmpGamertag[128];
 	if(slot.ClanID != 0)
-		sprintf(tmpGamertag, "[%s] %s", slot.ClanTag, slot.Gamertag);
+		sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", slot.ClanTag, slot.Gamertag);
 	else
 		r3dscpy(tmpGamertag, slot.Gamertag);
 	var[0].SetString(tmpGamertag);
@@ -3493,7 +3493,7 @@ void FrontendWarZ::SyncGraphicsUI()
 	{
 		char resString[ 128 ] = { 0 };
 		const r3dDisplayResolution& r = supportedReses[ i ] ;
-		_snprintf( resString, sizeof resString - 1, "%d x %d", r.Width, r.Height );
+		_snprintf_s( resString, sizeof(resString), _TRUNCATE, "%d x %d", r.Width, r.Height );
 		gfxMovie.Invoke("_root.api.addScreenResolution", resString);
 	}
 
@@ -3765,11 +3765,11 @@ void FrontendWarZ::eventOptionsApply(r3dScaleformMovie* pMovie, const Scaleform:
 	int width = 1280, height = 720;
 
 	for( ; *res < '0' || * res > '9' ; ) res ++;
-	int n = sscanf(res, "%d", &width );
+	int n = sscanf_s(res, "%d", &width );
 	r3d_assert( n == 1 );
 	for( ; *res >= '0' && * res <= '9' ; ) res ++;
 	for( ; *res < '0' || * res > '9' ; ) res ++;
-	n = sscanf(res, "%d", &height );
+	n = sscanf_s(res, "%d", &height );
 	r3d_assert( n == 1 );
 
 	r_width->SetInt( width );
@@ -4156,7 +4156,7 @@ void FrontendWarZ::eventBrowseGamesJoin(r3dScaleformMovie* pMovie, const Scalefo
 			{
 				Scaleform::GFx::Value var[3];
 				char tmpStr[512];
-				sprintf(tmpStr, gLangMngr.getString("CannotJoinGameTimeLimit"), gdata->info.gameTimeLimit);
+				sprintf_s(tmpStr, sizeof(tmpStr), gLangMngr.getString("CannotJoinGameTimeLimit"), gdata->info.gameTimeLimit);
 				var[0].SetString(tmpStr);
 				var[1].SetBoolean(true);
 				var[2].SetString("");
@@ -4489,7 +4489,7 @@ void FrontendWarZ::processNewGameList()
 		var[5].SetBoolean((ginfo.flags & GBGameInfo::SFLAGS_Nameplates) ? true : false);
 		var[6].SetBoolean((ginfo.flags & GBGameInfo::SFLAGS_CrossHair) ? true : false);
 		char players[16];
-		sprintf(players, "%d/%d", R3D_MIN(gd.curPlayers, ginfo.maxPlayers), ginfo.maxPlayers); // hide if dev connected
+		sprintf_s(players, sizeof(players), "%d/%d", R3D_MIN(gd.curPlayers, ginfo.maxPlayers), ginfo.maxPlayers); // hide if dev connected
 		var[7].SetString(players);
 		var[8].SetInt(ping);
 		var[9].SetBoolean(gUserSettings.isInFavoriteGamesList(ginfo.gameServerId));
@@ -4757,7 +4757,7 @@ void FrontendWarZ::eventCreateClan(r3dScaleformMovie* pMovie, const Scaleform::G
 	clanCreateParams.ClanTagColor = args[4].GetInt();
 	clanCreateParams.ClanEmblemID = args[5].GetInt();
 
-	if(strpbrk(clanCreateParams.ClanName, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½ ¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒ ÓÔÕÖ×ØÙÚàáâãäåæçèéêëìíî")!=NULL) // do not allow this symbols
+	if(strpbrk(clanCreateParams.ClanName, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")!=NULL) // do not allow this symbols
 	{
 		Scaleform::GFx::Value var[2];
 		var[0].SetString(gLangMngr.getString("ClanNameNoSpecSymbols"));
@@ -4765,7 +4765,7 @@ void FrontendWarZ::eventCreateClan(r3dScaleformMovie* pMovie, const Scaleform::G
 		gfxMovie.Invoke("_root.api.showInfoMsg", var, 2);
 		return;
 	}
-	if(strpbrk(clanCreateParams.ClanTag, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½ ¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒ ÓÔÕÖ×ØÙÚàáâãäåæçèéêëìíî")!=NULL) // do not allow this symbols
+	if(strpbrk(clanCreateParams.ClanTag, "!@#$%^&*()-=+_<>,./?'\":;|{}[] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")!=NULL) // do not allow this symbols
 	{
 		Scaleform::GFx::Value var[2];
 		var[0].SetString(gLangMngr.getString("ClanTagNoSpecSymbols"));
@@ -4793,7 +4793,7 @@ bool FrontendWarZ::processClanError(int api)
 	if(api >= 20 && api <= 29)
 	{
 		char tmpStr[64];
-		sprintf(tmpStr, "ClanError_Code%d", api);
+		sprintf_s(tmpStr, sizeof(tmpStr), "ClanError_Code%d", api);
 		SetAsyncError(0, gLangMngr.getString(tmpStr));
 		return true;
 	}
@@ -4873,7 +4873,7 @@ void FrontendWarZ::eventClanAdminDonateGC(r3dScaleformMovie* pMovie, const Scale
 		return;
 	}
 
-	char tmpStr[32]; sprintf(tmpStr, "%d GC", clans->clanInfo_.ClanGP);
+	char tmpStr[32]; sprintf_s(tmpStr, sizeof(tmpStr), "%d GC", clans->clanInfo_.ClanGP);
 	gfxMovie.SetVariable("_root.api.Main.ClansMyClan.MyClan.OptionsBlock3.GC.text", tmpStr);
 }
 
@@ -5073,7 +5073,7 @@ void FrontendWarZ::eventClanDonateGCToClan(r3dScaleformMovie* pMovie, const Scal
 		gfxMovie.Invoke("_root.api.showInfoMsg", var, 2);
 		return;
 	}
-	char tmpStr[32]; sprintf(tmpStr, "%d GC", clans->clanInfo_.ClanGP);
+	char tmpStr[32]; sprintf_s(tmpStr, sizeof(tmpStr), "%d GC", clans->clanInfo_.ClanGP);
 	gfxMovie.SetVariable("_root.api.Main.ClansMyClan.MyClan.OptionsBlock3.GC.text", tmpStr);
 }
 
@@ -5405,7 +5405,7 @@ void FrontendWarZ::eventStorePurchaseGDCallback(r3dScaleformMovie* pMovie, const
 	int GDResult = gUserProfile.GetConvertedGP2GD(priceInGC, conv);
 
 	char tmpStr[64];
-	sprintf(tmpStr, "1GC = %d", conv);
+	sprintf_s(tmpStr, sizeof(tmpStr), "1GC = %d", conv);
 
 	gfxMovie.SetVariable("_root.api.Main.PurchaseGC.Bar.Rate.text", tmpStr);
 
@@ -5420,7 +5420,7 @@ void FrontendWarZ::eventStorePurchaseGPCallback(r3dScaleformMovie* pMovie, const
 	int conv = GetGPConversionRateFromPrice(priceInCents);
 
 	char tmpStr[64];
-	sprintf(tmpStr, "$1 = %d", conv);
+	sprintf_s(tmpStr, sizeof(tmpStr), "$1 = %d", conv);
 
 	gfxMovie.SetVariable("_root.api.Main.PurchaseGC.Bar.Rate.text", tmpStr);
 
@@ -5577,32 +5577,32 @@ void FrontendWarZ::OnRequestLeaderboardSuccess()
 				default:
 					break;
 				}
-				sprintf(tmpPlrName, "<font color='%s'>[%s]</font> <font color='#D42F2F'>%s</font>", tagColor, gUserProfile.m_lbData[leaderboard_requestTableID][i].ClanTag, gUserProfile.m_lbData[leaderboard_requestTableID][i].gamertag);
+				sprintf_s(tmpPlrName, sizeof(tmpPlrName), "<font color='%s'>[%s]</font> <font color='#D42F2F'>%s</font>", tagColor, gUserProfile.m_lbData[leaderboard_requestTableID][i].ClanTag, gUserProfile.m_lbData[leaderboard_requestTableID][i].gamertag);
 			}
 			else
-				sprintf(tmpPlrName, "<font color='#D42F2F'>%s</font>", gUserProfile.m_lbData[leaderboard_requestTableID][i].gamertag);
+				sprintf_s(tmpPlrName, sizeof(tmpPlrName), "<font color='#D42F2F'>%s</font>", gUserProfile.m_lbData[leaderboard_requestTableID][i].gamertag);
 			args[1].SetString(tmpPlrName);
 			args[2].SetBoolean(gUserProfile.m_lbData[leaderboard_requestTableID][i].Alive>0);
 			switch(leaderboard_BoardSelected)
 			{
 			case 0:
-				sprintf(tmpStr, "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.XP);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.XP);
 				break;
 			case 1:
 				r3dscpy(tmpStr, getTimePlayedString(gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.TimePlayed));
 				break;
 			case 2:
-				sprintf(tmpStr, "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.KilledZombies);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.KilledZombies);
 				break;
 			case 3:
-				sprintf(tmpStr, "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.KilledSurvivors);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.KilledSurvivors);
 				break;
 			case 4:
-				sprintf(tmpStr, "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.KilledBandits);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.KilledBandits);
 				break;
 			case 5:
 			case 6:
-				sprintf(tmpStr, "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.Reputation);
+				sprintf_s(tmpStr, sizeof(tmpStr), "%d", gUserProfile.m_lbData[leaderboard_requestTableID][i].stats.Reputation);
 				break;
 			default:
 				r3d_assert(false);
@@ -5691,14 +5691,14 @@ void FrontendWarZ::OnRequestGCTransactionSuccess()
 		Scaleform::GFx::Value args[5];
 
 		char strAmount[64];
-		sprintf(strAmount, "%+d", gl.Amount);
-		
+		sprintf_s(strAmount, sizeof(strAmount), "%+d", gl.Amount);
+
 		struct tm* tm = _gmtime32(&gl.Time);
 		char strTime[64];
-		sprintf(strTime, "%d/%d/%d", tm->tm_mon + 1, tm->tm_mday, 1900 + tm->tm_year);
-		
+		sprintf_s(strTime, sizeof(strTime), "%d/%d/%d", tm->tm_mon + 1, tm->tm_mday, 1900 + tm->tm_year);
+
 		char strBalance[64];
-		sprintf(strBalance, "%d", gl.Previous + gl.Amount);
+		sprintf_s(strBalance, sizeof(strBalance), "%d", gl.Previous + gl.Amount);
 		
 		char strDesc[256*2] = "";
 		r3dscpy(strDesc, gl.Description.c_str());
@@ -5711,9 +5711,9 @@ void FrontendWarZ::OnRequestGCTransactionSuccess()
 			if(itemCfg)
 			{
 				if(ItemID == 301159 || ItemID == 301257 || ItemID == 301256 || ItemID == 301259 || ItemID == 301399) // early revival item or premium acc
-					sprintf(strDesc, "%s", itemCfg->m_StoreName);
+					strcpy_s(strDesc, sizeof(strDesc), itemCfg->m_StoreName);
 				else
-					sprintf(strDesc, "Marketplace: %s", itemCfg->m_StoreName);
+					sprintf_s(strDesc, sizeof(strDesc), "Marketplace: %s", itemCfg->m_StoreName);
 			}
 		}
 		
@@ -5774,14 +5774,14 @@ void FrontendWarZ::OnRequestLotterySuccess()
 
 		struct tm* tm = _gmtime32(&gl.Time);
 		char strTime[64];
-		sprintf(strTime, "%d/%d/%d", tm->tm_mon + 1, tm->tm_mday, 1900 + tm->tm_year);
+		sprintf_s(strTime, sizeof(strTime), "%d/%d/%d", tm->tm_mon + 1, tm->tm_mday, 1900 + tm->tm_year);
 
 		char strUID[256] = "";
 		r3dscpy(strUID, gl.UserID.c_str());
 		char Bank[64] = { 0 };
-		sprintf(Bank, "%s <font color = \"#3DB7E5\">%d GD</font>", gLangMngr.getString("$FR_TOTAL_BANK"), gl.Bank);
+		sprintf_s(Bank, sizeof(Bank), "%s <font color = \"#3DB7E5\">%d GD</font>", gLangMngr.getString("$FR_TOTAL_BANK"), gl.Bank);
 		char strChance[32] = "";
-		sprintf(strChance, "~ %s %%", gl.Chance.c_str());
+		sprintf_s(strChance, sizeof(strChance), "~ %s %%", gl.Chance.c_str());
 		
 		args[0].SetInt(gl.ID);
 		args[1].SetString(strTime);
@@ -5803,13 +5803,13 @@ void FrontendWarZ::OnRequestLotterySuccess()
 
 		struct tm* tm = _gmtime32(&wl.Time);
 		char strTime[64];
-		sprintf(strTime, "<font color=\"#777777\">%d/%d/%d </font>", tm->tm_mon + 1, tm->tm_mday, 1900 + tm->tm_year);
+		sprintf_s(strTime, sizeof(strTime), "<font color=\"#777777\">%d/%d/%d </font>", tm->tm_mon + 1, tm->tm_mday, 1900 + tm->tm_year);
 
 		char strWUID[256] = "";
 		r3dscpy(strWUID, wl.WUserID.c_str());
 
 		char strJackpot[64];
-		sprintf(strJackpot, "<font color=\"#0da5df\"> +%d</font>", wl.Jackpot);
+		sprintf_s(strJackpot, sizeof(strJackpot), "<font color=\"#0da5df\"> +%d</font>", wl.Jackpot);
 
 		args[0].SetString(strTime);
 		args[1].SetString(strWUID);
@@ -5909,11 +5909,11 @@ void FrontendWarZ::OnMyServerListSuccess()
 		bool serverExpired = false;
 		if(srv.WorkHours >= srv.RentHours)
 		{
-			sprintf(timeLeft, gLangMngr.getString("ServerStatus_Expired"));
+			strcpy_s(timeLeft, sizeof(timeLeft), gLangMngr.getString("ServerStatus_Expired"));
 			serverExpired = true;
 		}
 		else
-			sprintf(timeLeft, gLangMngr.getString("ServerRental_TimeLeft"), (srv.RentHours - srv.WorkHours) / 24, (srv.RentHours - srv.WorkHours) % 24);
+			sprintf_s(timeLeft, sizeof(timeLeft), gLangMngr.getString("ServerRental_TimeLeft"), (srv.RentHours - srv.WorkHours) / 24, (srv.RentHours - srv.WorkHours) % 24);
 
 		const char* status = gLangMngr.getString("ServerStatus_Unknown");
 		switch(srv.status) 
@@ -6607,7 +6607,7 @@ void FrontendWarZ::OnLearnSkillSuccess()
 		Scaleform::GFx::Value var[2];
 		char tmpGamertag[128];
 		if(slot.ClanID != 0)
-			sprintf(tmpGamertag, "[%s] %s", slot.ClanTag, slot.Gamertag);
+			sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", slot.ClanTag, slot.Gamertag);
 		else
 			r3dscpy(tmpGamertag, slot.Gamertag);
 		var[0].SetString(tmpGamertag);
@@ -6692,7 +6692,7 @@ unsigned int WINAPI FrontendWarZ::as_CharRenameThread(void* in_data)
 		// temp sring. maybe create a valid date and show it
 		int daysLeft = minutesLeft/1440;
 		int hoursLeft = minutesLeft/60;
-		sprintf(buf, gLangMngr.getString("ChangeNameTimeError"), (daysLeft>0)?(daysLeft):(hoursLeft), (daysLeft>0)?gLangMngr.getString("$FR_Store_PluralDay"):gLangMngr.getString("$FR_PAUSE_INVENTORY_HOURS"));
+		sprintf_s(buf, sizeof(buf), gLangMngr.getString("ChangeNameTimeError"), (daysLeft>0)?(daysLeft):(hoursLeft), (daysLeft>0)?gLangMngr.getString("$FR_Store_PluralDay"):gLangMngr.getString("$FR_PAUSE_INVENTORY_HOURS"));
 		This->SetAsyncError(0, buf);
 		return 0;
 	}
@@ -6719,8 +6719,8 @@ void FrontendWarZ::OnCharRenameSuccess()
 		char tmpGamertag[128];
 		if(slot.ClanID != 0)
 		{
-			sprintf(tmpGamertag_old, "[%s] %s", slot.ClanTag, CharRename_PreviousName);
-			sprintf(tmpGamertag, "[%s] %s", slot.ClanTag, slot.Gamertag);
+			sprintf_s(tmpGamertag_old, sizeof(tmpGamertag_old), "[%s] %s", slot.ClanTag, CharRename_PreviousName);
+			sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", slot.ClanTag, slot.Gamertag);
 		}
 		else
 		{
@@ -6770,9 +6770,9 @@ void FrontendWarZ::eventTrialRequestUpgrade(r3dScaleformMovie* pMovie, const Sca
 	{
 		char url[256];
 		if(gUserProfile.ProfileData.AccountType == 21)
-			sprintf(url, "http://infestationmmo.ru/buy");
+			strcpy_s(url, sizeof(url), "http://infestationmmo.ru/buy");
 		else
-			sprintf(url, "https://127.0.0.1.com/#getgame");
+			strcpy_s(url, sizeof(url), "https://127.0.0.1.com/#getgame");
 		ShellExecute(NULL, "open", url, "", NULL, SW_SHOW);
 	}
 
@@ -6845,7 +6845,7 @@ void FrontendWarZ::eventBuyPremiumAccount(r3dScaleformMovie* pMovie, const Scale
         mStore_BuyItemID = 301259;
 		mStore_BuyPrice = gUserProfile.ShopPremiumAcc30;
 	}
-	// ¶éÒÁÕÃÐººÃÐºØ¨Ó¹Ç¹ãÊè
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðºï¿½ï¿½ÐºØ¨Ó¹Ç¹ï¿½ï¿½ï¿½
 	mStore_BuyQuantity = 1;
 	mStore_BuyPriceGD = 0;
 
@@ -7036,7 +7036,7 @@ unsigned int WINAPI FrontendWarZ::as_DonateToServerThread(void* in_data)
 	if(apiCode == 4)
 	{
 		char buf[512];
-		sprintf(buf, gLangMngr.getString("ServerRent_DonateNeedWait"), HoursLeft);
+		sprintf_s(buf, sizeof(buf), gLangMngr.getString("ServerRent_DonateNeedWait"), HoursLeft);
 		This->SetAsyncError(0, buf);
 		return 0;
 	}
@@ -7268,7 +7268,7 @@ void FrontendWarZ::eventUnlockPinKeyAccount(r3dScaleformMovie* pMovie, const Sca
 		if (gUserProfile.GetProfile() == 0)
 		{
 			char count[512];
-			sprintf(count, gLangMngr.getString("SetPin_WrongKey"), 3 - gUserProfile.BadPinLoginCount);
+			sprintf_s(count, sizeof(count), gLangMngr.getString("SetPin_WrongKey"), 3 - gUserProfile.BadPinLoginCount);
 			msg = count;
 
 			SoundSys.PlayAndForget(SoundSys.GetEventIDByPath("Sounds/PinLogin/Error"), r3dPoint3D(0, 0, 0));

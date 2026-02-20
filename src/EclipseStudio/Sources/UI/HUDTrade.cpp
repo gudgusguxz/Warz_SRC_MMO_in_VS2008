@@ -354,7 +354,7 @@ void HUDTrade::Activate(const char* plrNameToTradeWith)
 		wiCharDataFull& slot = plr->CurLoadout;
 		char tmpGamertag[128];
 		if(plr->ClanID != 0)
-			sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+			sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 		else
 			r3dscpy(tmpGamertag, slot.Gamertag);
 		var[0].SetString(tmpGamertag);
@@ -510,7 +510,7 @@ void HUDTrade::updateSurvivorTotalWeight()
 	Scaleform::GFx::Value var[2];
 	char tmpGamertag[128];
 	if(plr->ClanID != 0)
-		sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, playerBackpackForTrade.Gamertag);
+		sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, playerBackpackForTrade.Gamertag);
 	else
 		r3dscpy(tmpGamertag, playerBackpackForTrade.Gamertag);
 

@@ -1613,10 +1613,10 @@ void Terrain3Editor::OptimizeLayerMasks()
 		m_UnpackedMaskTilesCache.clear();
 
 		char message[ 256 ];
-		sprintf( message, 
-						"Deleted %d masks ( %.2f MB )\nRemoved %d layer info entries", 
-						stats.NumDeletedMasks, 
-						( stats.NumDeletedMasks * Terrain3->GetMaskTileSizeInFile() ) / 1024.f / 1024.f, 
+		sprintf_s( message, sizeof(message),
+						"Deleted %d masks ( %.2f MB )\nRemoved %d layer info entries",
+						stats.NumDeletedMasks,
+						( stats.NumDeletedMasks * Terrain3->GetMaskTileSizeInFile() ) / 1024.f / 1024.f,
 						stats.NumDeletedLayerInfos );
 
 		MessageBoxA( r3dRenderer->HLibWin, message, "Optimization Results", MB_OK );
@@ -2210,7 +2210,7 @@ Terrain3Editor::ExportHeight( const char* path, int cellOffsetX, int cellOffsetZ
 static void ReportTileBordersRecalc( int i, int e )
 {
 	char buf[ 512 ];
-	sprintf( buf, "Stitching %d of %d", i, e );
+	sprintf_s( buf, sizeof(buf), "Stitching %d of %d", i, e );
 	Terrain3->ReportProgress( buf );
 }
 
@@ -2255,7 +2255,7 @@ void Terrain3Editor::RecalcAllMasksMipMaps()
 					{
 						lastInfoFrame = r3dGetTime();
 						char buf[ 512 ];
-						sprintf( buf, "Clearing (%d,%d,%d)", tx, tz, L );
+						sprintf_s( buf, sizeof(buf), "Clearing (%d,%d,%d)", tx, tz, L );
 						Terrain3->ReportProgress( buf );
 					}
 
@@ -2280,7 +2280,7 @@ void Terrain3Editor::RecalcAllMasksMipMaps()
 					{
 						lastInfoFrame = r3dGetTime();
 						char buf[ 512 ];
-						sprintf( buf, "Calculating (%d,%d,%d)", tx, tz, L );
+						sprintf_s( buf, sizeof(buf), "Calculating (%d,%d,%d)", tx, tz, L );
 						Terrain3->ReportProgress( buf );
 					}
 
@@ -2361,7 +2361,7 @@ void Terrain3Editor::RebuildLayerInfo()
 					{
 						lastInfoFrame = r3dGetTime();
 						char buf[ 512 ];
-						sprintf( buf, "Rebuilding layer info (%d,%d,%d)", tx, tz, L );
+						sprintf_s( buf, sizeof(buf), "Rebuilding layer info (%d,%d,%d)", tx, tz, L );
 						Terrain3->ReportProgress( buf );
 					}
 
@@ -2445,7 +2445,7 @@ void Terrain3Editor::RecalcAllHeightMipMaps()
 				{
 					lastInfoFrame = r3dGetTime();
 					char buf[ 512 ];
-					sprintf( buf, "Rebuilding height mips (%d,%d,%d)", tx, tz, L );
+					sprintf_s( buf, sizeof(buf), "Rebuilding height mips (%d,%d,%d)", tx, tz, L );
 					Terrain3->ReportProgress( buf );
 				}
 
@@ -2707,7 +2707,7 @@ int Terrain3Editor::ImportLayer( const char* path, int layerIndex, int cellOffse
 	if( dxii.Width % MASKTILEDIM || dxii.Height % MASKTILEDIM )
 	{
 		char msg[ 256 ];
-		sprintf( msg, "Imported texture dimensions must be multiples of %d!", MASKTILEDIM );
+		sprintf_s( msg, sizeof(msg), "Imported texture dimensions must be multiples of %d!", MASKTILEDIM );
 		MessageBox( r3dRenderer->HLibWin, msg, "Error", MB_OK );
 		return 0;
 	}
@@ -2752,7 +2752,7 @@ int Terrain3Editor::ImportLayer( const char* path, int layerIndex, int cellOffse
 			{
 				lastInfoFrame = r3dGetTime();
 				char buf[ 512 ];
-				sprintf( buf, "Importing (%d,%d)", tx, tz );
+				sprintf_s( buf, sizeof(buf), "Importing (%d,%d)", tx, tz );
 				Terrain3->ReportProgress( buf );
 			}
 
@@ -2910,7 +2910,7 @@ int Terrain3Editor::ImportLayer_RawTiles( const char* path, int layerIndex )
 					{
 						lastInfoFrame = r3dGetTime();
 						char buf[ 512 ];
-						sprintf( buf, "Cleaning (%d,%d,%d,%d)", tx, tz, L, maskId );
+						sprintf_s( buf, sizeof(buf), "Cleaning (%d,%d,%d,%d)", tx, tz, L, maskId );
 						Terrain3->ReportProgress( buf );
 					}
 
@@ -2946,7 +2946,7 @@ int Terrain3Editor::ImportLayer_RawTiles( const char* path, int layerIndex )
 		{
 			lastInfoFrame = r3dGetTime();
 			char buf[ 512 ];
-			sprintf( buf, "Importing %d of %d", tile, tileCount );
+			sprintf_s( buf, sizeof(buf), "Importing %d of %d", tile, tileCount );
 			Terrain3->ReportProgress( buf );
 		}
 
@@ -3207,10 +3207,10 @@ int Terrain3Editor::SwapLayers( int layerIndex0, int layerIndex1 )
 	char tempFilePath1[ 1024 ] = { 0 };
 
 	GetTempPath( sizeof tempFilePath0 - 1, tempFilePath0 );
-	strcat( tempFilePath0, "\\layer0.dat" );
+	strcat_s( tempFilePath0, sizeof(tempFilePath0), "\\layer0.dat" );
 
 	GetTempPath( sizeof tempFilePath1 - 1, tempFilePath1 );
-	strcat( tempFilePath1, "\\layer1.dat" );
+	strcat_s( tempFilePath1, sizeof(tempFilePath1), "\\layer1.dat" );
 
 	int res = 0x7ffffff;
 
@@ -3418,7 +3418,7 @@ void Terrain3Editor::FinishTasksWithReporting()
 			{
 				lastInfoFrame = r3dGetTime();
 				char buf[ 512 ];
-				sprintf( buf, "Finishing tasks (%d)", g_pBackgroundTaskDispatcher->GetTaskCount() );
+				sprintf_s( buf, sizeof(buf), "Finishing tasks (%d)", g_pBackgroundTaskDispatcher->GetTaskCount() );
 				Terrain3->ReportProgress( buf );
 			}
 		}

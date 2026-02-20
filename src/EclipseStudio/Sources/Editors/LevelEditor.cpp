@@ -2564,7 +2564,7 @@ void VFS_CreateDirectoryRecursive( const char * szName, bool bAddSlash = true )
 
 	size_t szNameLen = strlen ( szName );
 	if ( bAddSlash && szName[szNameLen - 1] != '\\' && szName[szNameLen - 1] != '/' )
-		sprintf ( data, "%s/", szName );
+		sprintf_s ( data, sizeof(data), "%s/", szName );
 	else
 		r3dscpy( data, szName );
 
@@ -2592,8 +2592,8 @@ void VFS_CreateDirectoryRecursive( const char * szName, bool bAddSlash = true )
 		size_t ipos = strlen( data ) - strlen( pdata );
 		memcpy( creation_path, data, ipos );
 		creation_path[ ipos ] = '\0';
-		strcat( szStoreDir, creation_path );
-		strcat( szStoreDir, "/" );
+		strcat_s( szStoreDir, sizeof(szStoreDir), creation_path );
+		strcat_s( szStoreDir, sizeof(szStoreDir), "/" );
 		CreateDirectory( szStoreDir, NULL );
 		r3dscpy( data, data + ipos + 1 );
 	}
@@ -2604,7 +2604,7 @@ void CopyRecursive ( const char * szFrom, const char * szTo, const char **dIgnor
 {
 	// copy recursive
 	char szFindStr [MAX_PATH];
-	sprintf ( szFindStr, "%s/*.*", szFrom );
+	sprintf_s ( szFindStr, sizeof(szFindStr), "%s/*.*", szFrom );
 
 	WIN32_FIND_DATA	 win32_data;
 	HANDLE pFile = FindFirstFile ( szFindStr, &win32_data );
@@ -2638,8 +2638,8 @@ void CopyRecursive ( const char * szFrom, const char * szTo, const char **dIgnor
 			{
 				char szFromNew [MAX_PATH];
 				char szToNew [MAX_PATH];
-				sprintf ( szFromNew, "%s/%s", szFrom, win32_data.cFileName );
-				sprintf ( szToNew, "%s/%s", szTo, win32_data.cFileName );
+				sprintf_s ( szFromNew, sizeof(szFromNew), "%s/%s", szFrom, win32_data.cFileName );
+				sprintf_s ( szToNew, sizeof(szToNew), "%s/%s", szTo, win32_data.cFileName );
 				
 				CreateDirectory ( szToNew, NULL );
 				CopyRecursive ( szFromNew, szToNew, dIgnoreFiles );
@@ -2648,8 +2648,8 @@ void CopyRecursive ( const char * szFrom, const char * szTo, const char **dIgnor
 			{
 				char szFileFrom [MAX_PATH];
 				char szFileTo [MAX_PATH];
-				sprintf ( szFileFrom, "%s/%s", szFrom, win32_data.cFileName );
-				sprintf ( szFileTo, "%s/%s", szTo, win32_data.cFileName );
+				sprintf_s ( szFileFrom, sizeof(szFileFrom), "%s/%s", szFrom, win32_data.cFileName );
+				sprintf_s ( szFileTo, sizeof(szFileTo), "%s/%s", szTo, win32_data.cFileName );
 
 				CopyFile ( szFileFrom, szFileTo, FALSE );
 			}
@@ -3080,10 +3080,10 @@ static int WriteLevelMatLib(r3dgfxVector(r3dMaterial*)& usedMats, const char* ma
   {
     // minor hack to save OriginalDir to room.mat
     char depot[MAX_PATH];
-    sprintf(depot, usedMats[i]->DepotName);
+    strcpy_s(depot, sizeof(depot), usedMats[i]->DepotName);
     *usedMats[i]->DepotName = 0;
     usedMats[i]->SaveAscii(f);
-    sprintf(usedMats[i]->DepotName, depot);
+    strcpy_s(usedMats[i]->DepotName, sizeof(usedMats[i]->DepotName), depot);
   }
   fclose(f);
 
@@ -3158,8 +3158,8 @@ static int CreateLevelMatLib()
   char matLibFile[MAX_PATH];
   char matLibTextures[MAX_PATH];
 
-  sprintf(matLibFile, "%s\\room.mat", r3dGameLevel::GetSaveDir());
-  sprintf(matLibTextures, "%s\\textures\\", r3dGameLevel::GetSaveDir());
+  sprintf_s(matLibFile, sizeof(matLibFile), "%s\\room.mat", r3dGameLevel::GetSaveDir());
+  sprintf_s(matLibTextures, sizeof(matLibTextures), "%s\\textures\\", r3dGameLevel::GetSaveDir());
   
   r3dgfxVector(r3dMaterial*) usedMats = GetUsedMaterials ();
   
@@ -3187,11 +3187,11 @@ void SaveLevelObject ( pugi::xml_node & curNode, GameObject *obj )
 //		__asm nop;
 
 	// save floats at %.4f to make merging easier
-	sprintf(temp_str, "%.4f", pos.x);
+	sprintf_s(temp_str, sizeof(temp_str), "%.4f", pos.x);
 	xmlObjectPos.append_attribute("x") = temp_str;
-	sprintf(temp_str, "%.4f", pos.y);
+	sprintf_s(temp_str, sizeof(temp_str), "%.4f", pos.y);
 	xmlObjectPos.append_attribute("y") = temp_str;
-	sprintf(temp_str, "%.4f", pos.z);
+	sprintf_s(temp_str, sizeof(temp_str), "%.4f", pos.z);
 	xmlObjectPos.append_attribute("z") = temp_str;
 	obj->WriteSerializedData(xmlObject);
 }
@@ -3241,7 +3241,7 @@ void SaveLevelData ( pugi::xml_node & curNode, ESerializeFile sfType )
 							PrefabsToClean::iterator found = prefabsToClean.find(p->prefabName);
 							if (found == prefabsToClean.end())
 							{
-								sprintf(buf, "Prefab '%s' have objects with improperly loaded meshes! Delete those objects from prefab definition?", p->Name.c_str());
+								sprintf_s(buf, sizeof(buf), "Prefab '%s' have objects with improperly loaded meshes! Delete those objects from prefab definition?", p->Name.c_str());
 								int cleanPrefab = MessageBox(r3dRenderer->HLibWin, buf, "Attention!", MB_YESNO) == IDYES;
 
 								prefabsToClean.insert(PrefabsToClean::value_type(p->prefabName, cleanPrefab ? p : 0)) ;
@@ -3259,7 +3259,7 @@ void SaveLevelData ( pugi::xml_node & curNode, ESerializeFile sfType )
 
 							if( found == missingMeshes.end() )
 							{
-								sprintf(	buf, "Mesh '%s' is missing! Delete objects with '%s' from level?", 
+								sprintf_s(	buf, sizeof(buf), "Mesh '%s' is missing! Delete objects with '%s' from level?",
 											mesh->FileName.c_str(),
 											mesh->FileName.c_str() ) ;
 
@@ -3311,7 +3311,7 @@ void SaveLevelData( char* Str )
 
 	//	Saving objects into LevelData
 	SaveLevelData ( xmlLevel, SF_LevelData);
-	sprintf(Str, "%s\\LevelData.xml", r3dGameLevel::GetSaveDir());
+	sprintf_s(Str, 512, "%s\\LevelData.xml", r3dGameLevel::GetSaveDir()); // TODO: verify buffer size
 	xmlLevelFile.save_file(Str);
 
 	//	Saving objects into SoundData
@@ -3321,7 +3321,7 @@ void SaveLevelData( char* Str )
 	xmlSound.set_name("sounds");
 
 	SaveLevelData(xmlSound, SF_SoundData);
-	sprintf(Str, "%s\\SoundData.xml", r3dGameLevel::GetSaveDir());
+	sprintf_s(Str, 512, "%s\\SoundData.xml", r3dGameLevel::GetSaveDir()); // TODO: verify buffer size
 	xmlSoundFile.save_file(Str);
 
 	//	Saving objects into ServerData
@@ -3331,7 +3331,7 @@ void SaveLevelData( char* Str )
 	xmlServer.set_name("server_objects");
 
 	SaveLevelData(xmlServer, SF_ServerData);
-	sprintf(Str, "%s\\ServerData.xml", r3dGameLevel::GetSaveDir());
+	sprintf_s(Str, 512, "%s\\ServerData.xml", r3dGameLevel::GetSaveDir()); // TODO: verify buffer size
 	xmlServerFile.save_file(Str);
 }
 
@@ -3386,7 +3386,7 @@ void SaveXMLSettings( const char* targetDir )
 	r3dGameLevel::Environment->SaveToXML( xmlRoot );
 
 	char XMLFilePath[ MAX_PATH ] ;
-	sprintf( XMLFilePath, "%s/LevelSettings.xml", targetDir );
+	sprintf_s( XMLFilePath, sizeof(XMLFilePath), "%s/LevelSettings.xml", targetDir );
 
 	xmlFile.save_file( XMLFilePath );
 }
@@ -3499,7 +3499,7 @@ void Editor_Level::SaveLevel( const char* targetDir, bool showSign, bool autoSav
 
 	SaveSettings( targetDir );
 
-	sprintf( FName, FNAME_CLOUD_LIB, targetDir );
+	sprintf_s( FName, sizeof(FName), FNAME_CLOUD_LIB, targetDir );
 	
 
 	g_pDecalChief->SaveLevel( targetDir );
@@ -3563,7 +3563,7 @@ Editor_Level::ToDamageLib( const char* MeshName )
 {
 	MainToolIdx			= EDITMODE_OBJECTS ;
 	ObjcategoryEditMode	= OBEM_DAMAGELIB ;
-	strncpy( DesiredDamageLibEntry, MeshName, sizeof DesiredDamageLibEntry - 1 );
+	strncpy_s( DesiredDamageLibEntry, sizeof(DesiredDamageLibEntry), MeshName, sizeof DesiredDamageLibEntry - 1 );
 }
 
 extern int __RepositionObjectsOnTerrain;
@@ -3903,7 +3903,7 @@ void DEBUG_DrawSceneBoxes()
 
 		char sceneBoxMsg[ 256 ];
 
-		sprintf( sceneBoxMsg, "Traversed %d( max %d )", stats.NumTraversedNodes, stats.MaxTraversedNodes );
+		sprintf_s( sceneBoxMsg, sizeof(sceneBoxMsg), "Traversed %d( max %d )", stats.NumTraversedNodes, stats.MaxTraversedNodes );
 		
 		_r3dSystemFont->PrintF( 10, 220, r3dColor24::white, sceneBoxMsg );
 	}
@@ -3993,8 +3993,8 @@ static void UpdateAutoSave( Editor_Level* lev )
 			levelless += sizeof "Levels\\" - 1 ;
 		}
 
-		sprintf(	path, "%s/%s/AutoSave_%d.%02d.%02d_%02d-%02d-%02d", 
-					autoSaveFolder, 
+		sprintf_s(	path, sizeof(path), "%s/%s/AutoSave_%d.%02d.%02d_%02d-%02d-%02d",
+					autoSaveFolder,
 					levelless,
 					ttm->tm_year + 1900, ttm->tm_mon + 1, ttm->tm_mday,
 					ttm->tm_hour, ttm->tm_min, ttm->tm_sec ) ;
@@ -4011,7 +4011,7 @@ static void UpdateAutoSave( Editor_Level* lev )
 		DirMap mapped ;
 
 		char multipleAutoFolder[ MAX_PATH * 3 ] ;
-		sprintf( multipleAutoFolder, "%s/%s/*.*", autoSaveFolder, levelless ) ;
+		sprintf_s( multipleAutoFolder, sizeof(multipleAutoFolder), "%s/%s/*.*", autoSaveFolder, levelless ) ;
 
 		HANDLE hFind;
 		BOOL bContinue = TRUE;
@@ -4025,7 +4025,7 @@ static void UpdateAutoSave( Editor_Level* lev )
 			{
 				int year, month, date, hour, minute, second ;
 
-				if( sscanf( data.cFileName, "AutoSave_%d.%02d.%02d_%02d-%02d-%02d", &year, &month, &date, &hour, &minute, &second ) == 6 )
+				if( sscanf_s( data.cFileName, "AutoSave_%d.%02d.%02d_%02d-%02d-%02d", &year, &month, &date, &hour, &minute, &second ) == 6 )
 				{
 					mapped.insert(	DirMap::value_type
 										(	
@@ -4054,7 +4054,7 @@ static void UpdateAutoSave( Editor_Level* lev )
 
 			for( DirMap::const_iterator i = mapped.begin(), e = mapped.end() ; i != e && toDelete ; ++ i, toDelete -- )
 			{
-				sprintf( path, "%s%s", multipleAutoFolder, i->second.c_str() ) ;
+				sprintf_s( path, sizeof(path), "%s%s", multipleAutoFolder, i->second.c_str() ) ;
 				r3d_delete_dir( path ) ;
 			}
 		}
@@ -4236,7 +4236,7 @@ void Editor_Level :: Process(bool enable)
 		{
 			char text[ 1024 ];
 
-			sprintf( text, "%s FPS %3.1f[%02.2fms] Objs:[%d] Cam:[%3.1f|%3.1f|%3.1f] Tri:%d ", LevelName, r3dGetAvgFPS(), 1000.0f / r3dGetAvgFPS(), numObjects , gCam.x, gCam.y, gCam.z, r3dRenderer->Stats.GetNumTrianglesRendered() );
+			sprintf_s( text, sizeof(text), "%s FPS %3.1f[%02.2fms] Objs:[%d] Cam:[%3.1f|%3.1f|%3.1f] Tri:%d ", LevelName, r3dGetAvgFPS(), 1000.0f / r3dGetAvgFPS(), numObjects , gCam.x, gCam.y, gCam.z, r3dRenderer->Stats.GetNumTrianglesRendered() );
 
 			SIZE sz;
 			Font_Label->GetTextExtent( text, &sz );
@@ -4259,7 +4259,7 @@ void Editor_Level :: Process(bool enable)
 				drawsColor = r3dColor::yellow;
 			}
 
-			sprintf( text, "Draw:%d", numDraws );
+			sprintf_s( text, sizeof(text), "Draw:%d", numDraws );
 
 			Font_Label->GetTextExtent( text, &sz );
 
@@ -4914,7 +4914,7 @@ void Editor_Level :: ProcessSettings()
 							SliderY += imgui_Value_Slider( SliderX, SliderY, "Load Radius", &sts.KeepAliveRadius, 256.f, 3072.f, "%.0f" );
 
 							char msg[ 512 ];
-							sprintf( msg, "Radius according to QL settings: %.2f", sts.KeepAliveRadius * r_sector_keep_alive_coef->GetFloat() );
+							sprintf_s( msg, sizeof(msg), "Radius according to QL settings: %.2f", sts.KeepAliveRadius * r_sector_keep_alive_coef->GetFloat() );
 
 							SliderY += imgui_Static( SliderX, SliderY, msg );
 
@@ -5047,14 +5047,14 @@ extern int		bDaySim;
 					SliderY += imgui_Static( SliderX, SliderY, "ULTRA (SOFT) SHADOW BIAS" );
 					for(int i=0; i<NumShadowSlices; ++i)
 					{
-						sprintf(StrS1, "Slice %d bias", i+1);
+						sprintf_s(StrS1, sizeof(StrS1), "Slice %d bias", i+1);
 						SliderY += imgui_Value_Slider(SliderX, SliderY, StrS1, &ShadowSlices[i].depthBias, 0,0.00025f,		"%-02.8f",1);
 					}
 
 					SliderY += imgui_Static( SliderX, SliderY, "HARDWARE SHADOW BIAS ( MED-HIGH )" );
 					for(int i=0; i<NumShadowSlices; ++i)
 					{
-						sprintf(StrS1,"Slice %d bias", i+1);
+						sprintf_s(StrS1, sizeof(StrS1), "Slice %d bias", i+1);
 						SliderY += imgui_Value_Slider(SliderX, SliderY, StrS1, &ShadowSlices[i].depthBias_HW, 0,0.00025f,	"%-02.8f",1);
 					}
 
@@ -5075,7 +5075,7 @@ extern int		bDaySim;
 					r_shadow_slice2_min_size->SetFloat( slice2_min_size );
 
 					char shadowDipsMsg[ 512 ];
-					sprintf( shadowDipsMsg, "Shadow dips: %d\n", r3dRenderer->Stats.GetNumShadowDips() );
+					sprintf_s( shadowDipsMsg, sizeof(shadowDipsMsg), "Shadow dips: %d\n", r3dRenderer->Stats.GetNumShadowDips() );
 					SliderY += imgui_Static( SliderX, SliderY, shadowDipsMsg );
 
 					//------------------------------------------------------------------------
@@ -5524,7 +5524,7 @@ float Editor_Level :: ProcessTerrain3_Settings( float SliderX, float SliderY )
 
 		char buf[ 512 ] ;
 
-		sprintf( buf, "Max Card Anisotropy: %d", r3dRenderer->d3dCaps.MaxAnisotropy  ) ;
+		sprintf_s( buf, sizeof(buf), "Max Card Anisotropy: %d", r3dRenderer->d3dCaps.MaxAnisotropy  ) ;
 		SliderY += imgui_Static( SliderX, SliderY, buf ) ;
 
 		static float maxAnisotropy = 0 ;		
@@ -5680,7 +5680,7 @@ float Editor_Level :: ProcessTerrain3_Settings( float SliderX, float SliderY )
 
 				char name[ 64 ] ;
 
-				sprintf( name, "Tex Lod %d count", i ) ;
+				sprintf_s( name, sizeof(name), "Tex Lod %d count", i ) ;
 
 				SliderY += imgui_Value_Slider( SliderX, SliderY, name, &lodCounts[ i ], 1.f, 8.f, "%.0f" ) ;
 
@@ -5696,7 +5696,7 @@ float Editor_Level :: ProcessTerrain3_Settings( float SliderX, float SliderY )
 
 				char name[ 64 ] ;
 
-				sprintf( name, "Geom Lod %d", i ) ;
+				sprintf_s( name, sizeof(name), "Geom Lod %d", i ) ;
 
 				SliderY += imgui_Value_Slider( SliderX, SliderY, name, &geomLodSteps[ i ], 8.f, 128.f, "%.0f" ) ;
 
@@ -5782,29 +5782,29 @@ float Editor_Level :: ProcessTerrain3_Settings( float SliderX, float SliderY )
 
 			char buf[ 512 ];
 
-			sprintf( buf, "Volumes: %d", stats.VolumeCount );
+			sprintf_s( buf, sizeof(buf), "Volumes: %d", stats.VolumeCount );
 			SliderY += imgui_Static( SliderX, SliderY, buf );
 
-			sprintf( buf, "Tiles: %d", stats.TileCount );
+			sprintf_s( buf, sizeof(buf), "Tiles: %d", stats.TileCount );
 			SliderY += imgui_Static( SliderX, SliderY, buf );
 
-			sprintf( buf, "MegaTiles: %d", stats.MegaTileCount );
+			sprintf_s( buf, sizeof(buf), "MegaTiles: %d", stats.MegaTileCount );
 			SliderY += imgui_Static( SliderX, SliderY, buf );
 
 			float toMegs = 1.0f / 1024.f / 1024.f;
 
-			sprintf( buf, "Tile VMem: %.2f MB", stats.TileTextureMemory * toMegs );
-			SliderY += imgui_Static( SliderX, SliderY, buf ); 
-
-			sprintf( buf, "Mask VMem: %.2f MB", stats.MaskTextureMemory * toMegs );
+			sprintf_s( buf, sizeof(buf), "Tile VMem: %.2f MB", stats.TileTextureMemory * toMegs );
 			SliderY += imgui_Static( SliderX, SliderY, buf );
 
-			sprintf( buf, "Layer VMem: %.2f MB", stats.LayerTextureMemory * toMegs );
+			sprintf_s( buf, sizeof(buf), "Mask VMem: %.2f MB", stats.MaskTextureMemory * toMegs );
+			SliderY += imgui_Static( SliderX, SliderY, buf );
+
+			sprintf_s( buf, sizeof(buf), "Layer VMem: %.2f MB", stats.LayerTextureMemory * toMegs );
 			SliderY += imgui_Static( SliderX, SliderY, buf );
 
 			int total = stats.LayerTextureMemory + stats.MaskTextureMemory + stats.TileTextureMemory;
 
-			sprintf( buf, "Total VMem: %.2f MB", total * toMegs );
+			sprintf_s( buf, sizeof(buf), "Total VMem: %.2f MB", total * toMegs );
 			SliderY += imgui_Static( SliderX, SliderY, buf );
 
 		}
@@ -6017,7 +6017,7 @@ float Editor_Level :: ProcessTerrain3_UpDown( float SliderX, float SliderY, int 
 	if( editMode )
 	{
 		char msg[ 128 ];
-		sprintf( msg, "[%.3f, %.3f, %3.f]", UI_TerraTargetPos.x, UI_TerraTargetPos.y, UI_TerraTargetPos.z );
+		sprintf_s( msg, sizeof(msg), "[%.3f, %.3f, %3.f]", UI_TerraTargetPos.x, UI_TerraTargetPos.y, UI_TerraTargetPos.z );
 		SliderY += imgui_Static( SliderX, SliderY, msg );
 	}
 
@@ -6516,7 +6516,7 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 					toAdd = sizeof "data\\terraindata\\materials" ;
 				}
 
-				sprintf( sStatStr, "%s texture\n%s\n%dx%d", g_iTerrainNormalMapEditMode ? "Normal" : "Diffuse", tex->getFileLoc().FileName + toAdd, tex->GetWidth(), tex->GetHeight() );
+				sprintf_s( sStatStr, sizeof(sStatStr), "%s texture\n%s\n%dx%d", g_iTerrainNormalMapEditMode ? "Normal" : "Diffuse", tex->getFileLoc().FileName + toAdd, tex->GetWidth(), tex->GetHeight() );
 
 				D3D_V( r3dRenderer->pd3ddev->SetRenderState( D3DRS_SCISSORTESTENABLE, FALSE ) );
 
@@ -6531,8 +6531,8 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 
 					char fullPath[ 4096 ] ;
 					GetCurrentDirectory( sizeof fullPath - 2, fullPath ) ;
-					strcat( fullPath, "\\" ) ;
-					strcat( fullPath, name ) ;
+					strcat_s( fullPath, sizeof(fullPath), "\\" ) ;
+					strcat_s( fullPath, sizeof(fullPath), name ) ;
 
 					for( size_t i = 0, e = strlen( fullPath) ; i < e ; i ++ )
 					{
@@ -6567,7 +6567,7 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 		{
 			char MatTypeName[ 2048 ] ;
 
-			strncpy( MatTypeName, CurrentLayer->MaterialTypeName.c_str(), sizeof MatTypeName - 1 ) ;
+			strncpy_s( MatTypeName, sizeof(MatTypeName), CurrentLayer->MaterialTypeName.c_str(), sizeof MatTypeName - 1 ) ;
 
 			SliderY = DrawMaterialTypeSelection( SliderX, SliderY, MatTypeName );
 
@@ -6605,7 +6605,7 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 		char DirWithWCard[ 512 ];
 
 		strcpy_s( DirWithWCard, sizeof(DirWithWCard), MatDirName );
-		strcat( DirWithWCard, "\\*.*" );
+		strcat_s( DirWithWCard, sizeof(DirWithWCard), "\\*.*" );
 
 		if( imgui_FileList( 5, DIR_LIST_START + DIR_LIST_HEIGHT + 5, 300, FILE_LIST_HEIGHT, DirWithWCard, MatFName, &matSelOffset, false, bChangedVal, 0, ".dds|.tga|.bmp" ) )
 		{
@@ -6615,11 +6615,11 @@ float Editor_Level :: ProcessTerrain3_Paint( float SliderX, float SliderY, int e
 
 			if( MatDirName[ strlen( MatDirName ) - 1 ] == '\\' )
 			{
-				sprintf( SS1, "%s%s", MatDirName, MatFName );
+				sprintf_s( SS1, sizeof(SS1), "%s%s", MatDirName, MatFName );
 			}
 			else
 			{
-				sprintf( SS1, "%s\\%s", MatDirName, MatFName );
+				sprintf_s( SS1, sizeof(SS1), "%s\\%s", MatDirName, MatFName );
 			}
 
 			switch( g_iTerrainNormalMapEditMode )
@@ -6819,7 +6819,7 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 			char drive[ 32 ], path[ 512 ], fileName[ 128 ], ext[ 32 ];
 
 			_splitpath( sts.FarDiffuseTextureName.c_str(), drive, path, fileName, ext );
-			sprintf( buff, "Diffuse Texture: %s.%s", fileName, ext );
+			sprintf_s( buff, sizeof(buff), "Diffuse Texture: %s.%s", fileName, ext );
 			SliderY += imgui_Static( SliderX, SliderY, buff );
 		}
 
@@ -6829,7 +6829,7 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 			char drive[ 32 ], path[ 512 ], fileName[ 128 ], ext[ 32 ];
 
 			_splitpath( sts.FarNormalTextureName.c_str(), drive, path, fileName, ext );
-			sprintf( buff, "Diffuse Texture: %s.%s", fileName, ext );
+			sprintf_s( buff, sizeof(buff), "Diffuse Texture: %s.%s", fileName, ext );
 			SliderY += imgui_Static( SliderX, SliderY, buff );
 		}
 
@@ -6848,7 +6848,7 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 				}
 
 				strcpy_s( MatFName, sizeof(MatFName), fileName );
-				strcat( MatFName, ext );
+				strcat_s( MatFName, sizeof(MatFName), ext );
 				break;
 
 			case 1:
@@ -6860,7 +6860,7 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 				}
 
 				strcpy_s( MatFName, sizeof(MatFName), fileName );
-				strcat( MatFName, ext );
+				strcat_s( MatFName, sizeof(MatFName), ext );
 				break;
 			};
 
@@ -6896,7 +6896,7 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 		char DirWithWCard[ 512 ];
 
 		strcpy_s( DirWithWCard, sizeof(DirWithWCard), MatDirName );
-		strcat( DirWithWCard, "\\*.*" );
+		strcat_s( DirWithWCard, sizeof(DirWithWCard), "\\*.*" );
 
 		if( imgui_FileList( 5, DIR_LIST_START + DIR_LIST_HEIGHT + 5, 300, FILE_LIST_HEIGHT, DirWithWCard, MatFName, &matSelOffset, false, bChangedVal, 0, ".dds|.tga|.bmp" ) )
 		{
@@ -6904,11 +6904,11 @@ float Editor_Level :: ProcessTerrain3_GlobalLayer( float SliderX, float SliderY,
 
 			if( MatDirName[ strlen( MatDirName ) - 1 ] == '\\' )
 			{
-				sprintf( SS1, "%s%s", MatDirName, MatFName );
+				sprintf_s( SS1, sizeof(SS1), "%s%s", MatDirName, MatFName );
 			}
 			else
 			{
-				sprintf( SS1, "%s\\%s", MatDirName, MatFName );
+				sprintf_s( SS1, sizeof(SS1), "%s\\%s", MatDirName, MatFName );
 			}
 
 			switch( g_iTerrainGlobalNormalMapEditMode )
@@ -6991,7 +6991,7 @@ float Editor_Level :: ProcessTerrain3_HMap( float SliderX, float SliderY )
 
 	if (imgui_FileList(SliderX, SliderY, 360, 200, "Data\\TerrainData\\Heightmaps\\*.dds", HMapName, &offset ))
 	{
-		sprintf(Path,"Data\\TerrainData\\Heightmaps\\%s", HMapName);
+		sprintf_s(Path, sizeof(Path), "Data\\TerrainData\\Heightmaps\\%s", HMapName);
 	}
 
 	SliderY += 206;
@@ -7047,7 +7047,7 @@ float Editor_Level :: ProcessTerrain3_HMap( float SliderX, float SliderY )
 			}
 		}
 
-		sprintf( Path, "Data/TerrainData/Heightmaps/%4s_%s_(%d,%d)_%dx%d_exp.dds", folder, name, (int)exportOffsetX, (int)exportOffsetZ, (int)exportSizeX, (int)exportSizeZ );
+		sprintf_s( Path, sizeof(Path), "Data/TerrainData/Heightmaps/%4s_%s_(%d,%d)_%dx%d_exp.dds", folder, name, (int)exportOffsetX, (int)exportOffsetZ, (int)exportSizeX, (int)exportSizeZ );
 
 		if( g_pTerrain3Editor->ExportHeight( Path, (int)exportOffsetX, (int)exportOffsetZ, (int)exportSizeX, (int)exportSizeZ ) )
 			MessageBoxA( r3dRenderer->HLibWin, ( r3dString( "Saved to " ) + Path ).c_str(), "Information", MB_OK ) ;
@@ -7137,7 +7137,7 @@ float Editor_Level :: ProcessTerrain3_ImportMask( float SliderX, float SliderY )
 
 	if( imgui_FileList(SliderX, SliderY, 360, 200, "Data\\TerrainData\\Masks\\*.dds", MaskName, &offset ) )
 	{
-		sprintf( Path, "Data\\TerrainData\\Masks\\%s", MaskName );
+		sprintf_s( Path, sizeof(Path), "Data\\TerrainData\\Masks\\%s", MaskName );
 	}
 
 	SliderY += 206;
@@ -7193,7 +7193,7 @@ float Editor_Level :: ProcessTerrain3_ImportMask( float SliderX, float SliderY )
 				}
 			}
 
-			sprintf( Path, "Data/TerrainData/Masks/%s%s_%d_mask.dds", folder, name, CurrentImportLayerIdx3 );
+			sprintf_s( Path, sizeof(Path), "Data/TerrainData/Masks/%s%s_%d_mask.dds", folder, name, CurrentImportLayerIdx3 );
 
 			if( g_pTerrain3Editor->ExportLayer( Path, CurrentImportLayerIdx3 - 1, (int)exportOffsetX, (int)exportOffsetZ, (int)exportSizeX, (int)exportSizeZ ) )
 				MessageBoxA( r3dRenderer->HLibWin, ( r3dString( "Saved to " ) + Path ).c_str(), "Information", MB_OK ) ;
@@ -7220,7 +7220,7 @@ float Editor_Level :: ProcessTerrain3_Debug( float SliderX, float SliderY )
 	r_force_min_terramegalod->SetInt( !!forceMinLod );
 
 	char debugOffsetText[ 512 ];
-	sprintf( debugOffsetText, "MegaTile Min LOD: %d", r_min_terramegalod->GetInt() );
+	sprintf_s( debugOffsetText, sizeof(debugOffsetText), "MegaTile Min LOD: %d", r_min_terramegalod->GetInt() );
 
 	SliderY += imgui_Static( SliderX, SliderY, debugOffsetText );
 
@@ -7279,7 +7279,7 @@ void Editor_Level :: ProcessTerrain3()
 			r3dTerrain3::Info tinfo = Terrain3->GetInfo();
 
 			char msg[ 512 ];
-			sprintf( msg, "Tile at cursor: (%d,%d,%d), (%d,%d,%d), (%d,%d,%d)", info.X, info.Z, info.L, info.MegaX, info.MegaZ, info.MegaL, info.MegaMaskX, info.MegaMaskZ, info.MegaMaskAtlasVolumeId );
+			sprintf_s( msg, sizeof(msg), "Tile at cursor: (%d,%d,%d), (%d,%d,%d), (%d,%d,%d)", info.X, info.Z, info.L, info.MegaX, info.MegaZ, info.MegaL, info.MegaMaskX, info.MegaMaskZ, info.MegaMaskAtlasVolumeId );
 
 			_r3dSystemFont->PrintF( 10, 144, r3dColor24::white, msg );
 
@@ -7308,7 +7308,7 @@ void Editor_Level :: ProcessTerrain3()
 			r3dTerrain3::Info tinfo = Terrain3->GetInfo();
 
 			char msg[ 512 ];
-			sprintf( msg, "Tile at cursor: (%d,%d,%d), (%d,%d,%d), (%d,%d,%d)", info.X, info.Z, info.L, info.AtlasTileX, info.AtlasTileZ, info.AtlasVolumeID, info.MegaX, info.MegaZ, info.MegaL );
+			sprintf_s( msg, sizeof(msg), "Tile at cursor: (%d,%d,%d), (%d,%d,%d), (%d,%d,%d)", info.X, info.Z, info.L, info.AtlasTileX, info.AtlasTileZ, info.AtlasVolumeID, info.MegaX, info.MegaZ, info.MegaL );
 
 			_r3dSystemFont->PrintF( 10, 144, r3dColor24::white, msg );
 
@@ -7581,7 +7581,7 @@ void Editor_Level :: ProcessTerrain3()
 	if( g_NeedLoadingTilesSign || IsTerrain3Frozen() )
 	{
 		char message[ 256 ];
-		sprintf( message, "Please wait for %d(%d) loading tiles before editing", g_NeedPrintThisAmountOfLoadingTiles, g_NeedPrintThisAmountOfBkTasks );
+		sprintf_s( message, sizeof(message), "Please wait for %d(%d) loading tiles before editing", g_NeedPrintThisAmountOfLoadingTiles, g_NeedPrintThisAmountOfBkTasks );
 
 		imgui_Static( r3dRenderer->ScreenW2 - 160, r3dRenderer->ScreenH2, message, 360, false );
 
@@ -7868,7 +7868,7 @@ void FillCatFromDir( CategoryStruct& cat, const char* clazz, const char* path, c
 {
 	char CatPath[ 256 ];
 
-	sprintf( CatPath, "Data\\ObjectsDepot\\%s\\", path );
+	sprintf_s( CatPath, sizeof(CatPath), "Data\\ObjectsDepot\\%s\\", path );
 
 	cat.NumObjects = 0;
 
@@ -7939,7 +7939,7 @@ void InitObjCategories()
 		char TempS[MAX_PATH] = {0};
 		if (!strcmp(xmlCatValue, "OBJLIST"))
 		{
-			sprintf(TempS, "Data\\ObjectsDepot\\%s\\Objects.xml", xmlCatName);
+			sprintf_s(TempS, sizeof(TempS), "Data\\ObjectsDepot\\%s\\Objects.xml", xmlCatName);
 			cat.Type = 1;
 
 			pugi::xml_document objListXML;
@@ -8064,7 +8064,7 @@ r3dSkeleton* GetDefaultSkeleton( const char* MeshName )
 		if( Path[ i ] == '/' ) Path[ i ] = '\\' ;
 	}
 
-	if( sscanf( Path, "data\\objectsdepot\\%s" , Cat ) == 1 )
+	if( sscanf_s( Path, "data\\objectsdepot\\%s" , Cat, (unsigned)sizeof(Cat) ) == 1 )
 	{
 		size_t strl = strlen( Cat ) - 1 ;
 
@@ -8097,15 +8097,15 @@ void DrawObjectPickControls(float &SliderX, float &SliderY, char *CategoryName, 
 
 	if( idx >= 0 && idx < (int)CatNames.size() )
 	{
-		sprintf(CategoryName, "%s", CatNames.at(idx).c_str());
+		strcpy_s(CategoryName, 512, CatNames.at(idx).c_str()); // TODO: verify buffer size
 
-		sprintf(ClassName,"");
-		sprintf(FileName, "");
+		strcpy_s(ClassName, 512, ""); // TODO: verify buffer size
+		strcpy_s(FileName, 512, ""); // TODO: verify buffer size
 		if(ObjectCategories.at(idx).ObjectsClasses.size() > 0)
 		{
-			sprintf(ClassName, "%s", ObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
-			sprintf(FileName, "%s", ObjectCategories.at(idx).ObjectsNames.at(0).c_str());
-			sprintf(RelFolder, "%s", ObjectCategories.at(idx).ObjectsSubfolders.at(0).c_str());
+			strcpy_s(ClassName, 512, ObjectCategories.at(idx).ObjectsClasses.at(0).c_str()); // TODO: verify buffer size
+			strcpy_s(FileName, 512, ObjectCategories.at(idx).ObjectsNames.at(0).c_str()); // TODO: verify buffer size
+			strcpy_s(RelFolder, sizeof(RelFolder), ObjectCategories.at(idx).ObjectsSubfolders.at(0).c_str());
 		}
 	}
 
@@ -8124,18 +8124,18 @@ void DrawObjectPickControls(float &SliderX, float &SliderY, char *CategoryName, 
 
 		if( idx1 >= 0 && idx1 < (int)cat.ObjectsNames.size() )
 		{
-			sprintf (ClassName,"%s", cat.ObjectsClasses.at(idx1).c_str());
-			sprintf (FileName,"%s", cat.ObjectsNames.at(idx1).c_str());
-			sprintf (RelFolder, "%s", cat.ObjectsSubfolders.at(idx1).c_str());
+			strcpy_s(ClassName, 512, cat.ObjectsClasses.at(idx1).c_str()); // TODO: verify buffer size
+			strcpy_s(FileName, 512, cat.ObjectsNames.at(idx1).c_str()); // TODO: verify buffer size
+			strcpy_s(RelFolder, sizeof(RelFolder), cat.ObjectsSubfolders.at(idx1).c_str());
 		}
 
 		if(ClassName[0] == 0 || FileName[0] == 0)
 			return;
 
 		if (ObjectCategories.at(idx).Type)
-			sprintf (Str,"%s", FileName);
+			strcpy_s(Str, 512, FileName); // TODO: verify buffer size
 		else
-			sprintf (Str,"Data\\ObjectsDepot\\%s%s\\%s", CategoryName, RelFolder, FileName);
+			sprintf_s(Str, 512, "Data\\ObjectsDepot\\%s%s\\%s", CategoryName, RelFolder, FileName); // TODO: verify buffer size
 	}
 }
 
@@ -8744,7 +8744,7 @@ void Editor_Level :: ProcessGroups()
 		int iCnt = obj_Group::m_dGroups[i]->m_dObjects.Count ();
 		if ( iCnt == 0 )
 			iCnt = obj_Group::m_dGroups[i]->m_iPreviewObjectsInGroup;
-		sprintf ( sNameNew, "%s (%i)%s", obj_Group::m_dGroups[i]->m_szName, iCnt, obj_Group::m_dGroups[i]->IsGroupJustCreated () ? " - edit mode" : "" );
+		sprintf_s( sNameNew, sizeof(sNameNew), "%s (%i)%s", obj_Group::m_dGroups[i]->m_szName, iCnt, obj_Group::m_dGroups[i]->IsGroupJustCreated () ? " - edit mode" : "" );
 		sGroupList.push_back ( sNameNew );
 	}
 
@@ -9387,8 +9387,8 @@ Editor_Level::ProcessDamageLib()
 						if( damagedIdx >= 0 && damagedIdx < (int)cat.ObjectsNames.size() )
 						{
 							strcpy_s( en->MeshName.str(), en->MeshName.MAX_LENGTH, CatNames[ indexMap[ catIdx ] ].c_str() );
-							strcat( en->MeshName.str(), "/" );
-							strcat( en->MeshName.str(), cat.ObjectsNames[ damagedIdx ].c_str() );
+							strcat_s( en->MeshName.str(), en->MeshName.MAX_LENGTH, "/" );
+							strcat_s( en->MeshName.str(), en->MeshName.MAX_LENGTH, cat.ObjectsNames[ damagedIdx ].c_str() );
 						}
 
 						SliderY += 202;
@@ -9425,7 +9425,7 @@ Editor_Level::ProcessDamageLib()
 				static char sParticleFileSelected[256] = {0};
 				static float fDestroyedParticleListOffset = 0;
 
-				sprintf ( sParticleFileSelected, "%s.prt", en->ParticleName.c_str() );
+				sprintf_s( sParticleFileSelected, sizeof(sParticleFileSelected), "%s.prt", en->ParticleName.c_str() );
 				if ( imgui_FileList (SliderX, SliderY, 360, 200, sDirFindParticles.c_str (), sParticleFileSelected, &fDestroyedParticleListOffset, true ) )
 				{
 					_splitpath ( sParticleFileSelected, NULL, NULL, en->ParticleName.str(), NULL );
@@ -9495,7 +9495,7 @@ Editor_Level::ProcessDamageLib()
 
 						if ( imgui_FileList ( SliderX, SliderY, 360, FILE_LIST_HEIGHT, sDirFind.c_str (), sAnimSelected, &fAnimListOffset ) )
 						{
-							strncpy( en->AnimName.GetDataPtr(), sAnimSelected, en->AnimName.GetMaxLength() );
+							strncpy_s( en->AnimName.GetDataPtr(), en->AnimName.GetMaxLength(), sAnimSelected, en->AnimName.GetMaxLength() - 1 );
 
 							UpdateDestructionMeshSettings( mesh.c_str() );
 						} 
@@ -9548,7 +9548,7 @@ void ReadCorrespondingSCOMaterial( char* output, const char* fileName )
 	char pathWithMask [ MAX_PATH ] ;
 
 	strcpy_s( pathWithMask, sizeof(pathWithMask), Path ) ;
-	strcat( pathWithMask, "*.sco" ) ;
+	strcat_s( pathWithMask, sizeof(pathWithMask), "*.sco" ) ;
 
 	HANDLE h = FindFirstFile( pathWithMask, &ffblk );
 
@@ -9799,7 +9799,7 @@ void Editor_Level::ProcessUtils()
 	if( imgui_Button(SliderX, SliderY, DEFAULT_CONTROLS_WIDTH, DEFAULT_CONTROLS_HEIGHT, "Delete duplicate objects") )
 	{
 		char msg[ 512 ];
-		sprintf( msg, "%d object(s) deleted",	 DeleteObjectDuplicates() );
+		sprintf_s( msg, sizeof(msg), "%d object(s) deleted",	 DeleteObjectDuplicates() );
 
 		MessageBoxA( r3dRenderer->HLibWin, msg, "Info", MB_OK );		
 	}
@@ -10558,7 +10558,7 @@ void Editor_Level :: ProcessGamePlay ()
 	const char * sSelectedType = g_iObjectSelectedType >= 0 ? g_dTypesList[g_iObjectSelectedType].c_str () :  "";
 
 	char sObjectTitle[256];
-	sprintf ( sObjectTitle, "OBJECTS \"%s\"", sSelectedType );
+	sprintf_s ( sObjectTitle, sizeof(sObjectTitle), "OBJECTS \"%s\"", sSelectedType );
 	SliderY += imgui_Static(SliderX, SliderY, sObjectTitle);
 	SliderY += 10;
 
@@ -10704,7 +10704,7 @@ void ProcessCloudsShadows()
 			extern r3dTexture* gCloudTexture;
 			if ( gCloudTexture )
 				r3dRenderer->DeleteTexture( gCloudTexture );
-			sprintf( CloudsShadows_TexName, "Data/clouds/ShadowTex/%s", szTexName );
+			sprintf_s( CloudsShadows_TexName, sizeof(CloudsShadows_TexName), "Data/clouds/ShadowTex/%s", szTexName );
 			gCloudTexture = r3dRenderer->LoadTexture( CloudsShadows_TexName );
 		}
 
@@ -10983,13 +10983,13 @@ void ProcessDecalsEditor(bool globalLib, float SliderX, float SliderY)
 				_splitpath( type.DiffuseTexName.c_str(), drive, dir, name, ext ) ;
 
 				strcpy_s( TexFileName, sizeof(TexFileName), name ) ;
-				strcat( TexFileName, ext ) ;
+				strcat_s( TexFileName, sizeof(TexFileName), ext ) ;
 
 				if ( imgui_FileList(5, 80, 300, 380, "Data\\Decals\\*.dds", TexFileName, &offset, false ) )
 				{
 					char FullPath[256];
 
-					sprintf( FullPath, "Data\\Decals\\%s", TexFileName );
+					sprintf_s( FullPath, sizeof(FullPath), "Data\\Decals\\%s", TexFileName );
 
 					switch( texEditMode )
 					{
@@ -11272,7 +11272,7 @@ void ProcessWaterEditor ()
 	for ( uint32_t i = 0; i < obj_WaterPlane::m_dWaterPlanes.Count (); i++ )
 	{
 		char szName [MAX_PATH];
-		sprintf ( szName, "%s", obj_WaterPlane::m_dWaterPlanes[i]->Name.c_str() );
+		strcpy_s ( szName, sizeof(szName), obj_WaterPlane::m_dWaterPlanes[i]->Name.c_str() );
 		tWaterList.push_back(szName);
 	}
 
@@ -11544,12 +11544,12 @@ void ProcessMinimapEditor ()
 		}
 
 		char sFile[1024];
-		sprintf(sFile, "%s\\%s", r3dGameLevel::GetHomeDir(), "minimap.dds");
+		sprintf_s(sFile, sizeof(sFile), "%s\\%s", r3dGameLevel::GetHomeDir(), "minimap.dds");
 
 		RenderLevelMinimap( sFile );
 
 		char sMsg[2048];
-		sprintf( sMsg, "Saved minimap to: %s", sFile ) ;
+		sprintf_s( sMsg, sizeof(sMsg), "Saved minimap to: %s", sFile ) ;
 		MessageBox( 0, sMsg, "Minimap", MB_OK ) ;
 
 		minimapTex = r3dRenderer->LoadTexture( sFile ) ;
@@ -11965,7 +11965,7 @@ float ProcessGrassConfigure( float SliderX, float SliderY )
 	static float CellScale = g_pGrassLib->GetSettings().CellScale;
 
 	char CurrentPatchSizeText[ 128 ];
-	sprintf( CurrentPatchSizeText, "Current Patch Size: %.2f", g_pGrassLib->GetSettings().CellScale );
+	sprintf_s( CurrentPatchSizeText, sizeof(CurrentPatchSizeText), "Current Patch Size: %.2f", g_pGrassLib->GetSettings().CellScale );
 
 	SliderY += imgui_Static( SliderX, SliderY, CurrentPatchSizeText );
 
@@ -12012,7 +12012,7 @@ float ProcessGrassConfigure( float SliderX, float SliderY )
 		if ( g_GrassTypeSelected >= 0 && g_GrassTypeSelected < (int)grassTypes.size() )
 		{
 			char buf[ 512 ] ;
-			sprintf( buf, "Showing for %s", grassTypes[ g_GrassTypeSelected ].c_str() ) ;
+			sprintf_s( buf, sizeof(buf), "Showing for %s", grassTypes[ g_GrassTypeSelected ].c_str() ) ;
 			SliderY += imgui_Static( SliderX, SliderY, buf ) ;
 			g_pGrassMap->SetDebugType( grassTypes[ g_GrassTypeSelected ].c_str() ) ;
 		}
@@ -12389,7 +12389,7 @@ float ProcessGrassMasks( float SliderX, float SliderY )
 		texelCountZ = tdesc.ZSize / info.GrassSizeZ * texelCountZ;
 	}
 
-	sprintf( maskSizeMessage, "Grass mask size: %dx%d", texelCountX, texelCountZ );
+	sprintf_s( maskSizeMessage, sizeof(maskSizeMessage), "Grass mask size: %dx%d", texelCountX, texelCountZ );
 
 	SliderY += imgui_Static( SliderX, SliderY, maskSizeMessage );
 
@@ -12403,7 +12403,7 @@ float ProcessGrassMasks( float SliderX, float SliderY )
 
 	if( imgui_FileList(SliderX, SliderY, 360, 200, "Data\\TerrainData\\GrassMasks\\*.dds", MaskName, &offset ) )
 	{
-		sprintf( Path, "Data\\TerrainData\\GrassMasks\\%s", MaskName );
+		sprintf_s( Path, sizeof(Path), "Data\\TerrainData\\GrassMasks\\%s", MaskName );
 	}
 
 	SliderY += 206;
@@ -12415,7 +12415,7 @@ float ProcessGrassMasks( float SliderX, float SliderY )
 			if( g_pGrassMap->ImportMask( Path, grassTypeIdx, cellOffsetX, cellOffsetZ ) )
 			{
 				char message[ 512 ];
-				sprintf( message, "Imported '%s' into %s!", Path, grassTypes[ selectedGrassType ].c_str() );
+				sprintf_s( message, sizeof(message), "Imported '%s' into %s!", Path, grassTypes[ selectedGrassType ].c_str() );
 
 				MessageBoxA( r3dRenderer->HLibWin, message, "Success", MB_OK );
 			}
@@ -12469,7 +12469,7 @@ float ProcessGrassMasks( float SliderX, float SliderY )
 				}
 			}
 
-			sprintf( Path, "Data/TerrainData/GrassMasks/%s%s_%d_mask.dds", folder, name, selectedGrassType );
+			sprintf_s( Path, sizeof(Path), "Data/TerrainData/GrassMasks/%s%s_%d_mask.dds", folder, name, selectedGrassType );
 
 			if( g_pGrassMap->ExportMask( Path, selectedGrassType, (int)exportOffsetX, (int)exportOffsetZ, (int)exportSizeX, (int)exportSizeZ ) )
 				MessageBoxA( r3dRenderer->HLibWin, ( r3dString( "Saved to " ) + Path ).c_str(), "Information", MB_OK ) ;
@@ -12643,7 +12643,7 @@ case	PE_FOG3:
 				g_pGrassMap->GetDebugGrassTile( &debugTexCell, grassType, UI_TerraTargetPos );
 
 				char msg[ 512 ];
-				sprintf( msg, "Tile at cursor: (%d,%d,%d)", debugTexCell.X, debugTexCell.Z, grassType );
+				sprintf_s( msg, sizeof(msg), "Tile at cursor: (%d,%d,%d)", debugTexCell.X, debugTexCell.Z, grassType );
 
 				_r3dSystemFont->PrintF( 10, 144, r3dColor24::white, msg );
 
@@ -12773,7 +12773,7 @@ case	PE_FOG3:
 					terrainTiles = Terrain3->GetNumLoadingMegaTiles();
 				}
 
-				sprintf( buffer, "Please wait for %d grass tiles ( + %d terrain tiles ) to load before editing", stats.TextureCellsLoading + stats.TextureCellsUnloading, terrainTiles );
+				sprintf_s( buffer, sizeof(buffer), "Please wait for %d grass tiles ( + %d terrain tiles ) to load before editing", stats.TextureCellsLoading + stats.TextureCellsUnloading, terrainTiles );
 
 				float sliceStart = r3dGetTime();
 
@@ -12867,7 +12867,7 @@ case	PE_FOG3:
 
 				char InfoLine[ 256 ] ;
 
-				sprintf( InfoLine, "Selected Particle: %s", ParticlePath ) ;
+				sprintf_s( InfoLine, sizeof(InfoLine), "Selected Particle: %s", ParticlePath ) ;
 
 				SliderY += imgui_Static( SliderX, SliderY, InfoLine ) ;
 
@@ -13508,7 +13508,7 @@ void Editor_Level :: ProcessPost_NightVision()
 	_splitpath( GetCCLUT3DTextureName( HUDFilter_NightVision, r3dAtmosphere::SKY_PHASE_DAY ).c_str(), drive, dir, name, ext );
 
 	strcpy_s( textureName, sizeof(textureName), name );
-	strcat( textureName, ext );
+	strcat_s( textureName, sizeof(textureName), ext );
 
 	if ( imgui_FileList(SliderX, SliderY, 360, CC_FILE_LIST_SIZE, fullPath, textureName, &offset ) )
 	{
@@ -14199,7 +14199,7 @@ void Editor_Level :: ProcessColorGrading()
 				for ( int i = 0; i < 5; i++ )
 				{
 					char str[256];
-					sprintf ( str, "(%ix%ix%i)", iDim, iDim, iDim );
+					sprintf_s ( str, sizeof(str), "(%ix%ix%i)", iDim, iDim, iDim );
 					texDimensions.push_back ( str );
 					iDim /= 2;
 				}
@@ -14365,7 +14365,7 @@ void Editor_Level :: ProcessColorGrading()
 					if ( sTexName[0] )
 					{
 						char nameAndExt[ 128 ];
-						sprintf( nameAndExt, "%s.dds", sTexName );
+						sprintf_s( nameAndExt, sizeof(nameAndExt), "%s.dds", sTexName );
 						GetCCLUT3DTextureFullPath( sFile, nameAndExt );
 					}
 
@@ -14399,9 +14399,9 @@ void Editor_Level :: ProcessColorGrading()
 
 #define LUT3D_EXTERNAL_SUPBATH "External\\"
 
-			strcat( fullPath, LUT3D_EXTERNAL_SUPBATH );
+			strcat_s( fullPath, sizeof(fullPath), LUT3D_EXTERNAL_SUPBATH );
 			r3dscpy( wildCards, fullPath );
-			strcat( wildCards, "*.bmp" );
+			strcat_s( wildCards, sizeof(wildCards), "*.bmp" );
 
 			if( FirstEntry )
 			{
@@ -14431,7 +14431,7 @@ void Editor_Level :: ProcessColorGrading()
 			{
 				char fullName[ 512 ];
 				r3dscpy( fullName, fullPath );
-				strcat( fullName, textureName );
+				strcat_s( fullName, sizeof(fullName), textureName );
 
 				if( ThumbNailTex->IsDrawable() )
 				{
@@ -14516,7 +14516,7 @@ void Editor_Level :: ProcessColorGrading()
 				char FullName[ 512 ];
 
 				r3dscpy( FullName, fullPath );
-				strcat( FullName, "\\CC_Reference.bmp" );
+				strcat_s( FullName, sizeof(FullName), "\\CC_Reference.bmp" );
 
 				tempTex->Save( FullName );
 
@@ -14555,14 +14555,14 @@ void Editor_Level :: ProcessColorGrading()
 
 					char nameWithExternal[ 256 ];
 					strcpy_s( nameWithExternal, sizeof(nameWithExternal), LUT3D_EXTERNAL_SUPBATH );
-					strcat( nameWithExternal, textureName );
+					strcat_s( nameWithExternal, sizeof(nameWithExternal), textureName );
 
 					GetCCLUT3DTextureFullPath( FileName, nameWithExternal );
 
 					GetCurrentDirectory( sizeof fullPath - 2, fullPath ) ;
 
-					strcat( fullPath, "\\" );
-					strcat( fullPath, FileName );
+					strcat_s( fullPath, sizeof(fullPath), "\\" );
+					strcat_s( fullPath, sizeof(fullPath), FileName );
 
 					ShellExecute( NULL, "open", execStr, fullPath, NULL, SW_SHOWNORMAL ) ;
 				}
@@ -14577,20 +14577,20 @@ void Editor_Level :: ProcessColorGrading()
 
 					char fullName[ 512 ];
 					r3dscpy( fullName, fullPath );
-					strcat( fullName, textureName );
+					strcat_s( fullName, sizeof(fullName), textureName );
 
 					if( IDirect3DVolumeTexture9* pVol = Generate3DLut( fullName, CC_TEX_SOURCE_DIM, 32 ) )
 					{
 						char FileName[ 512 ];
 
 						char nameAndExt[ 128 ];
-						sprintf( nameAndExt, "%s.dds", textureName );
+						sprintf_s( nameAndExt, sizeof(nameAndExt), "%s.dds", textureName );
 						GetCCLUT3DTextureFullPath( FileName, nameAndExt );
 
 						D3DXSaveTextureToFile( FileName, D3DXIFF_DDS, pVol, NULL );
 
 						char msg[ 512 ];
-						sprintf( msg, "Generated %s", FileName );
+						sprintf_s( msg, sizeof(msg), "Generated %s", FileName );
 
 						MessageBoxA( r3dRenderer->HLibWin, msg, "Success", MB_OK );
 
@@ -14749,11 +14749,11 @@ float Editor_Level::ProcessColorCorrectionMenu( HUDFilterSettings &hfs, float Sl
 
 	if( phase0 == phase1 )
 	{
-		sprintf( CurrPhase, "Current phase: %s", SkyPhaseToName( phase0 ) );
+		sprintf_s( CurrPhase, sizeof(CurrPhase), "Current phase: %s", SkyPhaseToName( phase0 ) );
 	}
 	else
 	{
-		sprintf( CurrPhase, "Current phase: %s->%s", SkyPhaseToName( phase0 ), SkyPhaseToName( phase1 ) );
+		sprintf_s( CurrPhase, sizeof(CurrPhase), "Current phase: %s->%s", SkyPhaseToName( phase0 ), SkyPhaseToName( phase1 ) );
 	}
 
 	SliderY += imgui_Static( SliderX, SliderY, CurrPhase );
@@ -14777,7 +14777,7 @@ float Editor_Level::ProcessColorCorrectionMenu( HUDFilterSettings &hfs, float Sl
 	SliderY += PHASE_LIST_HEIGHT;
 
 	char buf[512];
-	sprintf(buf, "Texture: %s", hfs.colorCorrectionTextureNames[ selectedPhase ] );
+	sprintf_s(buf, sizeof(buf), "Texture: %s", hfs.colorCorrectionTextureNames[ selectedPhase ] );
 	SliderY += imgui_Static(SliderX, SliderY, buf);
 
 	char fullPath[ 512 ];
@@ -14794,7 +14794,7 @@ float Editor_Level::ProcessColorCorrectionMenu( HUDFilterSettings &hfs, float Sl
 	static char textureName[ 256 ] = {0};
 
 	strcpy_s( textureName, sizeof(textureName), name ) ;
-	strcat( textureName, ext ) ;
+	strcat_s( textureName, sizeof(textureName), ext ) ;
 
 	const int CC_FILE_LIST_SIZE = 300;
 
@@ -15097,10 +15097,10 @@ void Editor_Level::ProcessAssets()
 	} 
 	else
 	{
-		sprintf( fileFind, "%s/*", dirName );
+		sprintf_s( fileFind, sizeof(fileFind), "%s/*", dirName );
 		if ( imgui_FileList( SliderX, SliderY, DEFAULT_CONTROLS_WIDTH, fBottomY - SliderY, fileFind, fileName, &fOffset, true, false, &nDragIndex, ExtFilter, &nSelectIndex ) )
 		{
-			sprintf( gPreviewCurrSelection, "%s/%s", dirName, fileName );
+			sprintf_s( gPreviewCurrSelection, sizeof(gPreviewCurrSelection), "%s/%s", dirName, fileName );
 			bNewSelect = true;
 			nIndex = -1;
 		}
@@ -15182,7 +15182,7 @@ void Editor_Level::ProcessAssets()
 
 				String_T<> sFullName( fileName );
 				char cacheName[ MAX_PATH ];
-				sprintf( cacheName, "Data/Editor/PreviewCache/Meshes/%s.dds", sFullName.GetName().c_str() );
+				sprintf_s( cacheName, sizeof(cacheName), "Data/Editor/PreviewCache/Meshes/%s.dds", sFullName.GetName().c_str() );
 				bool bLoadFromMesh = false;
 				if ( r3dFileExists( cacheName ) )
 				{
@@ -15341,7 +15341,7 @@ void Editor_Level::ProcessAssets()
 
 				String_T<> sFullPath( gPreviewCurrSelection );
 				char cacheName[ MAX_PATH ];
-				sprintf( cacheName, "Data/Editor/PreviewCache/Materials/%s.dds", sFullPath.GetName().c_str() );
+				sprintf_s( cacheName, sizeof(cacheName), "Data/Editor/PreviewCache/Materials/%s.dds", sFullPath.GetName().c_str() );
 				if ( r3dFileExists( cacheName ) )
 				{
 					FILETIME texTime;
@@ -15357,7 +15357,7 @@ void Editor_Level::ProcessAssets()
 			{
 				String_T<> sFullName( fileName );
 				char cacheName[ MAX_PATH ];
-				sprintf( cacheName, "Data/Editor/PreviewCache/Materials/%s.dds", sFullName.GetName().c_str() );
+				sprintf_s( cacheName, sizeof(cacheName), "Data/Editor/PreviewCache/Materials/%s.dds", sFullName.GetName().c_str() );
 				pMatTex = r3dRenderer->LoadTexture( cacheName );
 				g_EditorPreviewMaterialTexReady = false;
 			}
@@ -15379,7 +15379,7 @@ void Editor_Level::ProcessAssets()
 			{
 				bNewSelect = false;
 				SAFE_DELETE( pPartSys );
-				sprintf(buffer,"Data\\Particles\\%s.prt", fileName);
+				sprintf_s(buffer, sizeof(buffer), "Data\\Particles\\%s.prt", fileName);
 				pPartSys = r3dParticleSystemLoad( buffer );
 				if (pPartSys)
 				{
@@ -15837,13 +15837,13 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 			_splitpath( r3dGameLevel::Environment->StaticSkyMeshName.c_str(), drive, dir, name, ext ) ;
 
 			strcpy_s( SkyMeshName, sizeof(SkyMeshName), name ) ;
-			strcat( SkyMeshName, ext ) ;
+			strcat_s( SkyMeshName, sizeof(SkyMeshName), ext ) ;
 
 			if( imgui_FileList( SliderX, SliderY, 360, 60, STATICSKY_PATH "*.sco", SkyMeshName, &offset ) )
 			{
 				char SS1[ MAX_PATH ];
 
-				sprintf( SS1, STATICSKY_PATH"%s", SkyMeshName ) ;
+				sprintf_s( SS1, sizeof(SS1), STATICSKY_PATH"%s", SkyMeshName ) ;
 
 				r3dGameLevel::Environment->SetStaticSkyMesh( SS1 );
 			}
@@ -15871,11 +15871,11 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 
 				if( phase0 == phase1 )
 				{
-					sprintf( CurrPhase, "Current phase: %s", SkyPhaseToName( phase0 ) );
+					sprintf_s( CurrPhase, sizeof(CurrPhase), "Current phase: %s", SkyPhaseToName( phase0 ) );
 				}
 				else
 				{
-					sprintf( CurrPhase, "Current phase: %s->%s", SkyPhaseToName( phase0 ), SkyPhaseToName( phase1 ) );
+					sprintf_s( CurrPhase, sizeof(CurrPhase), "Current phase: %s->%s", SkyPhaseToName( phase0 ), SkyPhaseToName( phase1 ) );
 				}
 
 				SliderY += imgui_Static( SliderX, SliderY, CurrPhase );
@@ -15914,12 +15914,12 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 				_splitpath( r3dGameLevel::Environment->StaticSkyTextureNames[ index ].c_str(), drive, dir, name, ext ) ;
 
 				strcpy_s( SkyTexName, sizeof(SkyTexName), name );
-				strcat( SkyTexName, ext );
+				strcat_s( SkyTexName, sizeof(SkyTexName), ext );
 
 				_splitpath( r3dGameLevel::Environment->StaticSkyGlowTextureNames[ index ].c_str(), drive, dir, name, ext ) ;
 
 				strcpy_s( SkyGlowTexName, sizeof(SkyGlowTexName), name );
-				strcat( SkyGlowTexName, ext );
+				strcat_s( SkyGlowTexName, sizeof(SkyGlowTexName), ext );
 			}
 
 			bool texesChanged = false;
@@ -15933,7 +15933,7 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 			{
 				char SS1[ MAX_PATH ];
 
-				sprintf( SS1, STATICSKY_PATH"%s", SkyTexName );
+				sprintf_s( SS1, sizeof(SS1), STATICSKY_PATH"%s", SkyTexName );
 
 				skyTexNames[ index ] = SS1;
 
@@ -15957,7 +15957,7 @@ float Editor_Level::ProcessStaticSky( float SliderX, float SliderY )
 			{
 				char SS1[ MAX_PATH ];
 
-				sprintf( SS1, STATICSKY_PATH"%s", SkyGlowTexName );
+				sprintf_s( SS1, sizeof(SS1), STATICSKY_PATH"%s", SkyGlowTexName );
 
 				skyGlowTexNames[ index ] = SS1;
 
@@ -16089,10 +16089,10 @@ static void FixPresetExt( char* preset )
 	if( stricmp( ext, ".xml" ) )
 	{
 		strcpy_s( preset, MAX_PATH * 2, drive ); // TODO: verify buffer size - caller uses char[512]
-		strcat( preset, folder );
-		strcat( preset, name );
-		strcat( preset, ext );
-		strcat( preset, ".xml" );
+		strcat_s( preset, 512, folder ); // TODO: verify buffer size
+		strcat_s( preset, 512, name ); // TODO: verify buffer size
+		strcat_s( preset, 512, ext ); // TODO: verify buffer size
+		strcat_s( preset, 512, ".xml" ); // TODO: verify buffer size
 	}
 }
 
@@ -16152,7 +16152,7 @@ float Editor_Level::ProcessLightSetup( float SliderX, float SliderY )
 			if( imgui_Button( SliderX, SliderY, 180, BTN_HEIGHT, "Load" ) )
 			{
 				char fullPath[ MAX_PATH * 2 ];
-				sprintf( fullPath, R3D_ENV_PRESET_PATH"%s", PresetName );
+				sprintf_s( fullPath, sizeof(fullPath), R3D_ENV_PRESET_PATH"%s", PresetName );
 				LoadEnvironmentFromXML( fullPath );
 			}
 
@@ -16160,7 +16160,7 @@ float Editor_Level::ProcessLightSetup( float SliderX, float SliderY )
 			{
 				char fullPath[ MAX_PATH * 2 ];
 				FixPresetExt( PresetName );
-				sprintf( fullPath, R3D_ENV_PRESET_PATH"%s", PresetName );
+				sprintf_s( fullPath, sizeof(fullPath), R3D_ENV_PRESET_PATH"%s", PresetName );
 				mkdir( R3D_ENV_PRESET_PATH );
 				SaveEnvironmentToXML( fullPath );
 			}
@@ -16594,45 +16594,45 @@ void Editor_Level::ProcessKill()
 
 		message = (char*)malloc( totalSize );
 
-		sprintf( message, "Deleted meshes(%d): ", killedMeshes.Count() );
+		sprintf_s( message, totalSize, "Deleted meshes(%d): ", killedMeshes.Count() );
 
 		int ADJ_SIZE = sizeof message - 8;
 
 		for( int i = 0, e = killedMeshes.Count(); i < e; i ++ )
 		{
-			strcat( message, killedMeshes[ i ].c_str() );
+			strcat_s( message, totalSize, killedMeshes[ i ].c_str() );
 
 			if( i != e - 1 )
 			{
-				strcat( message, "," );
+				strcat_s( message, totalSize, "," );
 			}
 		}
 
 		char submsg[ 64 ];
-		sprintf( submsg, "\nDeleted materials(%d): ", killedMaterials.Count() );
+		sprintf_s( submsg, sizeof(submsg), "\nDeleted materials(%d): ", killedMaterials.Count() );
 
-		strcat( message, submsg);
+		strcat_s( message, totalSize, submsg);
 
 		for( int i = 0, e = killedMaterials.Count(); i < e; i ++ )
 		{
-			strcat( message, killedMaterials[ i ].c_str() );
+			strcat_s( message, totalSize, killedMaterials[ i ].c_str() );
 
 			if( i != e - 1 )
 			{
-				strcat( message, "," );
+				strcat_s( message, totalSize, "," );
 			}
 		}
 
-		sprintf( submsg, "\nDeleted textures(%d): ", killedTextures.Count() );
-		strcat( message, submsg);
+		sprintf_s( submsg, sizeof(submsg), "\nDeleted textures(%d): ", killedTextures.Count() );
+		strcat_s( message, totalSize, submsg);
 
 		for( int i = 0, e = killedTextures.Count(); i < e; i ++ )
 		{
-			strcat( message, killedTextures[ i ].c_str() );
+			strcat_s( message, totalSize, killedTextures[ i ].c_str() );
 
 			if( i != e - 1 )
 			{
-				strcat( message, "," );
+				strcat_s( message, totalSize, "," );
 			}
 		}
 
@@ -17031,7 +17031,7 @@ void Editor_Level :: ProcessMaterials()
 		g_pDesktopManager->Begin( "ed_materials" );
 
 		char fullname[256];
-		sprintf(fullname, "%s [%s]", EditMaterial->Name, EditMaterial->DepotName);
+		sprintf_s(fullname, sizeof(fullname), "%s [%s]", EditMaterial->Name, EditMaterial->DepotName);
 		SliderY += imgui_Static(SliderX, SliderY, fullname);
 		SliderY += 10;
 
@@ -17181,7 +17181,7 @@ void Editor_Level :: ProcessMaterials()
 
 			_splitpath( MatTexArray[i]->getFileLoc().FileName, drive, full, file, ext );
 
-			sprintf( full, "%s%s", file, ext );
+			sprintf_s( full, sizeof(full), "%s%s", file, ext );
 
 			imgui_Static(SliderX + 22 + 100			, SliderY + 88, full, 220 );
 			r3dDrawBox2D(SliderX + 10 + 2 - deskX	, SliderY + 10 + 2 - deskY, 100-4, 100-4, r3dColor(255,255,255),  MatTexArray[i]);
@@ -17216,8 +17216,8 @@ void Editor_Level :: ProcessMaterials()
 
 				char fullPath[ 4096 ] ;
 				GetCurrentDirectory( sizeof fullPath - 2, fullPath ) ;
-				strcat( fullPath, "\\" ) ;
-				strcat( fullPath, name ) ;
+				strcat_s( fullPath, sizeof(fullPath), "\\" ) ;
+				strcat_s( fullPath, sizeof(fullPath), name ) ;
 
 				for( size_t i = 0, e = strlen( fullPath) ; i < e ; i ++ )
 				{
@@ -17293,7 +17293,7 @@ void Editor_Level :: ProcessMaterials()
 		g_pDesktopManager->End();
 		
 		char DirName[512];
-		sprintf(DirName,  "%s/*.*", EditMaterial->OriginalDir);
+		sprintf_s(DirName, sizeof(DirName), "%s/*.*", EditMaterial->OriginalDir);
 
 		imgui_Static(5, 45, "Texture List:", 300);
 
@@ -17303,7 +17303,7 @@ void Editor_Level :: ProcessMaterials()
 		{
 			char SS1[256];
 
-			sprintf(SS1, "%s/%s", EditMaterial->OriginalDir, MatFName);
+			sprintf_s(SS1, sizeof(SS1), "%s/%s", EditMaterial->OriginalDir, MatFName);
 			if (!MatTexArray[i] || strcmp(MatTexArray[i]->getFileLoc().FileName, SS1) != 0)
 			{
 				MaterialTextureChangeUndo * pUndo = static_cast<MaterialTextureChangeUndo*>(g_pUndoHistory->CreateUndoItem(UA_MATERIAL_TEXTURE_CHANGE, 0));
@@ -17506,7 +17506,7 @@ const char * GetComputerIdName()
 		DWORD dwCount = MAX_PATH; 
 
 		GetComputerName( buffer, &dwCount ); 
-		strcat( buffer, "." );
+		strcat_s( buffer, sizeof(buffer), "." );
 		DWORD dwCount1 = MAX_PATH - dwCount - 1;
 		GetUserName( buffer + dwCount + 1, &dwCount1 );
 	}
@@ -17538,7 +17538,7 @@ namespace
 		for(int i=0; i<TE_NUM; ++i)
 		{
 			char BrushName[ 256 ] ;
-			sprintf( BrushName, "brush_%s", EditModeToString( EditMode_t( i ) ) );
+			sprintf_s( BrushName, sizeof(BrushName), "brush_%s", EditModeToString( EditMode_t( i ) ) );
 
 			strlwr( BrushName ) ;
 
@@ -17557,7 +17557,7 @@ namespace
 		for(int i=0; i<TE2_NUM; ++i)
 		{
 			char BrushName[ 256 ] ;
-			sprintf( BrushName, "brush_%s", EditModeToString2( EditMode2_t( i ) ) );
+			sprintf_s( BrushName, sizeof(BrushName), "brush_%s", EditModeToString2( EditMode2_t( i ) ) );
 
 			strlwr( BrushName ) ;
 
@@ -17576,7 +17576,7 @@ namespace
 		for(int i=0; i<TE3_NUM; ++i)
 		{
 			char BrushName[ 256 ] ;
-			sprintf( BrushName, "brush_%s", EditModeToString3( EditMode3_t( i ) ) );
+			sprintf_s( BrushName, sizeof(BrushName), "brush_%s", EditModeToString3( EditMode3_t( i ) ) );
 
 			strlwr( BrushName ) ;
 
@@ -17602,7 +17602,7 @@ void Editor_Level::SaveSettings( const char* targetDir )
 	xmlRoot.set_name( "root" ) ;
 
 	char XMLFilePath[ MAX_PATH ] ;
-	sprintf( XMLFilePath, LEVELEDITOR_SETTINGS_FILE, targetDir );
+	sprintf_s( XMLFilePath, sizeof(XMLFilePath), LEVELEDITOR_SETTINGS_FILE, targetDir );
 
 	SerializeXMLEditorSettings<true>( xmlRoot, this );
 
@@ -17614,7 +17614,7 @@ void Editor_Level::SaveSettings( const char* targetDir )
 void ReadXMLEditorSettingsStartPosition( r3dPoint3D* oPos )
 {
 	char XMLFilePath[ MAX_PATH ] ;
-	sprintf( XMLFilePath, LEVELEDITOR_SETTINGS_FILE, r3dGameLevel::GetHomeDir() );
+	sprintf_s( XMLFilePath, sizeof(XMLFilePath), LEVELEDITOR_SETTINGS_FILE, r3dGameLevel::GetHomeDir() );
 
 	r3dFile* f = r3d_open( XMLFilePath, "rb" );
 
@@ -17645,7 +17645,7 @@ void ReadXMLEditorSettingsStartPosition( r3dPoint3D* oPos )
 int Editor_Level::LoadSettingsXML()
 {
 	char XMLFilePath[ MAX_PATH ] ;
-	sprintf( XMLFilePath, LEVELEDITOR_SETTINGS_FILE, r3dGameLevel::GetHomeDir() );
+	sprintf_s( XMLFilePath, sizeof(XMLFilePath), LEVELEDITOR_SETTINGS_FILE, r3dGameLevel::GetHomeDir() );
 
 	r3dFile* f = r3d_open( XMLFilePath, "rb" );
 
@@ -18305,34 +18305,34 @@ void DumpRTStats()
 
 			const char* dbgName = sb->GetDebugName();
 
-			sprintf( buffer, "%-32s = %-5dx%-5d - %-5dkb %s\n", dbgName ? dbgName : "(unknown)", (int)sb->Width, (int)sb->Height, bytes / 1024, ztype ) ;
+			sprintf_s( buffer, sizeof(buffer), "%-32s = %-5dx%-5d - %-5dkb %s\n", dbgName ? dbgName : "(unknown)", (int)sb->Width, (int)sb->Height, bytes / 1024, ztype ) ;
 		}
 		else
 		{
-			sprintf( buffer, "%-32s = Empty\n", sb->GetDebugName() ) ;
+			sprintf_s( buffer, sizeof(buffer), "%-32s = Empty\n", sb->GetDebugName() ) ;
 		}
 
 		ConPrint( "%s", buffer ) ;
 		fputs( buffer, fout ) ;
 	}
 
-	sprintf( buffer, "---------------------------------\n" ) ;
+	sprintf_s( buffer, sizeof(buffer), "---------------------------------\n" ) ;
 	ConPrint( "%s", buffer ) ;
 	fputs( buffer, fout ) ;
 
 	int shadowZbufSize = r3dGetShadowZBufferSize() ;
-	sprintf( buffer, "Shadow ZBuf: %d kb\n", shadowZbufSize / 1024 ) ;
+	sprintf_s( buffer, sizeof(buffer), "Shadow ZBuf: %d kb\n", shadowZbufSize / 1024 ) ;
 	ConPrint( "%s", buffer ) ;
 	fputs( buffer, fout ) ;
 	sum += shadowZbufSize ;
 
 	int bbZbufSize = int( ScreenBuffer->Width * ScreenBuffer->Height * 4 ) ;
-	sprintf( buffer, "System ZBuf: %d kb\n", bbZbufSize / 1024 ) ;
+	sprintf_s( buffer, sizeof(buffer), "System ZBuf: %d kb\n", bbZbufSize / 1024 ) ;
 	ConPrint( "%s", buffer ) ;
 	fputs( buffer, fout ) ;
 	sum += bbZbufSize ;
 
-	sprintf( buffer, "Total: %.1f MB\n", sum / 1024.f / 1024.f ) ;
+	sprintf_s( buffer, sizeof(buffer), "Total: %.1f MB\n", sum / 1024.f / 1024.f ) ;
 	ConPrint( "%s", buffer ) ;
 	fputs( buffer, fout ) ;
 
@@ -18384,7 +18384,7 @@ void DisplayLumaInfo()
 		D3D_V( cdt.tex->UnlockRect( 0 ) ) ;
 	}
 
-	sprintf( exp_val, "Scene Exposure: %7.4f, Luma: %7.4f", exp, luma ) ;
+	sprintf_s( exp_val, sizeof(exp_val), "Scene Exposure: %7.4f, Luma: %7.4f", exp, luma ) ;
 
 	imgui_Static( 5, r3dRenderer->ScreenH-235, exp_val ) ;
 }
@@ -18510,7 +18510,7 @@ void DumpAtmoTextureStats()
 
 		if( r3dTexture * tex = r3dGameLevel::Environment->StaticSkyTextures[ i ] )
 		{
-			sprintf( msg, "%s is loaded", r3dGameLevel::Environment->StaticSkyTextureNames[ i ].c_str() );
+			sprintf_s( msg, sizeof(msg), "%s is loaded", r3dGameLevel::Environment->StaticSkyTextureNames[ i ].c_str() );
 			totalSize += tex->GetTextureSizeInVideoMemory();
 
 			loadOutput = 1;
@@ -18518,7 +18518,7 @@ void DumpAtmoTextureStats()
 
 		if( r3dTexture * tex = r3dGameLevel::Environment->StaticSkyGlowTextures[ i ] )
 		{
-			sprintf( msg + strlen( msg ), loadOutput ? ", %s is loaded\n" : "%s is loaded\n", r3dGameLevel::Environment->StaticSkyGlowTextureNames[ i ].c_str() );
+			{ size_t len = strlen(msg); sprintf_s( msg + len, sizeof(msg) - len, loadOutput ? ", %s is loaded\n" : "%s is loaded\n", r3dGameLevel::Environment->StaticSkyGlowTextureNames[ i ].c_str() ); }
 			totalSize += tex->GetTextureSizeInVideoMemory();
 
 			loadOutput = 1;

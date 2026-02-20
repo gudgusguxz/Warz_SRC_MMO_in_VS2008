@@ -1681,7 +1681,7 @@ void ObjectManipulator3d::PickByName	( const char* Name, int bExactMatch )
 {
 	char src[ 1024 ] = { 0 }, dest[ 1024 ] = { 0 } ;
 
-	strncpy( src, Name, sizeof src - 1 ) ;
+	strncpy_s( src, sizeof(src), Name, sizeof(src) - 1 ) ;
 	strlwr( src ) ;
 
 	Picker_Drop() ;
@@ -1690,7 +1690,7 @@ void ObjectManipulator3d::PickByName	( const char* Name, int bExactMatch )
 	{
 		GameObject* obj = iter.current;
 
-		strncpy( dest, obj->FileName.c_str(), sizeof dest - 1 ) ;
+		strncpy_s( dest, sizeof(dest), obj->FileName.c_str(), sizeof(dest) - 1 ) ;
 		strlwr( dest ) ;
 
 		char drive[ 16 ], dir[ 1024 ], file[ 1024 ], ext[ 1024 ] ;

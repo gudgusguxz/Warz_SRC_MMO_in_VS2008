@@ -6605,7 +6605,7 @@ void Render_Deffered_Pointlights()
 			if( r3dGetTime() - pointProjTexMessageTime > 45 )
 			{
 				char text[ 512 ];
-				sprintf( text, "Please change projection texture of POINT light at [%.1f  %.1f  %.1f] to be Cube Texture and not a 2D( or Volume) Texture", l->x, l->y, l->z );
+				sprintf_s( text, sizeof(text), "Please change projection texture of POINT light at [%.1f  %.1f  %.1f] to be Cube Texture and not a 2D( or Volume) Texture", l->x, l->y, l->z );
 				MessageBoxA( r3dRenderer->HLibWin, text, "Suggestion", MB_OK );
 
 				pointProjTexMessageTime = r3dGetTime();
@@ -7287,7 +7287,7 @@ void Render_Deffered_Spotlights()
 			if( r3dGetTime() - spotProjTexMessageTime > 45 )
 			{
 				char text[ 512 ];
-				sprintf( text, "Please change projection texture of SPOT light at [%.1f  %.1f  %.1f] to be 2D Texture and not Cube Texture", l->x, l->y, l->z );
+				sprintf_s( text, sizeof(text), "Please change projection texture of SPOT light at [%.1f  %.1f  %.1f] to be 2D Texture and not Cube Texture", l->x, l->y, l->z );
 				MessageBoxA( r3dRenderer->HLibWin, text, "Suggestion", MB_OK );
 
 				spotProjTexMessageTime = r3dGetTime();
@@ -9490,31 +9490,31 @@ SunHDRLightPShaderId::ToString( char* str )
 
 	if( ssr )
 	{
-		strcat ( str, "_SSR" ) ;
+		strcat_s ( str, 512, "_SSR" ) ; // TODO: verify buffer size
 	}
 
 	if( sss )
 	{
-		strcat ( str, "_SSS" ) ;
+		strcat_s ( str, 512, "_SSS" ) ; // TODO: verify buffer size
 	}
 
 	if( transp_shadows )
 	{
-		strcat( str, "_TRANSP_SHADOWS" ) ;
+		strcat_s( str, 512, "_TRANSP_SHADOWS" ) ; // TODO: verify buffer size
 	}
 
 	if( white_albedo )
 	{
-		strcat( str, "_WHITE_ALBEDO" ) ;
+		strcat_s( str, 512, "_WHITE_ALBEDO" ) ; // TODO: verify buffer size
 	}
 
 	if( ambient_only )
 	{
-		strcat( str, "_AMBIENT_ONLY" ) ;
+		strcat_s( str, 512, "_AMBIENT_ONLY" ) ; // TODO: verify buffer size
 	}
 
-	strcat( str, "_QL" );
-	strcat( str, DigitToCString( quality ) );
+	strcat_s( str, 512, "_QL" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( quality ) ); // TODO: verify buffer size
 }
 
 //------------------------------------------------------------------------
@@ -9562,51 +9562,51 @@ PointLightPShaderId::ToString( char* str )
 
 	if( ssr )
 	{
-		strcat( str, "_SSR" ) ;
+		strcat_s( str, 512, "_SSR" ) ; // TODO: verify buffer size
 	}
 
 	if( sss )
 	{
-		strcat( str, "_SSS" ) ;
+		strcat_s( str, 512, "_SSS" ) ; // TODO: verify buffer size
 	}
 
 	if( diffuse_only )
 	{
-		strcat( str, "_DIFFONLY" ) ;
+		strcat_s( str, 512, "_DIFFONLY" ) ; // TODO: verify buffer size
 	}
 
 	if( ssao )
 	{
-		strcat( str, "_SSAO" ) ;
+		strcat_s( str, 512, "_SSAO" ) ; // TODO: verify buffer size
 	}
 
 	if( proj_texture )
 	{
-		strcat( str, "_PROJTEXTURE" ) ;
+		strcat_s( str, 512, "_PROJTEXTURE" ) ; // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 1 )
 	{
-		strcat( str, "_SHADOWS" ) ;
+		strcat_s( str, 512, "_SHADOWS" ) ; // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 2 )
 	{
-		strcat( str, "_SHADOWS_PCF" ) ;
+		strcat_s( str, 512, "_SHADOWS_PCF" ) ; // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 3 )
 	{
-		strcat( str, "_SSMSHADOWS" ) ;
+		strcat_s( str, 512, "_SSMSHADOWS" ) ; // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 4 )
 	{
-		strcat( str, "_PARABOLOID_SHADOWS" ) ;
+		strcat_s( str, 512, "_PARABOLOID_SHADOWS" ) ; // TODO: verify buffer size
 	}
 
-	strcat( str, "_QL" );
-	strcat( str, DigitToCString( quality ) );
+	strcat_s( str, 512, "_QL" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( quality ) ); // TODO: verify buffer size
 
 	r3d_assert( shadow_mode < 5 ) ;
 
@@ -9662,31 +9662,31 @@ SpotLightPShaderId::ToString( char* str )
 
 	if( aux_enabled )
 	{
-		strcat( str, "_AUX" );
+		strcat_s( str, 512, "_AUX" ); // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 1 )
 	{
-		strcat( str, "_SHADOWS" );
+		strcat_s( str, 512, "_SHADOWS" ); // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 2 )
 	{
-		strcat( str, "_HWSHADOWS" );
+		strcat_s( str, 512, "_HWSHADOWS" ); // TODO: verify buffer size
 	}
 
 	if( shadow_mode == 3 )
 	{
-		strcat( str, "_SSMSHADOWS" );
+		strcat_s( str, 512, "_SSMSHADOWS" ); // TODO: verify buffer size
 	}
 
 	if( proj_texture )
 	{
-		strcat( str, "_PROJTEX" );
+		strcat_s( str, 512, "_PROJTEX" ); // TODO: verify buffer size
 	}
 
-	strcat( str, "_QL" );
-	strcat( str, DigitToCString( quality ) );
+	strcat_s( str, 512, "_QL" ); // TODO: verify buffer size
+	strcat_s( str, 512, DigitToCString( quality ) ); // TODO: verify buffer size
 
 }
 
@@ -9728,25 +9728,25 @@ SSAOPShaderId::ToString( char* str )
 	strcpy_s( str, 512, "PS_SSAO" ) ; // TODO: verify buffer size
 
 	if( num_rays )
-		strcat( str, "_16" ) ;
+		strcat_s( str, 512, "_16" ) ; // TODO: verify buffer size
 	else
-		strcat( str, "_8" ) ;
+		strcat_s( str, 512, "_8" ) ; // TODO: verify buffer size
 
 	if( optimized )
-		strcat( str, "_OPTIMIZED" ) ;
+		strcat_s( str, 512, "_OPTIMIZED" ) ; // TODO: verify buffer size
 
 	if( detail_radius )
-		strcat( str, "_DETAIL" ) ;
+		strcat_s( str, 512, "_DETAIL" ) ; // TODO: verify buffer size
 
 #if R3D_ALLOW_TEMPORAL_SSAO
 	if( temporal_optimisation )
-		strcat( str, "_TEMPORAL" ) ;
+		strcat_s( str, 512, "_TEMPORAL" ) ; // TODO: verify buffer size
 
 	if( temporal_show_passed )
-		strcat( str, "_TEMPOREVEAL" ) ;
+		strcat_s( str, 512, "_TEMPOREVEAL" ) ; // TODO: verify buffer size
 
 	if( output_stability_mask )
-		strcat( str, "_STABILITYMASK" ) ;
+		strcat_s( str, 512, "_STABILITYMASK" ) ; // TODO: verify buffer size
 #endif
 }
 
@@ -9862,7 +9862,7 @@ void UpdateInternalScreenshot()
 
 		char			FileName[512];
 
-		sprintf(FileName, "ScreenInternal_%02d%02d%04d_%02d%02d%02d.tga", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
+		sprintf_s(FileName, sizeof(FileName), "ScreenInternal_%02d%02d%04d_%02d%02d%02d.tga", curdate.tm_mday, curdate.tm_mon, 1900+curdate.tm_year, curdate.tm_hour, curdate.tm_min, curdate.tm_sec);
 
 		D3D_V( D3DXSaveTextureToFile( FileName, D3DXIFF_TGA, sysmemTex, NULL ) ) ;
 

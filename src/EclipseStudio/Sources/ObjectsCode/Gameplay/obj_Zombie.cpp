@@ -820,9 +820,9 @@ BOOL obj_Zombie::OnCreate()
 		// there is 1-7 dead poses
 		char aname[128];
 		if( IsSuperZombie() && IsSuperZombie2() )
-			sprintf(aname, "Super_Zombie_Dead_%c_01", (u_random(2) < 1) ? 'F' : 'B');
+			sprintf_s(aname, sizeof(aname), "Super_Zombie_Dead_%c_01", (u_random(2) < 1) ? 'F' : 'B');
 		else
-			sprintf(aname, "Zombie_Pose_dead%d", 1 + u_random(7));
+			sprintf_s(aname, sizeof(aname), "Zombie_Pose_dead%d", 1 + u_random(7));
 		int aid = AddAnimation(aname);
 		anim_.StartAnimation(aid, ANIMFLAG_RemoveOtherNow | ANIMFLAG_Looped, 1.0f, 1.0f, 0.0f);
 	}
@@ -1575,7 +1575,7 @@ r3dVector obj_Zombie::GetRightVector() const
 int obj_Zombie::AddAnimation(const char* anim)
 {
 	char buf[MAX_PATH];
-	sprintf(buf, "Data\\Animations5\\%s.anm", anim);
+	sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s.anm", anim);
 	int aid = g_zombieAnimPool[ m_typeIndex ]->Add(anim, buf);
 	
 	return aid;

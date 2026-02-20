@@ -830,7 +830,7 @@ static void DrawMenus()
 	extern floats movieDurations ;
 
 	char buff[ 512 ] ;
-	sprintf( buff, "%d - Num Drawcalls", r3dRenderer->Stats.NumDraws );
+	sprintf_s( buff, sizeof(buff), "%d - Num Drawcalls", r3dRenderer->Stats.NumDraws );
 
 	currentMovies.push_back( buff );
 	movieDurations.push_back( 0.1f );
@@ -899,7 +899,7 @@ static void DrawMenus()
 	}
 
 	obj_Player* plr = gClientLogic().localPlayer_;
-	if (!win::bSuspended && !hudMain->isChatInputActive() && !hudMain->isPlayersListVisible() && !hudMain->isTauntVisible()/* && !plr->bDead*/)//äÁèÊÒÁÒÃ¶¡´ I ä´éàÁ×èÍµÒÂ
+	if (!win::bSuspended && !hudMain->isChatInputActive() && !hudMain->isPlayersListVisible() && !hudMain->isTauntVisible()/* && !plr->bDead*/)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ I ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½
 	{
 		bool showHudPause = Keyboard->WasPressed(kbsEsc);
 		if(!hudPause->isActive() || (hudPause->isActive() && !hudPause->isDisabledHotKeys()))
@@ -1305,7 +1305,7 @@ static void DrawMenus()
 			if (tabPressed && !hudMain->isTauntVisible())
 			{
 				hudMain->showTaunt(1);
-				hudTrade->requestClose();//»Ô´à·Ã´
+				hudTrade->requestClose();//ï¿½Ô´ï¿½Ã´
 			}
 			else if ((tabReleased || escPressed) && hudMain->isTauntVisible())
 				hudMain->showTaunt(0);
@@ -1591,7 +1591,7 @@ void ProcessPlayerMovement(obj_Player* pl, bool editor_debug )
 			disablePlayerMovement = true;
 		}
 
-		//Taunt ËéÒÁà´Ô¹µÍ¹àµé¹ÍÂÙè
+		//Taunt ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (pl->m_TauntCoolDown > 0.0f)
 		{
 			disablePlayerRotation = false;
@@ -1619,7 +1619,7 @@ void ProcessPlayerMovement(obj_Player* pl, bool editor_debug )
 			}
 		}
 
-		//Taunt ËéÒÁà´Ô¹µÍ¹àµé¹ÍÂÙè
+		//Taunt ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (pl->m_TauntCoolDown > 0.0f)
 		{
 			disablePlayerRotation = false;
@@ -1945,50 +1945,50 @@ void ProcessPlayerMovement(obj_Player* pl, bool editor_debug )
 				accelaration *= pl->m_SpeedBoost;
 			}
 
-			if(pl->CurLoadout.HeroItemID == 20228 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #µÑÇÊÑè§·Ó
+			if(pl->CurLoadout.HeroItemID == 20228 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½ï¿½ï¿½ï¿½è§·ï¿½
 			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20229 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #µÑÇÊÑè§·Ó
+			if(pl->CurLoadout.HeroItemID == 20229 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½ï¿½ï¿½ï¿½è§·ï¿½
 			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20230 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #µÑÇÊÑè§·Ó
+			if(pl->CurLoadout.HeroItemID == 20230 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½ï¿½ï¿½ï¿½è§·ï¿½
 			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20232 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #µÑÇÊÑè§·Ó
+			if(pl->CurLoadout.HeroItemID == 20232 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½ï¿½ï¿½ï¿½è§·ï¿½
 			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20233 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #µÑÇÊÑè§·Ó
+			if(pl->CurLoadout.HeroItemID == 20233 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½ï¿½ï¿½ï¿½è§·ï¿½
 			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20234 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #µÑÇÊÑè§·Ó
-			accelaration *= 1.2f;
-
-			if(pl->CurLoadout.HeroItemID == 20226 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #â»Ã50
-			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20255 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #â»Ã50
-			accelaration *= 1.2f;
-			if(pl->CurLoadout.HeroItemID == 20253 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #â»Ã50
+			if(pl->CurLoadout.HeroItemID == 20234 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½ï¿½ï¿½ï¿½è§·ï¿½
 			accelaration *= 1.2f;
 
-			if(pl->CurLoadout.HeroItemID == 20225 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3500GC
+			if(pl->CurLoadout.HeroItemID == 20226 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½50
+			accelaration *= 1.2f;
+			if(pl->CurLoadout.HeroItemID == 20255 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½50
+			accelaration *= 1.2f;
+			if(pl->CurLoadout.HeroItemID == 20253 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #ï¿½ï¿½50
+			accelaration *= 1.2f;
+
+			if(pl->CurLoadout.HeroItemID == 20225 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3500GC
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20240 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3500GC
+			if(pl->CurLoadout.HeroItemID == 20240 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3500GC
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20241 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3500GC
+			if(pl->CurLoadout.HeroItemID == 20241 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3500GC
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20244 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3500GC
+			if(pl->CurLoadout.HeroItemID == 20244 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3500GC
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20245 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3500GC
+			if(pl->CurLoadout.HeroItemID == 20245 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3500GC
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20224 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3500GC
+			if(pl->CurLoadout.HeroItemID == 20224 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3500GC
 			accelaration *= 1.1f;
 
-			if(pl->CurLoadout.HeroItemID == 20222 ) //¡Ô¨¡ÃÃÁ
+			if(pl->CurLoadout.HeroItemID == 20222 ) //ï¿½Ô¨ï¿½ï¿½ï¿½ï¿½
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20223 ) //¡Ô¨¡ÃÃÁ
+			if(pl->CurLoadout.HeroItemID == 20223 ) //ï¿½Ô¨ï¿½ï¿½ï¿½ï¿½
 			accelaration *= 1.1f;
-			if(pl->CurLoadout.HeroItemID == 20212 ) //¡Ô¨¡ÃÃÁ
+			if(pl->CurLoadout.HeroItemID == 20212 ) //ï¿½Ô¨ï¿½ï¿½ï¿½ï¿½
 			accelaration *= 1.1f;
 
 
-			if(pl->CurLoadout.HeroItemID == 20252 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3µÑÇºÒ·
+			if(pl->CurLoadout.HeroItemID == 20252 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3ï¿½ï¿½ÇºÒ·
 			accelaration *= 1.3f;
-			if(pl->CurLoadout.HeroItemID == 20254 ) //µÑÇÅÐ¤ÃÇÔè§äÇ #3µÑÇºÒ·
+			if(pl->CurLoadout.HeroItemID == 20254 ) //ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ #3ï¿½ï¿½ÇºÒ·
 			accelaration *= 1.3f;
 			
 #ifdef FINAL_BUILD

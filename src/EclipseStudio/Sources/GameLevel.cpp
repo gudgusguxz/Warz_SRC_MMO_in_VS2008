@@ -21,7 +21,7 @@ namespace r3dGameLevel
 
 void r3dGameLevel :: SetHomeDir(const char* MapName)
 {   
-	sprintf(HomeDirectory,  "Levels\\%s", MapName);
+	sprintf_s(HomeDirectory, sizeof(HomeDirectory), "Levels\\%s", MapName);
 	strcpy_s( SaveDirectory, sizeof(SaveDirectory), HomeDirectory ) ;
 	r3dOutToLog("SetHomeDir: %s\n", HomeDirectory);
 }

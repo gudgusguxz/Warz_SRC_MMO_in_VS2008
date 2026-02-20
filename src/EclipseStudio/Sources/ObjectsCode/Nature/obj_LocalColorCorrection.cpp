@@ -89,7 +89,7 @@ obj_LocalColorCorrection::DrawPropertyEditor(float scrx, float scry, float scrw,
 		PropagateChange( radiusMinVal, &obj_LocalColorCorrection::m_fRadiusMin, this, selected ) ;
 
 		char buf[512];
-		sprintf(buf, "Texture: %s", m_sCCTexFileName.c_str());
+		sprintf_s(buf, sizeof(buf), "Texture: %s", m_sCCTexFileName.c_str());
 		starty += imgui_Static ( scrx, starty, buf );
 
 		char fullPath[ 512 ];

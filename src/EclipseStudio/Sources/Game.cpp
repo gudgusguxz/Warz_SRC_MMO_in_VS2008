@@ -409,7 +409,7 @@ void InitGame_Finish()
 {
 #if !DISABLE_BUDGETER
 	char buf[256]; 
-	sprintf(buf, "%s%s", r3dGameLevel::GetHomeDir(), "/budget.ini");
+	sprintf_s(buf, sizeof(buf), "%s%s", r3dGameLevel::GetHomeDir(), "/budget.ini");
 	gBudgeter.Init(buf);
 #endif
 
@@ -934,7 +934,7 @@ void GameStateGameLoop()
 			r_do_internal_screenshot->SetInt( 1 ) ;
 	}
 
-	if( Keyboard->WasPressed( kbsF9 ) ) //»ØèÁÍÑ´¤ÅÔ»
+	if( Keyboard->WasPressed( kbsF9 ) ) //ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ô»
 		SMToggleRecordVideo();
 
 	r3dRenderer->EndRender( true );

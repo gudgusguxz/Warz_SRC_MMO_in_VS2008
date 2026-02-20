@@ -174,7 +174,7 @@ float obj_Building::DrawPropertyEditor(float scrx, float scry, float scrw, float
 		{
 			char msg[ 1024 ];
 
-			sprintf( msg, "This will affect all meshes '%s' on the level. Are you sure?", MeshLOD[ 0 ]->FileName );
+			sprintf_s( msg, sizeof(msg), "This will affect all meshes '%s' on the level. Are you sure?", MeshLOD[ 0 ]->FileName );
 
 			if( MessageBoxA( r3dRenderer->HLibWin, msg, "WARNING", MB_YESNO ) == IDYES )
 			{
@@ -365,14 +365,14 @@ void obj_Building::GetAnimPath( char* oPath, int isGlobal, const char* animName 
 	if( isGlobal )
 	{
 		// try global folder
-		sprintf( tempPath, GLOBAL_ANIM_FOLDER "\\%s", animName ) ;
+		sprintf_s( tempPath, sizeof(tempPath), GLOBAL_ANIM_FOLDER "\\%s", animName ) ;
 	}
 	else
 	{
 		FixFileName(FileName.c_str(), tempPath);
 		char* p = strrchr(tempPath, '/');
 		r3d_assert(p);
-		sprintf( p, "\\Animations\\%s", animName );
+		sprintf_s( p, sizeof(tempPath) - (p - tempPath), "\\Animations\\%s", animName );
 	}
 
 	FixFileName( tempPath, oPath );
@@ -482,7 +482,7 @@ obj_Building::DestroyBuilding()
 			PhysicsConfig.isDestroyed = true;
 
 			char meshPath[ 1024 ] = "Data/ObjectsDepot/";
-			strcat( meshPath, m_pDamageLibEntry->MeshName.c_str() );
+			strcat_s( meshPath, sizeof(meshPath), m_pDamageLibEntry->MeshName.c_str() );
 
 			PhysicsConfig.SetDestroyedMesh( meshPath );
 

@@ -1266,7 +1266,7 @@ void _Draw3DTextBox(r3dPoint3D &v1, int SX, int SY, r3dColor24 &clr, char *Str, 
 
 		va_list ap;
 		va_start(ap, Str);
-		vsprintf(buf, Str, ap);
+		vsprintf_s(buf, sizeof(buf), Str, ap);
 		va_end(ap);
 
 		SIZE pt;
@@ -1780,7 +1780,7 @@ void Menu_GUI::Draw()
     }
     
     char msg1[32]; 
-    sprintf(msg1, "%d", sdi.Level);
+    sprintf_s(msg1, sizeof(msg1), "%d", sdi.Level);
     drawSpellSlot(z, sdi, ss, icon, Player->AI_SelectedSpell == i, curz_id == z.id, msg1, NULL);
   }
   
@@ -1799,8 +1799,8 @@ void Menu_GUI::Draw()
 
     char msg1[32] = "";
     char msg2[32] = "";
-    if(inv.IData->SpellCharges) sprintf(msg1, "%d", inv.SpellCharges);
-    if(inv.IData->MaxStack>1)   sprintf(msg2, "%d", Player->Inventory[i].NumInSlot);
+    if(inv.IData->SpellCharges) sprintf_s(msg1, sizeof(msg1), "%d", inv.SpellCharges);
+    if(inv.IData->MaxStack>1)   sprintf_s(msg2, sizeof(msg2), "%d", Player->Inventory[i].NumInSlot);
 
     drawSpellSlot(z, sdi, ss, icon, Player->AI_SelectedSpell == i, curz_id == z.id, msg1, msg2);
   }

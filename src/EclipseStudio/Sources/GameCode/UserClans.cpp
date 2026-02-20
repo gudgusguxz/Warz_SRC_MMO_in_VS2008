@@ -117,7 +117,7 @@ int CUserClans::ApiClanCheckIfCreateNeedMoney(int* out_NeedMoney)
 		return GetResultCode2("ApiClanCheckIfCreateNeedMoney", req);
 	}
 
-	sscanf(req.bodyStr_, "%d", out_NeedMoney);
+	sscanf_s(req.bodyStr_, "%d", out_NeedMoney);
 	return 0;
 }
 
@@ -144,7 +144,7 @@ int CUserClans::ApiClanCreate(const CreateParams_s& params)
 	
 	int ClanID = 0;
 	int newGPBalance = 0;
-	int nargs = sscanf(req.bodyStr_, "%d %d", &ClanID, &newGPBalance);
+	int nargs = sscanf_s(req.bodyStr_, "%d %d", &ClanID, &newGPBalance);
 	if(nargs != 2)
 	{
 		r3dError("wrong answer for ApiClanCreate");
@@ -424,7 +424,7 @@ int CUserClans::ApiClanAnswerInvite(int ClanInviteID, int Accept)
 	}
 
 	int ClanID = 0;
-	int nargs = sscanf(req.bodyStr_, "%d", &ClanID);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &ClanID);
 	if(nargs != 1)
 	{
 		r3dError("wrong answer for ApiClanAnswerInvite");

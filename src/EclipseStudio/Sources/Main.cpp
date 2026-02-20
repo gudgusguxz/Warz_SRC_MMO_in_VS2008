@@ -1038,7 +1038,7 @@ bool CreateFullIniPath( char* dest, bool old )
 {
 	bool res = old ? CreateWorkPath(dest) : CreateConfigPath(dest);
 	if(res)
-		strcat( dest, INI_FILE );
+		strcat_s( dest, 512, INI_FILE ); // TODO: verify buffer size
 	return res;
 }
 
@@ -1046,7 +1046,7 @@ bool CreateFullMappingPath( char* dest, bool old )
 {
 	bool res = old ? CreateWorkPath(dest) : CreateConfigPath(dest);
 	if(res)
-		strcat( dest, INPUT_MAP_FILE );
+		strcat_s( dest, 512, INPUT_MAP_FILE ); // TODO: verify buffer size
 	return res;
 }
 
@@ -1674,7 +1674,7 @@ void PrepareEditor(const char* levelName)
 	r3dGameLevel::SetHomeDir(levelName);
 
 	char Str[256];
-	sprintf(Str, "%s\\Constants.var", r3dGameLevel::GetHomeDir());
+	sprintf_s(Str, sizeof(Str), "%s\\Constants.var", r3dGameLevel::GetHomeDir());
 	cvars_Read(Str);	
 }
 

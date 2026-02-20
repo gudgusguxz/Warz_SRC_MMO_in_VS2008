@@ -710,8 +710,8 @@ void CTeamSpeakClient::StartConnect(const char* host, int port, DWORD voicePwd, 
 	// there might be leftovers from previous session
 	m_events = std::queue<evt_s>();
 
-	char pwd[32];   sprintf(pwd,  "%u", voicePwd);
-	char nick[32];  sprintf(nick, "%u", voiceId);
+	char pwd[32];   sprintf_s(pwd, sizeof(pwd), "%u", voicePwd);
+	char nick[32];  sprintf_s(nick, sizeof(nick), "%u", voiceId);
 
 	if((error = ts3client_startConnection(scHandlerID, m_identity.c_str(), host, port, nick, NULL, "", pwd)) != ERROR_ok)
 		TSHandleError("startConnection", true);
@@ -915,7 +915,7 @@ int CTeamSpeakClient::OnClientAppear(int clientID)
 	}
 	// first word of server voiceId (stored in nickname) is playerIdx
 	DWORD voiceId = 0;
-	sscanf(name, "%u", &voiceId);
+	sscanf_s(name, "%u", &voiceId);
 	int playerIdx = (voiceId & 0xFFFF);
 	if(playerIdx >= R3D_ARRAYSIZE(gClientLogic().playerNames))
 		r3dError("bad playerIdx: %d\n", playerIdx);
@@ -1018,7 +1018,7 @@ void CTeamSpeakClient::SetVolume(float volume)
 	else
 		db = 10.0f * log(volume) / log(2.0f);	// loudness radio in dB is 10*log2(x)
 	
-	char strdb[128]; sprintf(strdb, "%.2f", db);
+	char strdb[128]; sprintf_s(strdb, sizeof(strdb), "%.2f", db);
 	ts3client_setPlaybackConfigValue(scHandlerID, "volume_modifier", strdb);
 
 	//float value;

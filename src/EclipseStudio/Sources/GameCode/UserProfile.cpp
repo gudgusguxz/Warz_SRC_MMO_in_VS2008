@@ -280,7 +280,7 @@ int CUserProfile::GetProfile(int CharID)
 
 	const char* curTime = xmlAccount.attribute("time").value();
 	memset(&ServerTime, 0, sizeof(ServerTime));
-	sscanf(curTime, "%d %d %d %d %d", 
+	sscanf_s(curTime, "%d %d %d %d %d",
 		&ServerTime.tm_year, &ServerTime.tm_mon, &ServerTime.tm_mday,
 		&ServerTime.tm_hour, &ServerTime.tm_min);
 	ServerTime.tm_year -= 1900;
@@ -304,14 +304,14 @@ static void parseCharAttachments(const char* slotData, wiWeaponAttachment& attm)
 	}
 
 	// should match arguments of ApiCharModifyAttachments
-	int nargs = sscanf(slotData, "%d %d %d %d %d %d %d %d", 
-		&attm.attachments[0], 
-		&attm.attachments[1], 
-		&attm.attachments[2], 
-		&attm.attachments[3], 
-		&attm.attachments[4], 
-		&attm.attachments[5], 
-		&attm.attachments[6], 
+	int nargs = sscanf_s(slotData, "%d %d %d %d %d %d %d %d",
+		&attm.attachments[0],
+		&attm.attachments[1],
+		&attm.attachments[2],
+		&attm.attachments[3],
+		&attm.attachments[4],
+		&attm.attachments[5],
+		&attm.attachments[6],
 		&attm.attachments[7]);
 	if(nargs != 8)
 	{
@@ -424,7 +424,7 @@ void CUserProfile::ParseLoadouts(pugi::xml_node& xmlItem)
 		w.GameMapId   = xmlItem.attribute("GameMapId").as_int();
 		w.GameServerId= xmlItem.attribute("GameServerId").as_int();
 		w.GamePos = r3dPoint3D(0, 0, 0);
-		sscanf(xmlItem.attribute("GamePos").value(), "%f %f %f %f", &w.GamePos.x, &w.GamePos.y, &w.GamePos.z, &w.GameDir);
+		sscanf_s(xmlItem.attribute("GamePos").value(), "%f %f %f %f", &w.GamePos.x, &w.GamePos.y, &w.GamePos.z, &w.GameDir);
 		w.GameFlags   = xmlItem.attribute("GameFlags").as_int();
 		w.SecFromLastGame = xmlItem.attribute("SecFromLastGame").as_int64();
 
@@ -532,7 +532,7 @@ void CUserProfile::ParseCharData(wiCharDataFull& loadout, pugi::xml_node& xmlIte
 	for(int i=0; i<loadout.NumRecipes; i++)
 	{
 		char buf[32];
-		sprintf(buf, "r%d", i);
+		sprintf_s(buf, sizeof(buf), "r%d", i);
 		loadout.RecipesLearned[i] = xmlRecipes.attribute(buf).as_uint();
 	}
 
@@ -562,7 +562,7 @@ void CUserProfile::SaveCharData(const wiCharDataFull& loadout, pugi::xml_node& x
 	for(int i=0; i<loadout.NumRecipes; i++)
 	{
 		char buf[32];
-		sprintf(buf, "r%d", i);
+		sprintf_s(buf, sizeof(buf), "r%d", i);
 		xmlRecipes.append_attribute(buf) = loadout.RecipesLearned[i];
 	}
 
@@ -776,7 +776,7 @@ CClientUserProfile::~CClientUserProfile()
 void CClientUserProfile::GenerateSessionKey(char* outKey)
 {
 	char sessionInfo[128];
-	sprintf(sessionInfo, "%d:%d", CustomerID, SessionID);
+	sprintf_s(sessionInfo, sizeof(sessionInfo), "%d:%d", CustomerID, SessionID);
 	for(size_t i=0; i<strlen(sessionInfo); ++i)
 		sessionInfo[i] = sessionInfo[i]^0x64;
 	
@@ -814,7 +814,7 @@ static void replaceItemNameParams(T* itm, pugi::xml_node& xmlNode)
 	
 	// replace store icon (FNAME)
 	char storeIcon[256];
-	sprintf(storeIcon, "$Data/Weapons/StoreIcons/%s.dds", fname);
+	sprintf_s(storeIcon, sizeof(storeIcon), "$Data/Weapons/StoreIcons/%s.dds", fname);
 	if(strcmp(storeIcon, itm->m_StoreIcon) != 0)
 	{
 		free(itm->m_StoreIcon);
@@ -980,7 +980,7 @@ int CClientUserProfile::ApiCharRename(const char* Gamertag, int* out_MinutesLeft
 	{
 		if(req.resultCode_ == 4)
 		{
-			int nargs = sscanf(req.bodyStr_, "%d", out_MinutesLeft);
+			int nargs = sscanf_s(req.bodyStr_, "%d", out_MinutesLeft);
 			r3d_assert(nargs == 1);
 		}
 		r3dOutToLog("ApiCharRename failed: %d", req.resultCode_);
@@ -1031,7 +1031,7 @@ int CClientUserProfile::ApiCharReviveCheck(int* out_needMoney, int* out_secToRev
 		return req.resultCode_;
 	}
 
-	int nargs = sscanf(req.bodyStr_, "%d %d", out_needMoney, out_secToRevive);
+	int nargs = sscanf_s(req.bodyStr_, "%d %d", out_needMoney, out_secToRevive);
 	r3d_assert(nargs == 2);
 
 	return 0;
@@ -1129,7 +1129,7 @@ int CClientUserProfile::ApiGetGamePointsConvertsionRates()
 	for(int i=0; i<64; i++)
 	{
 		char buf[32];
-		sprintf(buf, "r%d", i);
+		sprintf_s(buf, sizeof(buf), "r%d", i);
 		m_GCPriceTable[i] = xmlConvert.attribute(buf).as_int();
 		if(m_GCPriceTable[i] == 0) 
 			break;
@@ -1150,7 +1150,7 @@ int CClientUserProfile::ApiConvertGamePoints(int GamePoints)
 	}
 
 	int GameDollars = 0;
-	int nargs = sscanf(req.bodyStr_, "%d", &GameDollars);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &GameDollars);
 	r3d_assert(nargs == 1);
 	
 	ProfileData.GameDollars = GameDollars;
@@ -1196,7 +1196,7 @@ int CClientUserProfile::ApiBackpackToInventory(int GridFrom, int amount)
 		}
 	}
 	char strInventoryID[128];
-	sprintf(strInventoryID, "%I64d", InvInventoryID);
+	sprintf_s(strInventoryID, sizeof(strInventoryID), "%I64d", InvInventoryID);
 
 	if(InvInventoryID == 0 && haveFreeInventorySlot() == false)
 	{
@@ -1217,7 +1217,7 @@ int CClientUserProfile::ApiBackpackToInventory(int GridFrom, int amount)
 	}
 	
 	__int64 InventoryID = 0;
-	int nargs = sscanf(req.bodyStr_, "%I64d", &InventoryID);
+	int nargs = sscanf_s(req.bodyStr_, "%I64d", &InventoryID);
 	r3d_assert(nargs == 1);
 	r3d_assert(InventoryID > 0);
 
@@ -1306,7 +1306,7 @@ int CClientUserProfile::ApiBackpackFromInventory(__int64 InventoryID, int GridTo
 	r3d_assert(GridTo != -1);
 	
 	char strInventoryID[128];
-	sprintf(strInventoryID, "%I64d", InventoryID);
+	sprintf_s(strInventoryID, sizeof(strInventoryID), "%I64d", InventoryID);
 
 	CWOBackendReq req(this, "api_CharBackpack.aspx");
 	req.AddParam("CharID", w.LoadoutID);
@@ -1321,7 +1321,7 @@ int CClientUserProfile::ApiBackpackFromInventory(__int64 InventoryID, int GridTo
 	}
 
 	// get new inventory id
-	int nargs = sscanf(req.bodyStr_, "%I64d", &InventoryID);
+	int nargs = sscanf_s(req.bodyStr_, "%I64d", &InventoryID);
 	r3d_assert(nargs == 1);
 	r3d_assert(InventoryID > 0);
 
@@ -1416,7 +1416,7 @@ int CClientUserProfile::ApiChangeBackpack(__int64 InventoryID)
 
 	// no need to validate InventoryID - server will do that
 	char strInventoryID[128];
-	sprintf(strInventoryID, "%I64d", InventoryID);
+	sprintf_s(strInventoryID, sizeof(strInventoryID), "%I64d", InventoryID);
 
 	CWOBackendReq req(this, "api_CharBackpack.aspx");
 	req.AddParam("CharID", w.LoadoutID);
@@ -1452,7 +1452,7 @@ int CClientUserProfile::ApiBuyItem(int itemId, int buyIdx, __int64* out_Inventor
 	}
 
 	int balance = 0;
-	int nargs = sscanf(req.bodyStr_, "%d %I64d", &balance, out_InventoryID);
+	int nargs = sscanf_s(req.bodyStr_, "%d %I64d", &balance, out_InventoryID);
 	if(nargs != 2)
 	{
 		r3dError("wrong answer for ApiBuyItem");
@@ -1511,7 +1511,7 @@ int CClientUserProfile::ApiSteamStartBuyGP(int priceInCents)
 	steamAuthResp.gotResp = false;
 	
 	char strSteamId[1024];
-	sprintf(strSteamId, "%I64d", gSteam.steamID);
+	sprintf_s(strSteamId, sizeof(strSteamId), "%I64d", gSteam.steamID);
 
 	CWOBackendReq req(this, "api_SteamBuyGP.aspx");
 	req.AddParam("func",     "auth");
@@ -1531,7 +1531,7 @@ int CClientUserProfile::ApiSteamStartBuyGP(int priceInCents)
 int CClientUserProfile::ApiSteamFinishBuyGP(__int64 orderId)
 {
 	char	strOrderId[1024];
-	sprintf(strOrderId, "%I64d", orderId);
+	sprintf_s(strOrderId, sizeof(strOrderId), "%I64d", orderId);
 
 	CWOBackendReq req(this, "api_SteamBuyGP.aspx");
 	req.AddParam("func",    "fin");
@@ -1545,9 +1545,9 @@ int CClientUserProfile::ApiSteamFinishBuyGP(__int64 orderId)
 
 	// update balance
 	int balance = 0;
-	int nargs = sscanf(req.bodyStr_, "%d", &balance);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &balance);
 	r3d_assert(nargs == 1);
-	
+
 	ProfileData.GamePoints = balance;
 	return 0;
 }
@@ -1568,7 +1568,7 @@ int CClientUserProfile::ApiFriendAddReq(const char* gamertag, int* outFriendStat
 	}
 
 	int friendStatus;
-	int nargs = sscanf(req.bodyStr_, "%d", &friendStatus);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &friendStatus);
 	r3d_assert(nargs == 1);
 	*outFriendStatus = friendStatus;
 	

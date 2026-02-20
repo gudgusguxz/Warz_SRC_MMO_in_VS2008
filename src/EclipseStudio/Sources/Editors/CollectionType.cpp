@@ -69,7 +69,7 @@ bool CollectionType::InitMeshes(const char *meshName)
 
 	for (uint32_t i = 0; i < totalLodsToCheck && lodIdx < COLLECTION_ELEMENT_MAX_LOD_COUNT; ++i)
 	{
-		sprintf(TempLodName, lodSuffixes[i], filename);
+		sprintf_s(TempLodName, sizeof(TempLodName), lodSuffixes[i], filename);
 
 		char tempLodNameScb[MAX_PATH] = {0};
 		r3dscpy(tempLodNameScb, TempLodName);

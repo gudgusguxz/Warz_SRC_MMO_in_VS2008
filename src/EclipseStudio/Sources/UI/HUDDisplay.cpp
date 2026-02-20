@@ -276,7 +276,7 @@ int HUDDisplay::Update()
 		}
 		gfxRangeFinder.Invoke("_root.Main.Distance.gotoAndStop", distance!=-1?"on":"off");	
 		char tmpStr[16];
-		sprintf(tmpStr, "%.1f", distance);
+		sprintf_s(tmpStr, sizeof(tmpStr), "%.1f", distance);
 		gfxRangeFinder.SetVariable("_root.Main.Distance.Distance.Distance.text", tmpStr);
 
 		const ClientGameLogic& CGL = gClientLogic();
@@ -393,7 +393,7 @@ void HUDDisplay::setBloodAlpha(float alpha)
 void HUDDisplay::eventBtnTauntSelect(r3dScaleformMovie* pMovie, const Scaleform::GFx::Value* args, unsigned argCount)
 {
 	TauntSelect = args[0].GetInt();
-	/*Scaleform::GFx::Value var[1];//Êè§¤èÒàÁ×èÍàÅ×Í¡·èÒàµé¹áÅéÇ ¡ÅÑºä»ÂÑ§ Hud à¾×èÍ·ÓÍ×è¹æÍÕ¡
+	/*Scaleform::GFx::Value var[1];//ï¿½è§¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ñºï¿½ï¿½Ñ§ Hud ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¡
 	var[0].SetInt(TauntSelect);
 	gfxHUD.Invoke("_root.Main.BtnTauntActive", var, 1);*/
 }
@@ -405,7 +405,7 @@ void HUDDisplay::eventTaunt(r3dScaleformMovie* pMovie, const Scaleform::GFx::Val
 	obj_Player* plr = gClientLogic().localPlayer_;
 	/* if (plr->NetworkLocal = true);
 	{*/
-	if (TauntSelect == 99)//»Ô´àµé¹
+	if (TauntSelect == 99)//ï¿½Ô´ï¿½ï¿½
 	{
 		plr->m_TauntCoolDown = 0.0f;
 		plr->TauntstartstopLittle = false;
@@ -483,7 +483,7 @@ void HUDDisplay::eventTaunt(r3dScaleformMovie* pMovie, const Scaleform::GFx::Val
 	else
 	{
 		char cooldowntime[64] = { 0 };
-		sprintf(cooldowntime, "PlayAgain in: <[ %.2f ]> Sec", plr->m_TauntCoolDown - TimeCoolDown);
+		sprintf_s(cooldowntime, sizeof(cooldowntime), "PlayAgain in: <[ %.2f ]> Sec", plr->m_TauntCoolDown - TimeCoolDown);
 
 		SoundSys.PlayAndForget(SoundSys.GetEventIDByPath("Sounds/NaraEvents/Misc/UI_Error_MsgSound"), gClientLogic().localPlayer_->GetPosition());
 		addChatMessage(0, "<TAUNT>", cooldowntime, 5);
@@ -528,7 +528,7 @@ void HUDDisplay::eventChatMessage(r3dScaleformMovie* pMovie, const Scaleform::GF
 	{
 		char buf[256];
 		int hour, min;
-		if(3 != sscanf(s_chatMsg, "%s %d %d", buf, &hour, &min))
+		if(3 != sscanf_s(s_chatMsg, "%s %d %d", buf, (unsigned)sizeof(buf), &hour, &min))
 		{
 			addChatMessage(0, "<system>", "/stime {hour} {min}", 0);
 			return;
@@ -553,7 +553,7 @@ void HUDDisplay::eventChatMessage(r3dScaleformMovie* pMovie, const Scaleform::GF
 		char buf[128];
 		int status = 0;
 
-		if (2 != sscanf(s_chatMsg, "%s %d", buf, &status))
+		if (2 != sscanf_s(s_chatMsg, "%s%d", buf, (unsigned)sizeof(buf), &status))
 		{
 			addChatMessage(0, "<system>", "/nm {0|1}", 0);
 			return;
@@ -591,7 +591,7 @@ void HUDDisplay::eventChatMessage(r3dScaleformMovie* pMovie, const Scaleform::GF
 	else{		
 		addChatMessage(0, "<system>", gLangMngr.getString("ChatTemporarilyBanned"), 100);
 		char TimeLeftMsg[64]={0};		
-		sprintf(TimeLeftMsg, gLangMngr.getString("ChatBanTimeLeft"), (gUserProfile.ProfileData.BanTimeChat/60));		
+		sprintf_s(TimeLeftMsg, sizeof(TimeLeftMsg), gLangMngr.getString("ChatBanTimeLeft"), (gUserProfile.ProfileData.BanTimeChat/60));		
 		addChatMessage(0, "<system>", TimeLeftMsg, 100);
 		if(gUserProfile.ProfileData.BanChatCount>=3)
 			addChatMessage(0, "<system>", gLangMngr.getString("ChatBanWarningMsg"), 100);		
@@ -719,7 +719,7 @@ void HUDDisplay::addChatMessage(int tabIndex, const char* user, const char* text
 	
 	sMsg = applyProfanityFilter(sMsg.c_str());
 
-	sprintf(tmpMsg, "<font color=\"%s\">[%s]</font> <font color=\"%s\">%s%s:</font> <font color=\"%s\">%s</font>", tabNamesColor[tabIndex], tabNames[tabIndex], userColor, namePrefix, sUser.c_str(), textColor, sMsg.c_str());
+	sprintf_s(tmpMsg, sizeof(tmpMsg), "<font color=\"%s\">[%s]</font> <font color=\"%s\">%s%s:</font> <font color=\"%s\">%s</font>", tabNamesColor[tabIndex], tabNames[tabIndex], userColor, namePrefix, sUser.c_str(), textColor, sMsg.c_str());
 
 	var[0].SetString(tmpMsg);
 	gfxHUD.Invoke("_root.api.receiveChat", var, 1);
@@ -737,11 +737,11 @@ void HUDDisplay::showPingFPS(int valueping, int valuefps)
 	char PingStr[64] = { 0 };
 
 	if (pingnormal)
-		sprintf(PingStr, "<font color=\"#FFFFFF\">%d</font>", valueping);
+		sprintf_s(PingStr, sizeof(PingStr), "<font color=\"#FFFFFF\">%d</font>", valueping);
 	else if (pinglow)
-		sprintf(PingStr, "<font color=\"#FF9900\">%d</font>", valueping);
+		sprintf_s(PingStr, sizeof(PingStr), "<font color=\"#FF9900\">%d</font>", valueping);
 	else if (pinghight)
-		sprintf(PingStr, "<font color=\"#CC0000\">%d</font>", valueping);
+		sprintf_s(PingStr, sizeof(PingStr), "<font color=\"#CC0000\">%d</font>", valueping);
 
 	//FPS
 	float fps = r3dGetAvgFPS();
@@ -751,11 +751,11 @@ void HUDDisplay::showPingFPS(int valueping, int valuefps)
 	char FpsStr[64] = { 0 };
 
 	if (fpsvaluemax)
-		sprintf(FpsStr, "<font color=\"#FFFFFF\">%d</font>", valuefps);
+		sprintf_s(FpsStr, sizeof(FpsStr), "<font color=\"#FFFFFF\">%d</font>", valuefps);
 	else if (fpsvaluemed)
-		sprintf(FpsStr, "<font color=\"#FF9900\">%d</font>", valuefps);
+		sprintf_s(FpsStr, sizeof(FpsStr), "<font color=\"#FF9900\">%d</font>", valuefps);
 	else if (fpsvaluemin)
-		sprintf(FpsStr, "<font color=\"#CC0000\">%d</font>", valuefps);	
+		sprintf_s(FpsStr, sizeof(FpsStr), "<font color=\"#CC0000\">%d</font>", valuefps);
 	
 	Scaleform::GFx::Value var[2];
 	var[0].SetString(PingStr);
@@ -1719,7 +1719,7 @@ void HUDDisplay::eventPlayerListAction(r3dScaleformMovie* pMovie, const Scalefor
 
 		PKT_C2C_ChatMessage_s n;
 		char ffkick[128];
-		sprintf(ffkick, "/kick \"%s\" reason:", gamertag);
+		sprintf_s(ffkick, sizeof(ffkick), "/kick \"%s\" reason:", gamertag);
 		r3dscpy(n.gamertag, "system");
 		r3dscpy(n.msg, ffkick);
 		n.msgChannel = 1;
@@ -1730,13 +1730,13 @@ void HUDDisplay::eventPlayerListAction(r3dScaleformMovie* pMovie, const Scalefor
 	else if(actionID == HUDDisplay_ContextMenu_AdminBanPlayerID)
 	{
 		char tmpStr[256];
-		sprintf(tmpStr, "/ban \"%s\" reason:", gamertag);
+		sprintf_s(tmpStr, sizeof(tmpStr), "/ban \"%s\" reason:", gamertag);
 		showChatInput(tmpStr);
 	}
 	else if(actionID == HUDDisplay_ContextMenu_AdminBanChatPlayerID)
 	{
 		char tmpStr[256];
-		sprintf(tmpStr, "/chatban \"%s\" reason:", gamertag);
+		sprintf_s(tmpStr, sizeof(tmpStr), "/chatban \"%s\" reason:", gamertag);
 		showChatInput(tmpStr);
 	}
 	else if(actionID == HUDDisplay_ContextMenu_AdminTeleportToPlayerID)
@@ -1747,7 +1747,7 @@ void HUDDisplay::eventPlayerListAction(r3dScaleformMovie* pMovie, const Scalefor
 
 		PKT_C2C_ChatMessage_s n;
 		char tmpStr[256];
-		sprintf(tmpStr, "/ttp \"%s\"", gamertag);
+		sprintf_s(tmpStr, sizeof(tmpStr), "/ttp \"%s\"", gamertag);
 		r3dscpy(n.gamertag, "system");
 		r3dscpy(n.msg, tmpStr);
 		n.msgChannel = 1;
@@ -1763,7 +1763,7 @@ void HUDDisplay::eventPlayerListAction(r3dScaleformMovie* pMovie, const Scalefor
 
 		PKT_C2C_ChatMessage_s n;
 		char tmpStr[256];
-		sprintf(tmpStr, "/ttyl \"%s\"", gamertag);
+		sprintf_s(tmpStr, sizeof(tmpStr), "/ttyl \"%s\"", gamertag);
 		r3dscpy(n.gamertag, "system");
 		r3dscpy(n.msg, tmpStr);
 		n.msgChannel = 1;
@@ -1825,31 +1825,31 @@ void HUDDisplay::ShowScore(const char* totalXP, const char* totalGD, const char*
 
 	if (totalXP != "")
 	{
-		sprintf(XP, "XP: %s", totalXP);
+		sprintf_s(XP, sizeof(XP), "XP: %s", totalXP);
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.totalXP.text", XP);
 	}
 	else{
-		sprintf(XP, "XP: 0");
+		strcpy_s(XP, sizeof(XP), "XP: 0");
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.totalXP.text", XP);
 	}
 
 	if (totalGD != "")
 	{
-		sprintf(GD, "GD: %s", totalGD);
+		sprintf_s(GD, sizeof(GD), "GD: %s", totalGD);
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.totalGD.text", GD);
 	}
 	else{
-		sprintf(GD, "GD: 0");
+		strcpy_s(GD, sizeof(GD), "GD: 0");
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.totalGD.text", GD);
 	}
 
 	if (totalKills != "")
 	{
-		sprintf(Kills, "KILLS: %s", totalKills);
+		sprintf_s(Kills, sizeof(Kills), "KILLS: %s", totalKills);
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.totalKills.text", Kills);
 	}
 	else{
-		sprintf(Kills, "KILLS: 0");
+		strcpy_s(Kills, sizeof(Kills), "KILLS: 0");
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.totalKills.text", Kills);
 	}
 }
@@ -1888,7 +1888,7 @@ void HUDDisplay::updateDeadTimer(int timer) //Respawnfast
 	char tmpstr[64];
 	if (gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_Respawnfast)
 	{
-		sprintf(tmpstr, "Respawn in [ %02d SEC ]", timer);
+		sprintf_s(tmpstr, sizeof(tmpstr), "Respawn in [ %02d SEC ]", timer);
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.ExitInText.text", tmpstr);
 		if (timer <= 0)
 		{
@@ -1901,7 +1901,7 @@ void HUDDisplay::updateDeadTimer(int timer) //Respawnfast
 	}
 	else {
 		respawnRequest = false;
-		sprintf(tmpstr, gLangMngr.getString("$HUD_ExitingIn"), timer);
+		sprintf_s(tmpstr, sizeof(tmpstr), gLangMngr.getString("$HUD_ExitingIn"), timer);
 		gfxHUD.SetVariable("_root.Main.PlayerDead.DeadMsg.ExitInText.text", tmpstr);
 	}
 
@@ -2026,13 +2026,13 @@ void HUDDisplay::setTPSReticleVisibility(int set)
 
 	char ReticleColor[16] = { 0 };
 	if (r_crosshaire_color->GetInt() == 0)
-		sprintf(ReticleColor, "white");
+		strcpy_s(ReticleColor, sizeof(ReticleColor), "white");
 	else if (r_crosshaire_color->GetInt() == 1)
-		sprintf(ReticleColor, "red");
+		strcpy_s(ReticleColor, sizeof(ReticleColor), "red");
 	else if (r_crosshaire_color->GetInt() == 2)
-		sprintf(ReticleColor, "blue");
+		strcpy_s(ReticleColor, sizeof(ReticleColor), "blue");
 	else if (r_crosshaire_color->GetInt() == 3)
-		sprintf(ReticleColor, "green");
+		strcpy_s(ReticleColor, sizeof(ReticleColor), "green");
 
 	if (r_crosshaire_mode->GetInt() == 0)
 	{
@@ -2352,7 +2352,7 @@ void HUDDisplay::showKillPlayer(const char* victim) //showKillPlayer
 
 
 	char KillStr[256];
-	sprintf(KillStr, "YOU KILLED <font color=\"#ff001f\">%s</font>", victim); 
+	sprintf_s(KillStr, sizeof(KillStr), "YOU KILLED <font color=\"#ff001f\">%s</font>", victim); 
 
 	gfxHUD.Invoke("_root.Main.showKillPlayer.gotoAndPlay", "start");
 	gfxHUD.SetVariable("_root.api.Main.showKillPlayer.Name.Text.htmlText", KillStr);

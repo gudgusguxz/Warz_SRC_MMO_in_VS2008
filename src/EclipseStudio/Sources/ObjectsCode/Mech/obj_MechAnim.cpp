@@ -27,7 +27,7 @@ void CMechUberEquip::LoadSlot(int slotId, const char* fname)
 	sl.name = "";
 	
 	char buf[256];
-	sprintf(buf, fname);
+	strcpy_s(buf, sizeof(buf), fname);
 	strupr(buf);
 	if(strstr(buf, "@EMPTY") != 0) {
 		return;

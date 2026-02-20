@@ -95,7 +95,7 @@ void HUDPause::ChangePlayerBackpackFast(int ItemID)
 			Scaleform::GFx::Value var[10];
 			char tmpGamertag[128];
 			if(plr->ClanID != 0)
-				sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+				sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 			else
 				r3dscpy(tmpGamertag, slot.Gamertag);
 			var[0].SetString(tmpGamertag);
@@ -882,7 +882,7 @@ void HUDPause::eventChangeBackpack(r3dScaleformMovie* pMovie, const Scaleform::G
 			Scaleform::GFx::Value var[10];
 			char tmpGamertag[128];
 			if(plr->ClanID != 0)
-				sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+				sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 			else
 				r3dscpy(tmpGamertag, slot.Gamertag);
 			var[0].SetString(tmpGamertag);
@@ -1327,8 +1327,8 @@ bool HUDPause::Init()
 	{
 		char sFullPath[512];
 		char sFullPathImg[512];
-		sprintf(sFullPath, "%s\\%s", r3dGameLevel::GetHomeDir(), "minimap.dds");
-		sprintf(sFullPathImg, "$%s", sFullPath); // use '$' char to indicate absolute path
+		sprintf_s(sFullPath, sizeof(sFullPath), "%s\\%s", r3dGameLevel::GetHomeDir(), "minimap.dds");
+		sprintf_s(sFullPathImg, sizeof(sFullPathImg), "$%s", sFullPath); // use '$' char to indicate absolute path
 
 		if(r3dFileExists(sFullPath))
 			gfxMovie.Invoke("_root.api.setMapIcon", sFullPathImg);
@@ -1392,7 +1392,7 @@ void HUDPause::Update()
 		Scaleform::GFx::Value var[3];
 		char tmpMsg[128];
 		if(timeLeft > 0)
-			sprintf(tmpMsg, gLangMngr.getString("HUD_DisconnectingIn"), timeLeft);
+			sprintf_s(tmpMsg, sizeof(tmpMsg), gLangMngr.getString("HUD_DisconnectingIn"), timeLeft);
 		else
 			r3dscpy(tmpMsg, gLangMngr.getString("HUD_DisconnectingSoon"));
 		var[0].SetString(tmpMsg);
@@ -1514,7 +1514,7 @@ void HUDPause::Activate()
 		wiCharDataFull& slot = plr->CurLoadout;
 		char tmpGamertag[128];
 		if(plr->ClanID != 0)
-			sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+			sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 		else
 			r3dscpy(tmpGamertag, slot.Gamertag);
 		var[0].SetString(tmpGamertag);
@@ -1552,7 +1552,7 @@ void HUDPause::Activate()
 
 	{
 		char tmpStr[256];
-		sprintf(tmpStr, gLangMngr.getString("HUD_ServerNameTitle"), gClientLogic().m_gameInfo.name);
+		sprintf_s(tmpStr, sizeof(tmpStr), gLangMngr.getString("HUD_ServerNameTitle"), gClientLogic().m_gameInfo.name);
 		gfxMovie.Invoke("_root.api.setServerName", tmpStr);
 	}
 
@@ -1598,7 +1598,7 @@ void HUDPause::updateSurvivorTotalWeight()
 	wiCharDataFull& slot = plr->CurLoadout;
 	char tmpGamertag[128];
 	if(plr->ClanID != 0)
-		sprintf(tmpGamertag, "[%s] %s", plr->ClanTag, slot.Gamertag);
+		sprintf_s(tmpGamertag, sizeof(tmpGamertag), "[%s] %s", plr->ClanTag, slot.Gamertag);
 	else
 		r3dscpy(tmpGamertag, slot.Gamertag);
 
@@ -1627,8 +1627,8 @@ void HUDPause::setTime(__int64 utcTime)
 
 	char date[128];
 	char time[128];
-	sprintf(date, "%s %d, %d", gLangMngr.getString(months[tm->tm_mon]), tm->tm_mday, 1900 + tm->tm_year);
-	sprintf(time, "%02d:%02d", tm->tm_hour, tm->tm_min);
+	sprintf_s(date, sizeof(date), "%s %d, %d", gLangMngr.getString(months[tm->tm_mon]), tm->tm_mday, 1900 + tm->tm_year);
+	sprintf_s(time, sizeof(time), "%02d:%02d", tm->tm_hour, tm->tm_min);
 
 	Scaleform::GFx::Value var[2];
 	var[0].SetString(date);

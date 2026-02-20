@@ -24,7 +24,7 @@ namespace
 	char LevelXMLSettingsFileName[512] = {0} ;
 	bool LoadLevelXMLSettings(pugi::xml_document &xmlLevelFile, pugi::xml_node &xmlRoot, Bytes &xmlFileBuffer)
 	{
-		_snprintf(LevelXMLSettingsFileName, sizeof LevelXMLSettingsFileName - 1, LEVEL_SETTINGS_FILE, r3dGameLevel::GetHomeDir());
+		_snprintf_s(LevelXMLSettingsFileName, sizeof(LevelXMLSettingsFileName), _TRUNCATE, LEVEL_SETTINGS_FILE, r3dGameLevel::GetHomeDir());
 
 		r3dFile* f = r3d_open(LevelXMLSettingsFileName, "rb");
 		if (f)
@@ -280,7 +280,7 @@ void PlayerLifeProps::DebugDrawZombieSenses()
 			float adjNoise = GetPlayerAdjustedNoise(dist);
 			float adjSmell = GetPlayerAdjustedSmell(dist);
 
-			sprintf(buf, "V: %.1f, %.1f\nN: %.1f, %.1f\nS: %.1f, %.1f", cfg.vision, adjVis, cfg.hearing, adjNoise, cfg.smelling, adjSmell);
+			sprintf_s(buf, sizeof(buf), "V: %.1f, %.1f\nN: %.1f, %.1f\nS: %.1f, %.1f", cfg.vision, adjVis, cfg.hearing, adjNoise, cfg.smelling, adjSmell);
 			imgui_Static(scrPos.x, scrPos.y, buf, 80, true, 40);
 
 		}

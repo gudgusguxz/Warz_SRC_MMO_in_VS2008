@@ -104,7 +104,7 @@ void HUDMark::addMarker(int id)
 			{
 				char tempStr[256];
 				float distance = (gameObj->GetPosition() - gClientLogic().localPlayer_->GetPosition()).Length();
-				sprintf(tempStr, "%s / %d m", gClientLogic().localPlayer_->CurLoadout.Gamertag, (int)distance);
+				sprintf_s(tempStr, sizeof(tempStr), "%s / %d m", gClientLogic().localPlayer_->CurLoadout.Gamertag, (int)distance);
 				showHUDIcon(gClientLogic().localPlayer_, MarkType_3, gameObj->GetPosition(), tempStr);
 
 				// send msg to server
@@ -124,7 +124,7 @@ void HUDMark::addMarker(int id)
 			r3dVector pos(hit.impact.x, hit.impact.y, hit.impact.z);
 			char tempStr[256];
 			float distance = (pos - gClientLogic().localPlayer_->GetPosition()).Length();
-			sprintf(tempStr, "%s / %d m", gClientLogic().localPlayer_->CurLoadout.Gamertag, (int)distance);
+			sprintf_s(tempStr, sizeof(tempStr), "%s / %d m", gClientLogic().localPlayer_->CurLoadout.Gamertag, (int)distance);
 			showHUDIcon(gClientLogic().localPlayer_, id, pos, tempStr);
 
 			// send msg to server

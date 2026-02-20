@@ -37,7 +37,7 @@ BOOL obj_BaseNPC::Load(const char *fname)
 	r3d_assert(m_NPCMeshName);
 
 	char cpMeshName[MAX_PATH];
-	sprintf(cpMeshName, "Data\\ObjectsDepot\\Characters\\%s.sco", m_NPCMeshName);
+	sprintf_s(cpMeshName, sizeof(cpMeshName), "Data\\ObjectsDepot\\Characters\\%s.sco", m_NPCMeshName);
 
 	if(!parent::Load(cpMeshName)) 
 		return FALSE;
@@ -69,7 +69,7 @@ BOOL obj_BaseNPC::OnCreate()
 		// load anim
 		r3d_assert(m_NPCAnimName);
 		char animNamePath[MAX_PATH];
-		sprintf(animNamePath, "Data\\Animations5\\%s.anm", m_NPCAnimName);
+		sprintf_s(animNamePath, sizeof(animNamePath), "Data\\Animations5\\%s.anm", m_NPCAnimName);
 		int aid = m_AnimPool.Add(m_NPCAnimName, animNamePath);
 		r3d_assert(aid!=-1);
 		m_Animation.StartAnimation(aid, ANIMFLAG_Looped, 0.0f, 0.0f, 0.0f);

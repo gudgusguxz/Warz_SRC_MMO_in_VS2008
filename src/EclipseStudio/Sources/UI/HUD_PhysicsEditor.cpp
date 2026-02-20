@@ -206,7 +206,7 @@ void PhysFillCatFromDir( PhysCategoryStruct& cat, const char* clazz, const char*
 {
 	char TempS[ 256 ];
 	char physicsFile[256];
-	sprintf ( TempS,"Data\\ObjectsDepot\\%s\\*.sco", path ); // ptumik: parse only text meshes
+	sprintf_s ( TempS, sizeof(TempS), "Data\\ObjectsDepot\\%s\\*.sco", path ); // ptumik: parse only text meshes
 	WIN32_FIND_DATA ffblk;
 	HANDLE h;
 	cat.NumObjects = 0;
@@ -226,7 +226,7 @@ void PhysFillCatFromDir( PhysCategoryStruct& cat, const char* clazz, const char*
 				elem.str = ffblk.cFileName;
 				
 				memset(physicsFile, 0, sizeof(physicsFile));
-				sprintf(physicsFile, "Data\\ObjectsDepot\\%s\\%s", path, ffblk.cFileName);
+				sprintf_s(physicsFile, sizeof(physicsFile), "Data\\ObjectsDepot\\%s\\%s", path, ffblk.cFileName);
 				int len = strlen(physicsFile);
 				r3dscpy(&physicsFile[len-3], "phx");
 				if(r3d_access(physicsFile, 0) == 0) // exist
@@ -392,8 +392,8 @@ void PhysicsHUD::ProcessPhysicsEditor()
 			idx1 = 0;
 		}
 
-		sprintf (ClassName,"%s", PhysObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
-		sprintf (FileName,"%s", PhysObjectCategories.at(idx).ObjectsNames.at(idx1).str.c_str());
+		strcpy_s(ClassName, sizeof(ClassName), PhysObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
+		strcpy_s(FileName, sizeof(FileName), PhysObjectCategories.at(idx).ObjectsNames.at(idx1).str.c_str());
 		if(ClassName[0] != 0 && FileName[0] != 0)
 		{
 			current_obj_idx = idx;
@@ -407,14 +407,14 @@ void PhysicsHUD::ProcessPhysicsEditor()
 	if (imgui_DrawList((float)SliderX, (float)SliderY, 360, 200, PhysCatNames, &PhysCatOffset, &idx, true, false, true))
 	{
 		idx1 = 0;
-		sprintf(CategoryName, "%s", PhysCatNames.at(idx).c_str());
+		strcpy_s(CategoryName, sizeof(CategoryName), PhysCatNames.at(idx).c_str());
 
-		sprintf(ClassName,"");
-		sprintf(FileName, "");
-		if(PhysObjectCategories.at(idx).ObjectsClasses.size() > 0) 
+		ClassName[0] = '\0';
+		FileName[0] = '\0';
+		if(PhysObjectCategories.at(idx).ObjectsClasses.size() > 0)
 		{
-			sprintf(ClassName, "%s", PhysObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
-			sprintf(FileName, "%s", PhysObjectCategories.at(idx).ObjectsNames.at(0).str.c_str());
+			strcpy_s(ClassName, sizeof(ClassName), PhysObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
+			strcpy_s(FileName, sizeof(FileName), PhysObjectCategories.at(idx).ObjectsNames.at(0).str.c_str());
 		}
 	}
 
@@ -428,8 +428,8 @@ void PhysicsHUD::ProcessPhysicsEditor()
 	{
 		if (imgui_DrawListColored((float)SliderX, (float)SliderY, 360, r3dRenderer->ScreenH-40-SliderY, PhysObjectCategories.at(idx).ObjectsNames , &PhysObjectCategories.at(idx).Offset, &idx1, true, true))
 		{
-			sprintf (ClassName,"%s", PhysObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
-			sprintf (FileName,"%s", PhysObjectCategories.at(idx).ObjectsNames.at(idx1).str.c_str());
+			strcpy_s (ClassName, sizeof(ClassName), PhysObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
+			strcpy_s (FileName, sizeof(FileName), PhysObjectCategories.at(idx).ObjectsNames.at(idx1).str.c_str());
 			if(ClassName[0] != 0 && FileName[0] != 0)
 			{
 				current_obj_idx = idx;
@@ -438,9 +438,9 @@ void PhysicsHUD::ProcessPhysicsEditor()
 			}
 		}
 		if (PhysObjectCategories.at(idx).Type)
-			sprintf (Str,"%s", FileName);
+			strcpy_s (Str, sizeof(Str), FileName);
 		else
-			sprintf (Str,"Data\\ObjectsDepot\\%s\\%s", CategoryName, FileName);
+			sprintf_s (Str, sizeof(Str), "Data\\ObjectsDepot\\%s\\%s", CategoryName, FileName);
 	}
 
 	

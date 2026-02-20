@@ -531,7 +531,7 @@ void WaterBase::RenderBegin(const r3dCamera& Cam, float waterLevel)
 		_deepColor = uDeepColor;
 		_attenColor = uAttenColor;
 
-		strcat(sVS, "U");
+		strcat_s(sVS, sizeof(sVS), "U");
 	}
 	else
 	{
@@ -542,15 +542,15 @@ void WaterBase::RenderBegin(const r3dCamera& Cam, float waterLevel)
 		_deepColor = deepColor;
 		_attenColor = attenColor;
 	}
-	if(isRippled)	strcat(sVS, "R");
+	if(isRippled)	strcat_s(sVS, sizeof(sVS), "R");
 
 	char* q[] = { "_L", "_N", "_H" };
-	strcat(sVS, q[r_environment_quality->GetInt()-1]);
+	strcat_s(sVS, sizeof(sVS), q[r_environment_quality->GetInt()-1]);
 
 	char sPS[16];
 	strcpy_s(sPS, sizeof(sPS), sVS);
-	strcat(sPS, "P");
-	strcat(sVS, "V");
+	strcat_s(sPS, sizeof(sPS), "P");
+	strcat_s(sVS, sizeof(sVS), "V");
 	r3dRenderer->SetVertexShader(sVS);
 	r3dRenderer->SetPixelShader(sPS);
 

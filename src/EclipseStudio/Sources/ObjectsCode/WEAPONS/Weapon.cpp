@@ -103,7 +103,7 @@ r3dMesh* WeaponConfig::getMesh( bool allow_async_loading, bool first_person ) co
 			if(g_bEditMode && !r3dFileExists(m_ModelPath_1st))
 			{
 				char buf[128];
-				sprintf(buf, "FPS model isn't available for %s", FNAME);
+				sprintf_s(buf, sizeof(buf), "FPS model isn't available for %s", FNAME);
 				MessageBox(NULL, buf, "Warning", MB_OK);
 				m_Model_FPS = m_Model;
 			}
@@ -405,11 +405,11 @@ void Weapon::checkForSkeleton()
 
 		m_pConfig->m_AnimPool_FPS = game_new r3dAnimPool();
 
-		sprintf(tmpStr, "%s\\%s_FPS_Idle.anm", GLOBAL_ANIM_FOLDER, m_pConfig->m_AnimPrefix);
+		sprintf_s(tmpStr, sizeof(tmpStr), "%s\\%s_FPS_Idle.anm", GLOBAL_ANIM_FOLDER, m_pConfig->m_AnimPrefix);
 		int aid = m_pConfig->m_AnimPool_FPS->Add("Idle", tmpStr);
-		sprintf(tmpStr, "%s\\%s_FPS_Fire.anm", GLOBAL_ANIM_FOLDER, m_pConfig->m_AnimPrefix);
+		sprintf_s(tmpStr, sizeof(tmpStr), "%s\\%s_FPS_Fire.anm", GLOBAL_ANIM_FOLDER, m_pConfig->m_AnimPrefix);
 		aid = m_pConfig->m_AnimPool_FPS->Add("Fire", tmpStr);
-		sprintf(tmpStr, "%s\\%s_FPS_Reload.anm", GLOBAL_ANIM_FOLDER, m_pConfig->m_AnimPrefix);
+		sprintf_s(tmpStr, sizeof(tmpStr), "%s\\%s_FPS_Reload.anm", GLOBAL_ANIM_FOLDER, m_pConfig->m_AnimPrefix);
 		aid = m_pConfig->m_AnimPool_FPS->Add("Reload", tmpStr);
 	}
 
@@ -1747,7 +1747,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 #endif
 				// now replace aim anims
 				char aname[128];
-				sprintf(aname, "FPS_Zoom_%s_Walk", m_pConfig->m_AnimPrefix);
+				sprintf_s(aname, sizeof(aname), "FPS_Zoom_%s_Walk", m_pConfig->m_AnimPrefix);
 				int animID = AI_Player_UberData->TryToAddAnimation(aname);
 				if(animID!=-1)
 				{
@@ -1759,7 +1759,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					}
 				}
 
-				sprintf(aname, "FPS_Zoom_%s_Fire", m_pConfig->m_AnimPrefix);
+				sprintf_s(aname, sizeof(aname), "FPS_Zoom_%s_Fire", m_pConfig->m_AnimPrefix);
 				animID = AI_Player_UberData->TryToAddAnimation(aname);
 				if(animID!=-1)
 				{
@@ -1770,7 +1770,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 						enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ShootAim].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 					}
 				}
-				sprintf(aname, "FPS_Zoom_%s_Idle", m_pConfig->m_AnimPrefix);
+				sprintf_s(aname, sizeof(aname), "FPS_Zoom_%s_Idle", m_pConfig->m_AnimPrefix);
 				animID = AI_Player_UberData->TryToAddAnimation(aname);
 				if(animID!=-1)
 				{
@@ -1795,7 +1795,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 
 				// now replace grip anims
 				char aname[128];
-				sprintf(aname, "FPS_GRIP_%s_%s_Sprint", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Sprint", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_SprintBlend] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1803,7 +1803,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_SprintBlend].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Run", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Run", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_RunBlend] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1811,7 +1811,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_RunBlend].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Fire", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Fire", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ShootWalk] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1819,7 +1819,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ShootWalk].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Reload", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Reload", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ReloadIdle] = m_animationIds_FPS[CUberData::AIDX_ReloadWalk] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1827,7 +1827,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ReloadWalk].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Idle", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Idle", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_IdleUpper] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1835,7 +1835,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_IdleUpper].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Crouch_Run", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Crouch_Run", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_CrouchBlend] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1843,7 +1843,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_CrouchBlend].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Crouch_Fire", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Crouch_Fire", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ShootCrouch] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1851,7 +1851,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ShootCrouch].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Crouch_Reload", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Crouch_Reload", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ReloadCrouch] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1859,7 +1859,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ReloadCrouch].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Prone_Fire", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Prone_Fire", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ShootProne] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1867,7 +1867,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ShootProne].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Prone_Idle", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Prone_Idle", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_IdleProne] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1875,7 +1875,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_IdleProne].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Prone_Reload", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Prone_Reload", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ReloadProne] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body
@@ -1883,7 +1883,7 @@ void Weapon::setWeaponAttachments(const WeaponAttachmentConfig** wpnAttmConfigs)
 					enableAnimBones(AI_Player_UberData->blendStartBones_[CUberData::AIDX_ReloadProne].c_str(), AI_Player_UberData->bindSkeleton_, ad, true);
 				}
 
-				sprintf(aname, "FPS_GRIP_%s_%s_Prone_Run", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
+				sprintf_s(aname, sizeof(aname), "FPS_GRIP_%s_%s_Prone_Run", m_pConfig->m_AnimPrefix, wpnAttmConfig->m_ScopeAnimPath);
 				m_animationIds_FPS[CUberData::AIDX_ProneBlend] = AI_Player_UberData->AddAnimation(aname);
 				{
 					// those animations is upper body

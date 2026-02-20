@@ -125,7 +125,7 @@ BOOL obj_Lake::OnCreate()
 	{
 		for(int i=0; i<25; ++i)
 		{
-			sprintf(Str,"Data\\Water\\waves_%.2d.dds",i);
+			sprintf_s(Str, sizeof(Str), "Data\\Water\\waves_%.2d.dds",i);
 			WaterColor[i] = r3dRenderer->LoadTexture(Str);
 		}
 		ColorTexture = r3dRenderer->LoadTexture("Data\\Water\\LakeColor.dds");
@@ -338,7 +338,7 @@ void obj_Lake::ReadSerializedData(pugi::xml_node& node)
 			char Str[256];
 			for(int i=0; i<25; ++i)
 			{
-				sprintf(Str,"%s%.2d.dds", szName, i);
+				sprintf_s(Str, sizeof(Str), "%s%.2d.dds", szName, i);
 				WaterColor[i] = r3dRenderer->LoadTexture(Str);
 			}
 		}

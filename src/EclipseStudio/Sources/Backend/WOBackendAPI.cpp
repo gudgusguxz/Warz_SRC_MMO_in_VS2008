@@ -72,9 +72,9 @@ void CWOBackendReq::Init(const char* url)
 	// create request
 	char fullUrl[512];
 	if(url[0] != '/')
-	  sprintf(fullUrl, "%s%s", gDomainBaseUrl, url);
-	else 
-	  sprintf(fullUrl, "%s", url);
+	  sprintf_s(fullUrl, sizeof(fullUrl), "%s%s", gDomainBaseUrl, url);
+	else
+	  strcpy_s(fullUrl, sizeof(fullUrl), url);
 
 	req.UsePost();
 	req.put_Path(fullUrl);
@@ -106,14 +106,14 @@ void CWOBackendReq::AddParam(const char* name, const char* val)
 void CWOBackendReq::AddParam(const char* name, int val)
 {
 	char	buf[1024];
-	sprintf(buf, "%d", val);
+	sprintf_s(buf, sizeof(buf), "%d", val);
 	AddParam(name, buf);
 }
 
 void CWOBackendReq::AddParamF(const char* name, float val)
 {
 	char	buf[1024];
-	sprintf(buf, "%.3f", val);
+	sprintf_s(buf, sizeof(buf), "%.3f", val);
 	AddParam(name, buf);
 }
 

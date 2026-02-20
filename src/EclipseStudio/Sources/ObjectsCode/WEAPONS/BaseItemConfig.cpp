@@ -33,9 +33,9 @@ bool BaseItemConfig::loadBaseFromXml(pugi::xml_node& xmlItem)
 	if(loadNameFromLangFile)
 	{
 		char tmpStr[64];
-		sprintf(tmpStr, "%d_name", m_itemID);
+		sprintf_s(tmpStr, sizeof(tmpStr), "%d_name", m_itemID);
 		m_StoreName = strdup(gLangMngr.getString(tmpStr));
-		sprintf(tmpStr, "%d_desc", m_itemID);
+		sprintf_s(tmpStr, sizeof(tmpStr), "%d_desc", m_itemID);
 		m_Description = strdup(gLangMngr.getString(tmpStr));
 	}
 	else

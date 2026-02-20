@@ -43,7 +43,7 @@ void HttpDownload::ProgressInfo(const char *name, const char *value)
 {
 	if(strcmp(name, "ResponseContentLength") == 0) {
 		DWORD contentLength;
-		sscanf(value, "%u", &contentLength);
+		sscanf_s(value, "%u", &contentLength);
 		return;
 	}
 

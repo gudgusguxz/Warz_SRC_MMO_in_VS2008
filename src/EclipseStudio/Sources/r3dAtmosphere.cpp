@@ -272,13 +272,13 @@ int r3dAtmosphere :: SerializeXML( pugi::xml_node root )
 		{
 			char name[ 64 ];
 
-			sprintf( name, "static_sky_tex_name_phase%d", i );
+			sprintf_s( name, sizeof(name), "static_sky_tex_name_phase%d", i );
 			SerializeXMLVal<W>( name, atmoNode, &StaticSkyTextureNames[ i ] );
 
-			sprintf( name, "static_sky_glow_tex_name_phase%d", i );
+			sprintf_s( name, sizeof(name), "static_sky_glow_tex_name_phase%d", i );
 			SerializeXMLVal<W>( name, atmoNode, &StaticSkyGlowTextureNames[ i ] );
 
-			sprintf( name, "static_sky_intensity_phase%d", i );
+			sprintf_s( name, sizeof(name), "static_sky_intensity_phase%d", i );
 			SerializeXMLVal<W>( name, atmoNode, &StaticSkyIntensities[ i ] );
 		}
 
