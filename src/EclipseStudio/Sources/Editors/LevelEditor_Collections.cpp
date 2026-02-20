@@ -333,7 +333,7 @@ void Draw_Collection_Toolbar()
 				// Checkbox if you need it  
 				static int CheckBoxValue = 0;
 				char string[200];
-				sprintf(string, "%c", currentGroup.ExpandedProperties ? '>' : 'V');
+				sprintf_s(string, sizeof(string), "%c", currentGroup.ExpandedProperties ? '>' : 'V');
 
 				if (imgui_Button(SliderX-20, SliderY, 20, 25, string, 0))
 				{
@@ -353,7 +353,7 @@ void Draw_Collection_Toolbar()
  				}
 
 				//imgui_Checkbox_Small(SliderX - 20, SliderY,20,string,&gInstanceGroupVisible[gCurrentLayer][t], 1);
-				sprintf(string,"Use %s", t->meshLOD[0]->Name);
+				sprintf_s(string, sizeof(string), "Use %s", t->meshLOD[0]->Name);
 				SliderY += imgui_Checkbox(SliderX, SliderY, 330, 25, string, &currentGroup.Active, 1);
 
 				if(currentGroup.ExpandedProperties)
@@ -445,14 +445,14 @@ void Draw_Collection_Toolbar()
 				if (!t || !t->meshLOD[0])
 					continue;
 
-				sprintf(string,"%c", t->UIVisible ? '>' : 'V');
+				sprintf_s(string, sizeof(string), "%c", t->UIVisible ? '>' : 'V');
 				
 				if (imgui_Button(SliderX-20, SliderY, 20, 25, string, 0))
 				{
 					t->UIVisible^=1;
 				}
 
-				sprintf(string, "%s", t->meshLOD[0]->Name);
+				strcpy_s(string, sizeof(string), t->meshLOD[0]->Name);
 				SliderY += imgui_Static(SliderX, SliderY,string );
 
 				if(t->UIVisible)
@@ -462,7 +462,7 @@ void Draw_Collection_Toolbar()
 						CollectionType::AnimLayer& layer = t->AnimLayers[ i ] ; 
 
 						char buf[ 64 ] ;
-						sprintf( buf, "Anim Layer %d", i ) ;
+						sprintf_s( buf, sizeof(buf), "Anim Layer %d", i ) ;
 
 						SliderY += imgui_Static( SliderX, SliderY, buf, 360 ) ;
  
@@ -1027,14 +1027,14 @@ void DrawPossibleElementsChoose(bool flag)
 	static int idx = -1;
 	if (imgui_DrawList(SliderX, SliderY, 360, 200, CatNames, &CatOffset, &idx))
 	{
-		sprintf(CategoryName, "%s", CatNames.at(idx).c_str());
+		strcpy_s(CategoryName, sizeof(CategoryName), CatNames.at(idx).c_str());
 
-		sprintf(ClassName,"");
-		sprintf(FileName, "");
+		strcpy_s(ClassName, sizeof(ClassName), "");
+		strcpy_s(FileName, sizeof(FileName), "");
 		if(ObjectCategories.at(idx).ObjectsClasses.size() > 0)
 		{
-			sprintf(ClassName, "%s", ObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
-			sprintf(FileName, "%s", ObjectCategories.at(idx).ObjectsNames.at(0).c_str());
+			strcpy_s(ClassName, sizeof(ClassName), ObjectCategories.at(idx).ObjectsClasses.at(0).c_str());
+			strcpy_s(FileName, sizeof(FileName), ObjectCategories.at(idx).ObjectsNames.at(0).c_str());
 		}
 	}
 
@@ -1047,18 +1047,18 @@ void DrawPossibleElementsChoose(bool flag)
 	{
 		if (imgui_DrawList(SliderX, SliderY, 360, 200, ObjectCategories.at(idx).ObjectsNames , &ObjectCategories.at(idx).Offset, &idx1))
 		{
-			sprintf (ClassName,"%s", ObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
-			sprintf (FileName,"%s", ObjectCategories.at(idx).ObjectsNames.at(idx1).c_str());
+			strcpy_s(ClassName, sizeof(ClassName), ObjectCategories.at(idx).ObjectsClasses.at(idx1).c_str());
+			strcpy_s(FileName, sizeof(FileName), ObjectCategories.at(idx).ObjectsNames.at(idx1).c_str());
 		}
 		SliderY += 205;
 
 		if(ClassName[0] == 0 || FileName[0] == 0)
 			return;
 
-		sprintf (Str,"Data\\ObjectsDepot\\%s\\%s", CategoryName, FileName);
+		sprintf_s(Str, sizeof(Str), "Data\\ObjectsDepot\\%s\\%s", CategoryName, FileName);
 		r3dSTLString fileName = Str;
 
-		sprintf (Str,"%s\\%s", CategoryName, FileName);
+		sprintf_s(Str, sizeof(Str), "%s\\%s", CategoryName, FileName);
 		r3dSTLString uiName = Str;
 
 		if(imgui_Button(SliderX, SliderY, DEFAULT_CONTROLS_WIDTH, DEFAULT_CONTROLS_HEIGHT, "Add Decorator"))
@@ -1066,7 +1066,7 @@ void DrawPossibleElementsChoose(bool flag)
 			int idx = gCollectionsManager.CreateNewType();
 			CollectionType *t = gCollectionsManager.GetType(idx);
 			char buf[MAX_PATH];
-			sprintf(buf, "data\\objectsdepot\\%s", Str);
+			sprintf_s(buf, sizeof(buf), "data\\objectsdepot\\%s", Str);
 			t->InitMeshes(buf);
 			t->lod1Dist = 30.0f;
 			t->lod2Dist = 100.0f;

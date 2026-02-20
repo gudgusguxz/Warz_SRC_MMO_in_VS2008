@@ -136,7 +136,7 @@ void CUserFriends::ParseFriendStatus(pugi::xml_node xmlFriends)
 		r3dscpy(fr.gamerTag, GT);
 		r3dscpy(fr.clanName, clanName);
 		fr.isOnline = isOnline;
-		sscanf(gsid, "%I64d", &fr.gameSessionId);
+		sscanf_s(gsid, "%I64d", &fr.gameSessionId);
 			
 		friendsCur_.push_back(fr);
 		

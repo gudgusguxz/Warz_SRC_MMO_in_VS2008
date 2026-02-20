@@ -321,17 +321,17 @@ int DoLoadingScreen( volatile LONG* Loading, const char* LevelName, const char* 
 	r3d_assert( gLoadingScreen );
 
 	char sFullPath[512];
-	sprintf( sFullPath, "%s\\%s", LevelFolder, "LoadingScreen.dds" );
+	sprintf_s( sFullPath, sizeof(sFullPath), "%s\\%s", LevelFolder, "LoadingScreen.dds" );
 
 	// no dollar sign for access
 	if(r3d_access(sFullPath, 0) != 0)
 	{
 		int sel = rand()%3;
-		sprintf( sFullPath, "%s\\LoadingScreen%d.dds", LevelFolder, sel );
+		sprintf_s( sFullPath, sizeof(sFullPath), "%s\\LoadingScreen%d.dds", LevelFolder, sel );
 	}
 
 	char tempStr[32];
-	sprintf(tempStr, "TipOfTheDay%d", int(floorf(u_GetRandom(0.0f, 12.99f))));
+	sprintf_s(tempStr, sizeof(tempStr), "TipOfTheDay%d", int(floorf(u_GetRandom(0.0f, 12.99f))));
 	gLoadingScreen->SetData( sFullPath, LevelName, LevelDescription, gLangMngr.getString(tempStr));
 
 	bool checkTimeOut = TimeOut != 0.f;

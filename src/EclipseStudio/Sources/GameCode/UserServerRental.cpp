@@ -124,11 +124,11 @@ int CUserServerRental::ApiRentServer(const rentParams_s& params, int price)
 	}
 	
 	int ServerID;
-	int nargs = sscanf(req.bodyStr_, "%d", &ServerID);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &ServerID);
 	r3d_assert(nargs == 1);
-	
+
 	gUserProfile.ProfileData.GamePoints -= price;
-	
+
 	return 0;
 }
 
@@ -155,7 +155,7 @@ int CUserServerRental::ApiRenewServer(DWORD gameServerId, const rentParams_s& pa
 		{
 			// special case - need to wait until you can donate
 			int HoursLeft;
-			int nargs = sscanf(req.bodyStr_, "%d", &HoursLeft);
+			int nargs = sscanf_s(req.bodyStr_, "%d", &HoursLeft);
 			r3d_assert(nargs == 1);
 			if(out_HoursLeft)
 				*out_HoursLeft = HoursLeft;
@@ -169,11 +169,11 @@ int CUserServerRental::ApiRenewServer(DWORD gameServerId, const rentParams_s& pa
 	}
 	
 	int ServerID;
-	int nargs = sscanf(req.bodyStr_, "%d", &ServerID);
+	int nargs = sscanf_s(req.bodyStr_, "%d", &ServerID);
 	r3d_assert(nargs == 1);
-	
+
 	gUserProfile.ProfileData.GamePoints -= price;
-	
+
 	return 0;
 }
 

@@ -70,10 +70,10 @@ bool CreateNewLevel()
 	{
 		char tmpStr[512];
 		r3dscpy(tmpStr, LevelEditName);
-		sprintf(LevelEditName, "WorkInProgress\\%s", tmpStr);
+		sprintf_s(LevelEditName, sizeof(LevelEditName), "WorkInProgress\\%s", tmpStr);
 	}
 
-	sprintf(Path, "Levels\\%s", LevelEditName );
+	sprintf_s(Path, sizeof(Path), "Levels\\%s", LevelEditName );
 	if ( mkdir(Path) == -1 )
 	{
 		if ( errno == EEXIST )
@@ -199,7 +199,7 @@ int Menu_Main::DoModal()
 
 					if (tempName[0])
 					{
-						sprintf(LevelEditName, "WorkInProgress\\%s", tempName);
+						sprintf_s(LevelEditName, sizeof(LevelEditName), "WorkInProgress\\%s", tempName);
 						if (imgui_Button(r3dRenderer->ScreenW/2+250-150, r3dRenderer->ScreenH/2+200+5,150,30, "Load Level", 0)) 
 							released_id = bEditor;
 					}

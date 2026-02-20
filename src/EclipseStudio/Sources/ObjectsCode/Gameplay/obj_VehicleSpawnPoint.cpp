@@ -336,7 +336,7 @@ float obj_VehicleSpawnPoint::DrawPropertyEditor(float scrx, float scry, float sc
 		for (ITEM_SPAWN_POINT_VECTOR::iterator it = m_SpawnPointsV.begin(); it != m_SpawnPointsV.end();)
 		{
 			char tempStr[32];
-			sprintf(tempStr, "Location %d", i + 1);
+			sprintf_s(tempStr, sizeof(tempStr), "Location %d", i + 1);
 
 			if (imgui_Button(scrx, startY, 100, 25, tempStr, i == selectedSpawnPoint))
 			{
@@ -418,7 +418,7 @@ void obj_VehicleSpawnPoint::ReadSerializedData(pugi::xml_node& node)
 	for (uint32_t i = 0; i < numVehicles; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "v%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "v%d", i);
 		pugi::xml_node vNode = spawnerNode.child(tempStr);
 		r3d_assert(!vNode.empty());
 		VehicleSpawnSelection.push_back(vNode.attribute("id").as_uint());
@@ -443,7 +443,7 @@ void obj_VehicleSpawnPoint::WriteSerializedData(pugi::xml_node& node)
 	{
 		pugi::xml_node vNode = spawnerNode.append_child();
 		char tempStr[32];
-		sprintf(tempStr, "v%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "v%d", i);
 		vNode.set_name(tempStr);
 		vNode.append_attribute("id") = VehicleSpawnSelection[i];
 	}

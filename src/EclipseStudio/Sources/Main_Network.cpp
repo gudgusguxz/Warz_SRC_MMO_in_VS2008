@@ -77,7 +77,7 @@ static void SetNewLogFile()
 {
 	extern void r3dChangeLogFile(const char* fname);
 	char buf[512];
-	sprintf(buf, "logs\\r3dlog_client_%d.txt", GetTickCount());
+	sprintf_s(buf, sizeof(buf), "logs\\r3dlog_client_%d.txt", GetTickCount());
 	r3dChangeLogFile(buf);
 }
 

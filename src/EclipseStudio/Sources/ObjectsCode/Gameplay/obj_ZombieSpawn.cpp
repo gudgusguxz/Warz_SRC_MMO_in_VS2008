@@ -417,7 +417,7 @@ void obj_ZombieSpawn::WriteSerializedData(pugi::xml_node& node)
 	{
 		pugi::xml_node zNode = zombieSpawnNode.append_child();
 		char tempStr[32];
-		sprintf(tempStr, "z%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "z%d", i);
 		zNode.set_name(tempStr);
 		zNode.append_attribute("id") = ZombieSpawnSelection[i];
 	}
@@ -426,7 +426,7 @@ void obj_ZombieSpawn::WriteSerializedData(pugi::xml_node& node)
 	{
 		pugi::xml_node zNode = zombieSpawnNode.append_child();
 		char tempStr[32];
-		sprintf(tempStr, "b%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "b%d", i);
 		zNode.set_name(tempStr);
 		zNode.append_attribute("id") = ZombieBrainSelection[i];
 	}
@@ -465,7 +465,7 @@ void obj_ZombieSpawn::ReadSerializedData(pugi::xml_node& node)
 	for(uint32_t i=0; i<numZombies; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "z%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "z%d", i);
 		pugi::xml_node zNode = zombieSpawnNode.child(tempStr);
 		r3d_assert(!zNode.empty());
 		ZombieSpawnSelection.push_back(zNode.attribute("id").as_uint());
@@ -474,7 +474,7 @@ void obj_ZombieSpawn::ReadSerializedData(pugi::xml_node& node)
 	for(uint32_t i=0; i<numBrains; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "b%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "b%d", i);
 		pugi::xml_node zNode = zombieSpawnNode.child(tempStr);
 		r3d_assert(!zNode.empty());
 		ZombieBrainSelection.push_back(zNode.attribute("id").as_uint());

@@ -132,7 +132,7 @@ void ReloadPartTex(r3dString &path, ValueTracker<r3dString> &)
 		return;
 	}
 	char buf[256] = {0}	;
-	sprintf(buf, PARTICLE_DATA_PATH_PATTERN, path.c_str());
+	sprintf_s(buf, sizeof(buf), PARTICLE_DATA_PATH_PATTERN, path.c_str());
 	NotifyReloadPartTexture(buf);
 }
 
@@ -144,7 +144,7 @@ void ReloadNormalTex(r3dString &path, ValueTracker<r3dString> &)
 		return;
 	}
 	char buf[256] = {0}	;
-	sprintf(buf, PARTICLE_DATA_PATH_PATTERN, path.c_str());
+	sprintf_s(buf, sizeof(buf), PARTICLE_DATA_PATH_PATTERN, path.c_str());
 	ParticleReloadTex(&EditTorch->NormalTexture, buf);
 }
 
@@ -157,14 +157,14 @@ void ReloadDistortTex(r3dString &path, ValueTracker<r3dString> &)
 	}
 
 	char buf[256] = {0}	;
-	sprintf(buf, PARTICLE_DATA_PATH_PATTERN, path.c_str());
+	sprintf_s(buf, sizeof(buf), PARTICLE_DATA_PATH_PATTERN, path.c_str());
 	ParticleReloadTex(&EditTorch->DistortTexture, buf);
 }
 
 void ReloadMeshForEmitter(r3dString &path, ValueTracker<r3dString> &)
 {
 	char buf[256] = {0}	;
-	sprintf(buf, PARTICLE_DATA_PATH_PATTERN, path.c_str());
+	sprintf_s(buf, sizeof(buf), PARTICLE_DATA_PATH_PATTERN, path.c_str());
 	if (curEmitterSlot < r3dParticleData::MAX_EMITTER_SLOTS && curEmitterSlot >= 0)
 	ParticleReloadMesh(*EditTorch->PType[curEmitterSlot], buf, false);
 }

@@ -406,7 +406,7 @@ int EventSystem::PickParticleEditor(float scrx, float &scry)
 		char buf[MAX_PATH];
 
 		particleNames.clear();
-		sprintf(buf, "%s\\*.prt", "data\\Particles");
+		sprintf_s(buf, sizeof(buf), "%s\\*.prt", "data\\Particles");
 
 		h = FindFirstFile(buf, &ffblk);
 		if (h != INVALID_HANDLE_VALUE)

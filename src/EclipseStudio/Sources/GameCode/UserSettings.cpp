@@ -21,7 +21,7 @@ bool UserSettings::createFullPath( char* dest, bool old )
 {
 	bool res = old ? CreateWorkPath(dest) : CreateConfigPath(dest);
 	if(res)
-		strcat( dest, USERSETTINGS_FILE );
+		strcat_s( dest, 512, USERSETTINGS_FILE ); // TODO: verify buffer size
 	return res;
 }
 

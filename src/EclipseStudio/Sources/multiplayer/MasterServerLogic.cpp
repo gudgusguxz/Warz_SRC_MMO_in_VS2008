@@ -412,7 +412,7 @@ void MasterServerLogic::GetJoinedGameServer(char* out_ip, int* out_port, __int64
   r3d_assert(gMasterServerLogic.gameJoinAnswer_.result == GBPKT_M2C_JoinGameAns_s::rOk);
   
   DWORD ip = gameJoinAnswer_.ip;
-  sprintf(out_ip, inet_ntoa(*(in_addr*)&ip));
+  strcpy_s(out_ip, 512, inet_ntoa(*(in_addr*)&ip)); // TODO: verify buffer size
   *out_port      = gameJoinAnswer_.port;
   *out_sessionId = gameJoinAnswer_.sessionId;
   

@@ -69,7 +69,7 @@ MeshPropertyLib::Load( const char* levelFolder, bool isGlobal )
 	COMPILE_ASSERT( R3D_ARRAYSIZE(LODNodeNames) == MeshPropertyLibEntry::LOD_COUNT );
 
 	char fullPath[ 512 ];
-	sprintf( fullPath, "%s/%s", levelFolder, MESHPROPERTY_FILE_NAME );
+	sprintf_s( fullPath, sizeof(fullPath), "%s/%s", levelFolder, MESHPROPERTY_FILE_NAME );
 
 	r3dFile* f = r3d_open( fullPath, "rb" );
 	if ( !f )
@@ -188,7 +188,7 @@ MeshPropertyLib::Save( const char* levelFolder, bool isGlobal )
 	}
 
 	char fullPath[ 512 ];
-	sprintf( fullPath, "%s/%s", levelFolder, MESHPROPERTY_FILE_NAME );
+	sprintf_s( fullPath, sizeof(fullPath), "%s/%s", levelFolder, MESHPROPERTY_FILE_NAME );
 
 	xmlFile.save_file( fullPath );
 }

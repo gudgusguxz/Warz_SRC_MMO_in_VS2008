@@ -31,7 +31,7 @@ BOOL obj_Terrain::Load(const char* fname)
 
 	char Str[256];
 
-	sprintf(Str, "%s\\TERRAIN", r3dGameLevel::GetHomeDir());
+	sprintf_s(Str, sizeof(Str), "%s\\TERRAIN", r3dGameLevel::GetHomeDir());
 
 	Name     = "r3dTerrain"; //Str;
 	FileName = "terra1";
@@ -39,14 +39,14 @@ BOOL obj_Terrain::Load(const char* fname)
 	r3dOutToLog ("TERRAIN:  LOADING %s\n", Str);
 
 	char filePath[ 512 ] ;
-	sprintf( filePath, "%s\\terrain.heightmap", r3dGameLevel::GetHomeDir() ) ;
+	sprintf_s( filePath, sizeof(filePath), "%s\\terrain.heightmap", r3dGameLevel::GetHomeDir() ) ;
 
 	bool have_terrain1 = r3dFileExists( filePath ) ;
 
 	bool loaded_terrain2 = false;
 	bool loaded_terrain3 = false;
 
-	sprintf( filePath, "%s\\TERRAIN3\\terrain3.ini", r3dGameLevel::GetHomeDir() ) ;
+	sprintf_s( filePath, sizeof(filePath), "%s\\TERRAIN3\\terrain3.ini", r3dGameLevel::GetHomeDir() ) ;
 
 	if( r3dFileExists( filePath ) )
 	{

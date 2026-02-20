@@ -130,7 +130,7 @@ int Menu_LightEditor::Update()
 				
 				char FName[256];
    
-				sprintf(FName,"Levels\\%s\\Light.dat", MissionInfo.MissionDir);
+				sprintf_s(FName, sizeof(FName), "Levels\\%s\\Light.dat", MissionInfo.MissionDir);
 
 				f = fopen(FName, "wt");
 

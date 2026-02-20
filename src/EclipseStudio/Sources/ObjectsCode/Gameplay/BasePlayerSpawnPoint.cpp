@@ -40,7 +40,7 @@ void BasePlayerSpawnPoint::ReadSerializedData(pugi::xml_node& node)
 		char tempStr[32];
 		for(int i=0; i<m_NumSpawnPoints; ++i)
 		{
-			sprintf(tempStr, "point%d", i);
+			sprintf_s(tempStr, sizeof(tempStr), "point%d", i);
 			pugi::xml_node spawnNode = cpNode.child(tempStr);
 			r3d_assert(!spawnNode.empty());
 			m_SpawnPoints[i].pos.x = spawnNode.attribute("x").as_float();
@@ -62,7 +62,7 @@ void BasePlayerSpawnPoint::WriteSerializedData(pugi::xml_node& node)
 	{
 		pugi::xml_node spawnNode = cpNode.append_child();
 		char tempStr[32];
-		sprintf(tempStr, "point%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "point%d", i);
 		spawnNode.set_name(tempStr);
 		spawnNode.append_attribute("x") = m_SpawnPoints[i].pos.x;
 		spawnNode.append_attribute("y") = m_SpawnPoints[i].pos.y;

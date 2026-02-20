@@ -67,7 +67,7 @@ void obj_LightMesh::ReadSerializedData(pugi::xml_node& node)
 		if( g_bEditMode )
 		{
 			char buf[ 512 ] ;
-			sprintf( buf, "Inconsistent light mesh object '%s'! ( mesh is here but light is not)", this->Name.c_str() );
+			sprintf_s( buf, sizeof(buf), "Inconsistent light mesh object '%s'! ( mesh is here but light is not)", this->Name.c_str() );
 			MessageBox( 0, buf, "Error", MB_OK );
 		}
 #endif

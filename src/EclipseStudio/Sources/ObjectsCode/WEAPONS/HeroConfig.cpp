@@ -22,7 +22,7 @@ void HeroConfig::resetMesh()
 r3dMesh* HeroConfig::getHairMesh() const
 {
 	char tmpBuf[512];
-	sprintf(tmpBuf, "%s_Hair_01.sco", m_BaseModelName);
+	sprintf_s(tmpBuf, sizeof(tmpBuf), "%s_Hair_01.sco", m_BaseModelName);
 	m_HairMeshes = r3dGOBAddMesh(tmpBuf, true, false, true, true );
 	
 	if(m_HairMeshes == NULL)
@@ -39,7 +39,7 @@ r3dMesh* HeroConfig::getHeadMesh(int index) const
 	if(m_HeadMeshes[index] == 0)
 	{
 		char tmpBuf[512];
-		sprintf(tmpBuf, "%s_Head_%02d.sco", m_BaseModelName, index+1);
+		sprintf_s(tmpBuf, sizeof(tmpBuf), "%s_Head_%02d.sco", m_BaseModelName, index+1);
 		m_HeadMeshes[index] = r3dGOBAddMesh(tmpBuf, true, false, true, true );
 		if(m_HeadMeshes[index]==NULL)
 		{
@@ -57,7 +57,7 @@ r3dMesh* HeroConfig::getLegMesh(int index) const
 	if(m_LegsMeshes[index] == 0)
 	{
 		char tmpBuf[512];
-		sprintf(tmpBuf, "%s_Legs_%02d.sco", m_BaseModelName, index+1);
+		sprintf_s(tmpBuf, sizeof(tmpBuf), "%s_Legs_%02d.sco", m_BaseModelName, index+1);
 		m_LegsMeshes[index] = r3dGOBAddMesh(tmpBuf, true, false, true, true );
 		if(m_LegsMeshes[index]==NULL)
 		{
@@ -79,7 +79,7 @@ r3dMesh* HeroConfig::getBodyMesh(int index, bool isFPS, const char* GearFPSModel
 		if(m_BodyMeshes[index] == 0)
 		{
 			char tmpBuf[512];
-			sprintf(tmpBuf, "%s_Body_%02d.sco", m_BaseModelName, index+1);
+			sprintf_s(tmpBuf, sizeof(tmpBuf), "%s_Body_%02d.sco", m_BaseModelName, index+1);
 			m_BodyMeshes[index] = r3dGOBAddMesh(tmpBuf, true, false, true, true );
 			if(m_BodyMeshes[index]==NULL)
 			{
@@ -108,7 +108,7 @@ r3dMesh* HeroConfig::getBodyMesh(int index, bool isFPS, const char* GearFPSModel
 		else if(m_BodyMeshesFPS[index] == 0)
 		{
 			char tmpBuf[512];
-			sprintf(tmpBuf, "%s_BodyFPS_01.sco", m_BaseModelName);// always load only first body for FPS //, index+1);
+			sprintf_s(tmpBuf, sizeof(tmpBuf), "%s_BodyFPS_01.sco", m_BaseModelName);// always load only first body for FPS //, index+1);
 			m_BodyMeshesFPS[index] = r3dGOBAddMesh(tmpBuf, true, false, true, true );
 			if(m_BodyMeshesFPS[index]==NULL)
 			{

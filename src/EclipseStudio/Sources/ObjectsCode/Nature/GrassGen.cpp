@@ -465,7 +465,7 @@ GrassGen::Load()
 		char buf[ 1024 ];
 		fgets( buf, sizeof buf - 1, glistFile );
 
-		if( sscanf( buf, "%d\n", &glist_n ) == 1 )
+		if( sscanf_s( buf, "%d\n", &glist_n ) == 1 )
 		{
 			for( int i = 0, e = glist_n ; i < e ; i ++ )
 			{
@@ -474,7 +474,7 @@ GrassGen::Load()
 
 				char loc[ 512 ];
 
-				if( sscanf( buf, "%511s", loc ) == 1 )
+				if( sscanf_s( buf, "%511s", loc, (unsigned)sizeof(loc) ) == 1 )
 				{
 					loadList.push_back( loc ) ;
 					loaded ++ ;

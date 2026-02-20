@@ -86,7 +86,7 @@ class HTTPQuery : public I_HTTPRequest {
         return;
       }
       char buf[2048];
-      sprintf( buf, "GET %s HTTP/1.0\r\nUser-Agent: setQuery()\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n",
+      sprintf_s( buf, sizeof(buf), "GET %s HTTP/1.0\r\nUser-Agent: setQuery()\r\nAccept: */*\r\nHost: %s\r\nConnection: close\r\n\r\n",
           url, host );
       r = ::send( socket_, buf, int(strlen( buf )), NONBLOCK_MSG_SEND );
       if( r != strlen( buf ) ) {
@@ -236,7 +236,7 @@ I_HTTPRequest * NewHTTPRequest( char const * url )
   if( path-url > 255 ) {
     return 0;
   }
-  strncpy( name, url, path-url );
+  strncpy_s( name, sizeof(name), url, path-url );
   name[path-url] = 0;
   char * port = strrchr( name, ':' );
   unsigned short iport = 80;

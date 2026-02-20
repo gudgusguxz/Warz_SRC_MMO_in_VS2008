@@ -44,18 +44,18 @@ BOOL obj_Depot::OnCreate()
   char Str1[256];
 
 
-  sprintf (Str,"Data\\ObjectsDepot\\%s\\room.mat", Name.c_str());
-  sprintf (Str1,"Data\\ObjectsDepot\\%s\\Textures\\", Name.c_str());
-	
+  sprintf_s(Str, sizeof(Str), "Data\\ObjectsDepot\\%s\\room.mat", Name.c_str());
+  sprintf_s(Str1, sizeof(Str1), "Data\\ObjectsDepot\\%s\\Textures\\", Name.c_str());
+
   r3dMaterialLibrary :: LoadLibrary(Str,Str1);
 
-  sprintf(Str, "Data\\ObjectsDepot\\%s\\*.sco", Name.c_str());
+  sprintf_s(Str, sizeof(Str), "Data\\ObjectsDepot\\%s\\*.sco", Name.c_str());
 
 
   h = FindFirstFile(Str, &ffblk);
   if(h != INVALID_HANDLE_VALUE) {
     do {
-	    sprintf(Str1, "Data\\ObjectsDepot\\%s\\%s", Name.c_str(), ffblk.cFileName);
+	    sprintf_s(Str1, sizeof(Str1), "Data\\ObjectsDepot\\%s\\%s", Name.c_str(), ffblk.cFileName);
 
 		GameObject *obj = srv_CreateGameObject("obj_Building", Str1, r3dPoint3D(0,0,0), OBJ_CREATE_SKIP_POS);
 		obj->CompoundID = MasterID;

@@ -47,7 +47,7 @@ namespace
 
 	const char * GetLevelCollectionElementsFilePath(bool forSave, const char *fileName)
 	{
-		sprintf(PATH_BUF, "%s\\collections\\%s", forSave ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir(), fileName);
+		sprintf_s(PATH_BUF, sizeof(PATH_BUF), "%s\\collections\\%s", forSave ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir(), fileName);
 		return PATH_BUF;
 	}
 
@@ -62,7 +62,7 @@ namespace
 
 	const char * GetLevelCollectionQuadTreeFile(bool forSave)
 	{
-		sprintf(PATH_BUF, "%s\\collections\\quadtree.bin", forSave ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir());
+		sprintf_s(PATH_BUF, sizeof(PATH_BUF), "%s\\collections\\quadtree.bin", forSave ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir());
 		return PATH_BUF;
 	}
 
@@ -70,7 +70,7 @@ namespace
 	
 	const char * GetLevelCollectionSaveDir()
 	{
-		sprintf(PATH_BUF, "%s\\collections", r3dGameLevel::GetSaveDir());
+		sprintf_s(PATH_BUF, sizeof(PATH_BUF), "%s\\collections", r3dGameLevel::GetSaveDir());
 		return PATH_BUF;
 	}
 

@@ -12,12 +12,12 @@ extern void UnittestMyNetwork();
 static void get_url_path( char * buf, int len, char const * path )
 {
   if( strlen( path ) <= 7 ) {
-    strncpy( buf, "url.out", len );
+    strncpy_s( buf, len, "url.out", _TRUNCATE );
     buf[len-1] = 0;
     return;
   }
   path += 7;
-  strncpy( buf, path, len );
+  strncpy_s( buf, len, path, _TRUNCATE );
   buf[len-1] = 0;
   char * e = buf;
   while( *e ) {

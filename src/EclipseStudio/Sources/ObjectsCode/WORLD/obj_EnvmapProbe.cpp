@@ -536,7 +536,7 @@ obj_EnvmapProbe::GetTextureName( bool forSaving ) const
 
 	char buffer[64];
 
-	sprintf( buffer, "envmap%d.dds", mID );
+	sprintf_s( buffer, sizeof(buffer), "envmap%d.dds", mID );
 
 	return r3dString( forSaving ? r3dGameLevel::GetSaveDir() : r3dGameLevel::GetHomeDir() ) + ENVMAP_FOLDER + "\\" + buffer;
 }

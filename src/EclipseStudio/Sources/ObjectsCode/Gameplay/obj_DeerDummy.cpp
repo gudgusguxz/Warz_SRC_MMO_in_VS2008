@@ -256,7 +256,7 @@ void obj_DeerDummy::AppendShadowRenderables(RenderArray &rarr, int sliceIndex, c
 int obj_DeerDummy::AddAnimation(const char* anim)
 {
 	char buf[MAX_PATH];
-	sprintf(buf, "Data\\Animations5\\%s.anm", anim);
+	sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s.anm", anim);
 	int aid = g_deerAnimPool->Add(anim, buf);
 	
 	return aid;
@@ -265,7 +265,7 @@ int obj_DeerDummy::AddAnimation(const char* anim)
 void obj_DeerDummy::SwitchToSelectedAnim()
 {
 	char buf[MAX_PATH];
-	sprintf(buf, "Data\\Animations5\\%s", sAnimSelected);
+	sprintf_s(buf, sizeof(buf), "Data\\Animations5\\%s", sAnimSelected);
 	int aid = g_deerAnimPool->Add(sAnimSelected, buf);
 	anim_.StartAnimation(aid, ANIMFLAG_RemoveOtherNow | ANIMFLAG_Looped, 1.0f, 1.0f, 0.0f);
 	

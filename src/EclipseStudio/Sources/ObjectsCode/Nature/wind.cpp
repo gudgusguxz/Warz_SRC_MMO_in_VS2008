@@ -431,7 +431,7 @@ r3dWind::SetSettings( const Settings& sts )
 void r3dWind::Load(const char* levelDir)
 {
 	char FName[ 512 ];
-	_snprintf( FName, sizeof FName - 1, "%s/wind.cfg", levelDir );
+	_snprintf_s( FName, sizeof(FName), _TRUNCATE, "%s/wind.cfg", levelDir );
 
 	Script_c script;
 

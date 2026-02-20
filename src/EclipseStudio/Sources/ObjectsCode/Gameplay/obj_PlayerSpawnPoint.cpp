@@ -317,7 +317,7 @@ float obj_PlayerSpawnPoint::DrawPropertyEditor(float scrx, float scry, float scr
 			{
 				// selection button
 				char tempStr[32];
-				sprintf(tempStr, "Location %d", i+1);
+				sprintf_s(tempStr, sizeof(tempStr), "Location %d", i+1);
 				if(imgui_Button(scrx, starty, 100, 25, tempStr, i==m_SelectedSpawnPoint))
 				{
 					// shift click on location will set camera to it

@@ -3029,7 +3029,7 @@ void InMainThread( void* p )
 	D3D_V( tex->UnlockRect( 0 ) );
 
 	char fname[ 512 ];
-	sprintf( fname, "__%s%d.bmp", prms->prefix, prms->idx );
+	sprintf_s( fname, sizeof(fname), "__%s%d.bmp", prms->prefix, prms->idx );
 
 	D3D_V( D3DXSaveTextureToFile( fname, D3DXIFF_BMP, tex, NULL ) );
 
@@ -4376,7 +4376,7 @@ r3dString GetGrassMapTexPath( const r3dString& LevelPath )
 r3dString GetGrassMapHeightTexName( int CellX, int CellZ )
 {
 	char Name[ 128 ];
-	sprintf( Name, "height_%d_%d.dds", CellX, CellZ );
+	sprintf_s( Name, sizeof(Name), "height_%d_%d.dds", CellX, CellZ );
 
 	return Name;
 }
@@ -4389,7 +4389,7 @@ r3dString GetGrassMapMaskTexName( const r3dString& Type, int CellX, int CellZ )
 	_splitpath( Type.c_str(), drive, folder, fname, ext );
 
 	char Name[ 128 ];
-	sprintf( Name, "mask_%s_%d_%d.dds", fname, CellX, CellZ );
+	sprintf_s( Name, sizeof(Name), "mask_%s_%d_%d.dds", fname, CellX, CellZ );
 
 	return Name;
 }
@@ -4665,7 +4665,7 @@ static void Text_Print(float x, float y,r3dColor color,char *message, ...)
 	va_list	va;
 	char		buffer[1000];
 	va_start(va, message);
-	vsprintf(buffer, message, va);
+	vsprintf_s(buffer, sizeof(buffer), message, va);
 	va_end(va);
 	_r3dSystemFont->PrintF(x/1280.0f*r3dRenderer->ScreenW,y/720.0f*r3dRenderer->ScreenH, color,buffer);
 }

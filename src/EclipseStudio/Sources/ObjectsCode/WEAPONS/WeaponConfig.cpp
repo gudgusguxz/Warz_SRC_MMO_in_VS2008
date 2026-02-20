@@ -114,9 +114,9 @@ bool WeaponConfig::loadBaseFromXml(pugi::xml_node& xmlWeapon)
 	IsFPS = fpsNode.attribute("IsFPS").as_int();
 	for(int i=0; i<WPN_ATTM_MAX; i++) {
 		char buf[64];
-		sprintf(buf, "i%d", i);
+		sprintf_s(buf, sizeof(buf), "i%d", i);
 		FPSSpecID[i] = fpsNode.attribute(buf).as_int();
-		sprintf(buf, "d%d", i);
+		sprintf_s(buf, sizeof(buf), "d%d", i);
 		FPSDefaultID[i] = fpsNode.attribute(buf).as_int();
 	}
 

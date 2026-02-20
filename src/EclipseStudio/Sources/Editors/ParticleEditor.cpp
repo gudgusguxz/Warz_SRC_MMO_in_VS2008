@@ -214,7 +214,7 @@ static void ScanForFiles()
 	// scan for particles
 	vParticleNames.clear();
 	particleNamesOffset = 0;
-	sprintf(buf, "%s\\*.prt", "data\\Particles");
+	sprintf_s(buf, sizeof(buf), "%s\\*.prt", "data\\Particles");
 
 	h = FindFirstFile(buf, &ffblk);
 	if(h != INVALID_HANDLE_VALUE) {
@@ -228,7 +228,7 @@ static void ScanForFiles()
 	vTextureNames.clear();
 	textureNamesOffset = 0;
 
-	sprintf(buf, "%s\\*.*", "data\\Particles");
+	sprintf_s(buf, sizeof(buf), "%s\\*.*", "data\\Particles");
 
 	h = FindFirstFile(buf, &ffblk);
 	if(h != INVALID_HANDLE_VALUE) 
@@ -251,7 +251,7 @@ static void ScanForFiles()
 	// scan for meshes
 	vMeshNames.clear();
 	meshNamesOffset = 0;
-	sprintf(buf, "%s\\*.sco", "data\\Particles");
+	sprintf_s(buf, sizeof(buf), "%s\\*.sco", "data\\Particles");
 
 	h = FindFirstFile(buf, &ffblk);
 	if(h != INVALID_HANDLE_VALUE) {
@@ -302,7 +302,7 @@ void NotifyReloadPartTexture(const char *Str2)
 {
 	ParticleReloadTex(&EditTorch->Texture, Str2);
 	char Str3[512];
-	sprintf(Str3, "%s%s", Str2, ".Atlas");
+	sprintf_s(Str3, sizeof(Str3), "%s%s", Str2, ".Atlas");
 	EditTorch->Atlas.load(Str3);
 }
 
@@ -389,7 +389,7 @@ static void DrawTextureParams ()
 	imgui2_Static("Textures for particle system");
 
 	char EditTexName[MAX_PATH];
-	sprintf ( EditTexName, "Texture             %s", EditTorch->TextureFileName.c_str() );
+	sprintf_s( EditTexName, sizeof(EditTexName), "Texture             %s", EditTorch->TextureFileName.c_str() );
 	if ( imgui2_Static_Checked ( EditTexName ) )
 		EnableListPick(PICK_PartTexture);
 
@@ -405,7 +405,7 @@ static void DrawTextureParams ()
 	imgui2_Checkbox("UseDistort", &EditTorch->bDistort);
 	if(EditTorch->bDistort) {
 		char EditDistTexName[MAX_PATH];
-		sprintf ( EditDistTexName, "  DistortTex       %s", EditTorch->DistortTextureFileName.c_str());
+		sprintf_s( EditDistTexName, sizeof(EditDistTexName), "  DistortTex       %s", EditTorch->DistortTextureFileName.c_str());
 		if ( imgui2_Static_Checked ( EditDistTexName ) )
 			EnableListPick(PICK_DistortTex);
 	}
@@ -417,7 +417,7 @@ static void DrawTextureParams ()
 		imgui2_Value_Old(0.0f, 1.0f, "%.4f", "Bump Power", &EditTorch->fBumpPower);
 
 		char EditNormTexName[MAX_PATH];
-		sprintf ( EditNormTexName, "  NormalTex       %s", EditTorch->NormalTextureFileName.c_str() );
+		sprintf_s( EditNormTexName, sizeof(EditNormTexName), "  NormalTex       %s", EditTorch->NormalTextureFileName.c_str() );
 		if ( imgui2_Static_Checked ( EditNormTexName ) )
 			EnableListPick(PICK_NormalTex);
 	}
@@ -1083,7 +1083,7 @@ static void DrawParticleSlot(int SlotID)
 
 			pe->Load(EditTorch->FileName, name);
 			name[strlen(name)-1] = 0;
-			sprintf(pe->Name, "%s%d", name, SlotID);
+			sprintf_s(pe->Name, sizeof(pe->Name), "%s%d", name, SlotID);
 			ValueTrackersManager::Instance().SetUpdateMask(TT_PARTICLE_EMITTER_VARS | ValueTrackersManager::Instance().GetUpdateMask());
 			InitParticleEmitterValueTrackers(*pe);
 
@@ -1103,7 +1103,7 @@ static void DrawParticleSlot(int SlotID)
 					pe->Name[0] = SlotID + '0';
 				} else {
 					char name[100];
-					sprintf(name, "%d_%s", SlotID, pe->Name);
+					sprintf_s(name, sizeof(name), "%d_%s", SlotID, pe->Name);
 					r3dscpy(pe->Name, name);
 				}
 				havePastedFx = false;
@@ -1178,11 +1178,11 @@ static void DrawParticleSlot(int SlotID)
 					char sCopy[256];
 					r3dscpy ( sCopy, sEmit );
 					if ( iExists > 0 )
-						sprintf(sEmit,"%s,%i", sCopy, i );
+						sprintf_s(sEmit, sizeof(sEmit), "%s,%i", sCopy, i );
 					else
 					{
-						sprintf(sEmit,"%s%i", sCopy, i );
-						sprintf(sEmitOne,"S:%s", EditTorch->PType[i]->Name );
+						sprintf_s(sEmit, sizeof(sEmit), "%s%i", sCopy, i );
+						sprintf_s(sEmitOne, sizeof(sEmitOne), "S:%s", EditTorch->PType[i]->Name );
 					}
 					
 					iExists++;
@@ -1275,7 +1275,7 @@ static int menuDrawButtons(float &x, float y, const char** list, int count)
 void ParticleEditorReloadParticle (const char * szParticle )
 {
 	char sNameFull[256];
-	sprintf(sNameFull,"Data\\Particles\\%s.prt", szParticle);
+	sprintf_s(sNameFull, sizeof(sNameFull), "Data\\Particles\\%s.prt", szParticle);
 
 	void r3dParticleSystemReloadCacheFor ( const char * );
 	void ReloadParticles ( const char * );
@@ -1447,11 +1447,11 @@ static bool ProcessTextEdit()
 	case eCreate: // create
 	case eSaveAs: // save as
 		strlwr(InputLine);
-		if(strstr(InputLine, ".prt") == NULL) 
-			strcat(InputLine, ".prt");
+		if(strstr(InputLine, ".prt") == NULL)
+			strcat_s(InputLine, sizeof(InputLine), ".prt");
 
 		char Str2[256];
-		sprintf(Str2, PARTICLE_DATA_PATH_PATTERN, InputLine);
+		sprintf_s(Str2, sizeof(Str2), PARTICLE_DATA_PATH_PATTERN, InputLine);
 
 		r3dscpy(EditTorch->FileName, Str2);
 		saveParticle(EditTorch, EditTorch->FileName, sel != eCreate );
@@ -1530,7 +1530,7 @@ static void ProcessIMControls()
 void LoadParticle ( const char * sPartName )
 {
 	char sFullName[256];
-	sprintf(sFullName, "Data\\Particles\\%s.prt", sPartName);
+	sprintf_s(sFullName, sizeof(sFullName), "Data\\Particles\\%s.prt", sPartName);
 
 	char sReloadName[MAX_PATH];
 	r3dscpy ( sReloadName, ParticleObj->Name.c_str () );
@@ -1598,7 +1598,7 @@ static bool DrawPickMenu()
 
 		if( selectedDepot[ 0 ] )
 		{
-			sprintf( path, "%s/*.sco", selectedDepot );
+			sprintf_s( path, sizeof(path), "%s/*.sco", selectedDepot );
 			imgui_FileList( x + w + 22, y, w, h - 36.f, path, selectedMesh, &offset1 );
 		}
 
@@ -1678,7 +1678,7 @@ static bool DrawPickMenu()
 
 		char Str2[256];
 		char sPartName[256];
-		sprintf(Str2, PARTICLE_DATA_PATH_PATTERN, outName);
+		sprintf_s(Str2, sizeof(Str2), PARTICLE_DATA_PATH_PATTERN, outName);
 
 		_splitpath(Str2, NULL, NULL, sPartName, NULL );
 
@@ -1995,7 +1995,7 @@ void UpdateParticleAtlas( const char* basePath, const char* atlasName )
 
 	char fullPath[ 512 ];
 	strcpy_s( fullPath, sizeof(fullPath), basePath );
-	strcat( fullPath, atlasName );
+	strcat_s( fullPath, sizeof(fullPath), atlasName );
 
 	if( !r3dDirectoryExists( fullPath ) )
 	{
@@ -2027,7 +2027,7 @@ void UpdateParticleAtlas( const char* basePath, const char* atlasName )
 	PROCESS_INFORMATION pi;
 
 	char cmdLine[ 512 ];
-	sprintf( cmdLine, "AtlasComposer.Release.exe %s", path );
+	sprintf_s( cmdLine, sizeof(cmdLine), "AtlasComposer.Release.exe %s", path );
 
 	if( !CreateProcess( NULL,							// No module name (use command line)
 						cmdLine,						// Command line

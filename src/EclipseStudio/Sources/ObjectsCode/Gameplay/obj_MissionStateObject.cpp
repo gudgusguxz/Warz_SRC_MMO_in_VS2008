@@ -25,9 +25,9 @@ AUTOREGISTER_CLASS(obj_MissionStateObject);
 obj_MissionStateObject::obj_MissionStateObject()
 	: m_ActionUI_Text( NULL )
 {
-	sprintf( m_ActionUI_TitleID, "Note" );
-	sprintf( m_ActionUI_MsgID, "HoldEToReadNote" );
-	sprintf( m_ActionUI_TextID, "\0" );
+	strcpy_s( m_ActionUI_TitleID, sizeof(m_ActionUI_TitleID), "Note" );
+	strcpy_s( m_ActionUI_MsgID, sizeof(m_ActionUI_MsgID), "HoldEToReadNote" );
+	strcpy_s( m_ActionUI_TextID, sizeof(m_ActionUI_TextID), "\0" );
 }
 
 obj_MissionStateObject::~obj_MissionStateObject()
@@ -123,7 +123,7 @@ void obj_MissionStateObject::InitObjLists()
 bool obj_MissionStateObject::InitMissionData()
 {
 	char fname[MAX_PATH];
-	sprintf(fname, "%s\\Missions.xml", r3dGameLevel::GetHomeDir());
+	sprintf_s(fname, sizeof(fname), "%s\\Missions.xml", r3dGameLevel::GetHomeDir());
 	
 	r3dFile* f = r3d_open(fname, "rb");
 	if ( !f )
@@ -211,9 +211,9 @@ float obj_MissionStateObject::DrawPropertyEditor(float scrx, float scry, float s
 		int idx0 = -1;
 		if( idx >= 0 && idx < (int)MissionStateObjCatNames.size() )
 		{
-			sprintf(catName, "%s", MissionStateObjCatNames.at(idx).c_str());
-			sprintf(className, "");
-			sprintf(fileName, "");
+			strcpy_s(catName, sizeof(catName), MissionStateObjCatNames.at(idx).c_str());
+			strcpy_s(className, sizeof(className), "");
+			strcpy_s(fileName, sizeof(fileName), "");
 
 			r3dSTLString relPath( "\\" );
 			relPath += catName;
@@ -228,9 +228,9 @@ float obj_MissionStateObject::DrawPropertyEditor(float scrx, float scry, float s
 				{
 					const CategoryStruct& cat = ObjectCategories.at(idx0);
 
-					sprintf( className, "%s", cat.ObjectsClasses.at(0).c_str() );
-					sprintf( fileName, "%s", cat.ObjectsNames.at(0).c_str() );
-					sprintf( relFolder, "%s", cat.ObjectsSubfolders.at(0).c_str() );
+					strcpy_s( className, sizeof(className), cat.ObjectsClasses.at(0).c_str() );
+					strcpy_s( fileName, sizeof(fileName), cat.ObjectsNames.at(0).c_str() );
+					strcpy_s( relFolder, sizeof(relFolder), cat.ObjectsSubfolders.at(0).c_str() );
 				}
 			}
 		}
@@ -245,17 +245,17 @@ float obj_MissionStateObject::DrawPropertyEditor(float scrx, float scry, float s
 
 			if( idx1 >= 0 && idx1 < (int)cat.ObjectsNames.size() )
 			{
-				sprintf( className, "%s", cat.ObjectsClasses.at(idx1).c_str() );
-				sprintf( fileName, "%s", cat.ObjectsNames.at(idx1).c_str() );
-				sprintf( relFolder, "%s", cat.ObjectsSubfolders.at(idx1).c_str() );
+				strcpy_s( className, sizeof(className), cat.ObjectsClasses.at(idx1).c_str() );
+				strcpy_s( fileName, sizeof(fileName), cat.ObjectsNames.at(idx1).c_str() );
+				strcpy_s( relFolder, sizeof(relFolder), cat.ObjectsSubfolders.at(idx1).c_str() );
 			}
 
 			if( className[0] > 0 && fileName[0] > 0 )
 			{
 				if( cat.Type )
-					sprintf( str, "%s", fileName );
+					strcpy_s( str, sizeof(str), fileName );
 				else
-					sprintf( str, "Data\\ObjectsDepot\\%s%s\\%s", catName, relFolder, fileName );
+					sprintf_s( str, sizeof(str), "Data\\ObjectsDepot\\%s%s\\%s", catName, relFolder, fileName );
 			}
 
 			starty += 210;
@@ -287,7 +287,7 @@ void obj_MissionStateObject::WriteSerializedData(pugi::xml_node& node)
 	{
 		pugi::xml_node mNode = objNode.append_child();
 		char tempStr[32];
-		sprintf(tempStr, "m%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "m%d", i);
 		mNode.set_name(tempStr);
 		mNode.append_attribute("id") = *iter;
 	}
@@ -299,14 +299,14 @@ void obj_MissionStateObject::ReadSerializedData(pugi::xml_node& node)
 	GameObject::ReadSerializedData(node);
 
 	pugi::xml_node objNode = node.child("StateParams");
-	sprintf( m_ActionUI_TitleID, objNode.attribute("UITitleID").value() );
-	sprintf( m_ActionUI_MsgID, objNode.attribute("UIMsgID").value() );
-	sprintf( m_ActionUI_TextID, objNode.attribute("UITextID").value() );
+	strcpy_s( m_ActionUI_TitleID, sizeof(m_ActionUI_TitleID), objNode.attribute("UITitleID").value() );
+	strcpy_s( m_ActionUI_MsgID, sizeof(m_ActionUI_MsgID), objNode.attribute("UIMsgID").value() );
+	strcpy_s( m_ActionUI_TextID, sizeof(m_ActionUI_TextID), objNode.attribute("UITextID").value() );
 	uint32_t numMissions = objNode.attribute("numMissionsSelected").as_uint();
 	for(uint32_t i=0; i<numMissions; ++i)
 	{
 		char tempStr[32];
-		sprintf(tempStr, "m%d", i);
+		sprintf_s(tempStr, sizeof(tempStr), "m%d", i);
 		pugi::xml_node mNode = objNode.child(tempStr);
 		r3d_assert(!mNode.empty());
 		m_missionIDs.insert(mNode.attribute("id").as_uint());
