@@ -121,6 +121,8 @@ public:
 	DWORD		gppDataSeed_;		// seed for sending crc of game player parameters
 	bool		d3dCheatSent2_;
 	float		nextTimeToSendCameraPos;
+	BYTE		lastAntiCheatFlags_;	// cached result from last anti-cheat scan
+	DWORD		nextAntiCheatScan_;	// time for next anti-cheat scan
 	
 	#define DEFINE_PACKET_FUNC(XX) \
 	  void On##XX(const XX##_s& n, GameObject* fromObj, DWORD peerId, bool& needPassThru);
