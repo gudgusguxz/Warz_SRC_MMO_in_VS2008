@@ -189,7 +189,7 @@ public:
 
 	r3dSkeleton*	GetSkeleton();	// access to r3dSkeleton inside uberAnim
 	r3dAnimation&	GetAnimation();	// access to r3dAnimation inside uberAnim
-	int		PlayerState;	// player state as Playerstate_e
+	r3dSec_type<int, 0x7B3E91A4>		PlayerState;	// player state as Playerstate_e
 	int		PlayerMoveDir;	// movement direction as CUberData::EAnimDir
 	int			AnglingStatus;
 	uint32_t	FishrodID;
@@ -302,8 +302,8 @@ public:
 	float		getPlayerHeightForCameraWithPlayerState() const;
 
 	// sprint energy vars
-	float m_Stamina;
-	float m_StaminaPenaltyTime;
+	r3dSec_type<float, 0x2D8F47C1> m_Stamina;
+	r3dSec_type<float, 0x63A2B5E9> m_StaminaPenaltyTime;
 	float		getMaxStamina();
 
 	// sniper & breath vars
@@ -319,7 +319,7 @@ public:
 	r3dPoint3D	lastTimeHitForce;
 	void		ApplyDamage(const r3dPoint3D& dmgPos, float damage, GameObject* fromObj, int bodyBone, int dmgType);
 	float		BloodEffect; // timer
-	int			bDead;
+	r3dSec_type<int, 0x4C17D8F3>			bDead;
 	float		TimeOfDeath; // for animations after dying
 	float		TimeUpdateGroup;
 	STORE_CATEGORIES DeathDamageSource;
@@ -336,21 +336,21 @@ public:
 	float		fHeightAboveGround;
 	void		StartJump();
 	bool		IsJumpActive();
-	float		JumpVelocity;
+	r3dSec_type<float, 0x1E5A9C06>		JumpVelocity;
 	float		JumpStartTime;	// time when we actually need to apply JumpVelocity
-	float		StartFallingHeight;
+	r3dSec_type<float, 0x8B6E2F74>		StartFallingHeight;
 	float		StartFallingTime;
 
-	//////////////////////////Í¹ÔàÁªÑè¹
-	void		StartLitter();//àµé¹¹Ò¹ÁÒ¡
-	void		StartSpank();//àµé¹âÂ¡ªÙ¹ÔéÇ
-	void		StartSpanktwo();//âÂ¡ËÑÇ
-	void		StartHandFlip();//µÕÅÑ§¡Ò
-	void		StartJack();//âªÇ¤ÇÂ
-	void		StartPThrust();//á¡Åé§µÒÂ
-	void		StartBigPThrust();//Á×Íä¤ÇèËÑÇÂÍÁáÅéÇ
-	void		StartBalls();//äËÇé
-	void		Startinsult();//µÕµÙ´
+	//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	void		StartLitter();//ï¿½é¹¹Ò¹ï¿½Ò¡
+	void		StartSpank();//ï¿½ï¿½ï¿½Â¡ï¿½Ù¹ï¿½ï¿½ï¿½
+	void		StartSpanktwo();//ï¿½Â¡ï¿½ï¿½ï¿½
+	void		StartHandFlip();//ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½
+	void		StartJack();//ï¿½Ç¤ï¿½ï¿½
+	void		StartPThrust();//ï¿½ï¿½é§µï¿½ï¿½
+	void		StartBigPThrust();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	void		StartBalls();//ï¿½ï¿½ï¿½ï¿½
+	void		Startinsult();//ï¿½ÕµÙ´
 
 #ifdef VEHICLES_ENABLED
 	void StartPushFromVehicle(float vehicleSpeed, float maxSpeed);
@@ -541,7 +541,7 @@ public:
 	void			 OnNetPacket(const PKT_C2C_TradeGDAns_s& n);
 	//
 
-	//////////////////////////Í¹ÔàÁªÑè¹
+	//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void			 OnNetPacket(const PKT_C2C_StartLitter_s& n);
 	void			 OnNetPacket(const PKT_C2C_StartSpank_s& n);
 	void			 OnNetPacket(const PKT_C2C_StartSpanktwo_s& n);

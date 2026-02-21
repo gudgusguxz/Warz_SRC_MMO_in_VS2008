@@ -45,6 +45,8 @@
 #include "HWInfo.h"
 extern CHWInfo g_HardwareInfo;
 
+#include "AntiCheat/r3dAntiCheatIntegration.h"
+
 extern IDirect3DTexture9* _r3d_screenshot_copy;
 
 // PunkBuster SDK
@@ -171,6 +173,8 @@ void ClientGameLogic::Reset()
 	nextSecTimeReport_    = 0xFFFFFFFF;
 	gppDataSeed_          = 0;
 	d3dCheatSent2_		  = false;
+	lastAntiCheatFlags_   = 0;
+	nextAntiCheatScan_    = 0;
 
 	m_highPingTimer		  = 0;
 	
@@ -2394,6 +2398,8 @@ bool ClientGameLogic::Connect(const char* host, int port)
 	r3d_assert(!serverConnected_);
 	r3d_assert(disconnectStatus_ == 0);
 
+	r3dAntiCheat_GameInit();
+
 	g_net.Initialize(this, "p2pNet");
 	g_net.CreateClient(0);
 	g_net.Connect(host, port);
@@ -2406,6 +2412,7 @@ bool ClientGameLogic::Connect(const char* host, int port)
 
 void  ClientGameLogic::Disconnect()
 {
+	r3dAntiCheat_GameShutdown();
 	g_net.Deinitialize();
 	serverConnected_ = false;
 }
@@ -2667,6 +2674,9 @@ void ClientGameLogic::Tick()
 			tempCountMinusKeyPressedNum = 0; // reset
 			n.reserved = 0;
 			n.GPP_Crc32 = GPP->GetCrc32() ^ gppDataSeed_;
+
+			// anti-cheat scan
+			r3dAntiCheat_UpdateSecurityReport(curTicks, nextAntiCheatScan_, lastAntiCheatFlags_, n.antiCheatFlags, n.codeIntegrityCrc);
 
 			n.NVGHack = false;
 			if(r_hud_filter_mode->GetInt() == HUDFilter_NightVision && localPlayer_) 

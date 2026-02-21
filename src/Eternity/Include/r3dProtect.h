@@ -7,8 +7,8 @@
 
 // always use VMProtect in final build
 #ifdef FINAL_BUILD
-  //#undef USE_VMPROTECT
-  #define USE_VMPROTECT 0
+  #undef USE_VMPROTECT
+  #define USE_VMPROTECT 1
 #endif
 
 // always not use VMProtect in server
@@ -47,17 +47,26 @@ template<class TYPE, DWORD CRYPT_KEY> class r3dSec_type
 		  BYTE	b4;
 		} crypt;
 	} data;
+	BYTE	checksum_; // integrity checksum to detect direct memory edits
 #ifdef _DEBUG
 	TYPE		uncrypted;
 #endif
 
-  public:	
+	__forceinline BYTE computeChecksum() const {
+		return (BYTE)(data.crypt.b1 ^ data.crypt.b2 ^ data.crypt.b3 ^ data.crypt.b4 ^ (BYTE)(CRYPT_KEY >> 12));
+	}
+
+  public:
 	r3dSec_type() {
 		// default consturctor, do nothing.
 	}
-	
+
 	__forceinline r3dSec_type(const TYPE rhs) {
 		set(rhs);
+	}
+
+	__forceinline bool isValid() const {
+		return checksum_ == computeChecksum();
 	}
 
 	__forceinline TYPE get() const {
@@ -74,12 +83,13 @@ template<class TYPE, DWORD CRYPT_KEY> class r3dSec_type
 		data.crypt.b3 ^= ((CRYPT_KEY >>  0) & 0xFF);
 		data.crypt.b2 ^= ((CRYPT_KEY >>  8) & 0xFF);
 		data.crypt.b4 ^= ((CRYPT_KEY >> 24) & 0xFF);
-#ifdef _DEBUG		
+		checksum_ = computeChecksum();
+#ifdef _DEBUG
 		uncrypted = rhs;
-#endif		
+#endif
 		return *this;
 	}
-	
+
 	// accessors and setters
 	__forceinline operator TYPE() const {
 		return get();
@@ -92,6 +102,12 @@ template<class TYPE, DWORD CRYPT_KEY> class r3dSec_type
 	}
 	__forceinline r3dSec_type& operator=(const TYPE rhs) {
 		return set(rhs);
+	}
+	__forceinline r3dSec_type& operator+=(const TYPE rhs) {
+		return set(get() + rhs);
+	}
+	__forceinline r3dSec_type& operator-=(const TYPE rhs) {
+		return set(get() - rhs);
 	}
 };
 #pragma pack(pop)

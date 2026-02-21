@@ -217,7 +217,7 @@ enum pkttype_e
   PKT_C2S_MoveCameraLocation, // for FairFight
   PKT_C2C_PlayerJump,
 
-	//////////////////////////Í¹ÔàÁªÑè¹
+	//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   PKT_C2C_StartLitter,
   PKT_C2C_StartSpank,
   PKT_C2C_StartSpanktwo,
@@ -685,7 +685,7 @@ struct PKT_C2C_PlayerJump_s : public DefaultPacketMixin<PKT_C2C_PlayerJump>
 {
 };
 
-//////////////////////////Í¹ÔàÁªÑè¹
+//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 struct PKT_C2C_StartLitter_s : public DefaultPacketMixin<PKT_C2C_StartLitter>
 {
 };
@@ -1550,6 +1550,8 @@ struct PKT_C2S_SecurityRep_s : public DefaultPacketMixin<PKT_C2S_SecurityRep>
 	BYTE		reserved;
 	BYTE		NVGHack; // if player has NVG enabled, but doesn't have NVG item equipped
 	DWORD		GPP_Crc32;
+	BYTE		antiCheatFlags;   // r3dAntiCheatFlags bitmask from client-side scans
+	DWORD		codeIntegrityCrc; // CRC32 of .text section for code integrity check
 };
 
 struct PKT_C2S_CameraPos_s : public DefaultPacketMixin<PKT_C2S_CameraPos>
@@ -1615,6 +1617,12 @@ struct PKT_S2C_CheatWarning_s : public DefaultPacketMixin<PKT_S2C_CheatWarning>
 		CHEAT_AdminGiveItem,
 		CHEAT_Jobs,
 		CHEAT_Kills,
+
+		// client-side anti-cheat detections
+		CHEAT_DebuggerDetected,
+		CHEAT_CheatToolFound,
+		CHEAT_SuspiciousModule,
+		CHEAT_CodeIntegrity,
 
 #ifdef VEHICLES_ENABLED
 		CHEAT_VehicleHitTarget,		

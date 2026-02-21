@@ -31,6 +31,7 @@
 
 #include "NetworkHelper.h"
 #include "AsyncFuncs.h"
+#include "../EclipseStudio/Sources/AntiCheat/r3dAntiCheatProtocol.h"
 #include "Async_ServerObjects.h"
 #include "Async_ServerState.h"
 #include "TeamSpeakServer.h"
@@ -4144,6 +4145,20 @@ IMPL_PACKET_FUNC(ServerGameLogic, PKT_C2S_SecurityRep)
 		}
 	}
 
+	// process client-side anti-cheat flags
+	if(n.antiCheatFlags != 0 && peer.player)
+	{
+		if(n.antiCheatFlags & 0x01) // AC_DEBUGGER_PRESENT
+			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_DebuggerDetected, true, "debugger detected");
+		if(n.antiCheatFlags & 0x02) // AC_CHEAT_TOOL_FOUND
+			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_CheatToolFound, true, "cheat tool found");
+		if(n.antiCheatFlags & 0x04) // AC_SUSPICIOUS_MODULE
+			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_SuspiciousModule, false, "suspicious module injected");
+		if(n.antiCheatFlags & 0x08) // AC_HW_BREAKPOINT
+			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_DebuggerDetected, false, "hw breakpoint detected");
+		if(n.antiCheatFlags & 0x20) // AC_CODE_MODIFIED
+			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_CodeIntegrity, true, "code integrity violation", "crc=0x%08X", n.codeIntegrityCrc);
+	}
 
 	peer.secRepRecvTime = curTime;
 	peer.secRepGameTime = n.gameTime;
