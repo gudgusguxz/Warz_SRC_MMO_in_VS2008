@@ -2398,8 +2398,6 @@ bool ClientGameLogic::Connect(const char* host, int port)
 	r3d_assert(!serverConnected_);
 	r3d_assert(disconnectStatus_ == 0);
 
-	r3dAntiCheat_GameInit();
-
 	g_net.Initialize(this, "p2pNet");
 	g_net.CreateClient(0);
 	g_net.Connect(host, port);
@@ -2506,6 +2504,10 @@ int ClientGameLogic::RequestToStartGame()
 {
 	r3d_assert(localPlayerIdx_ != -1);
 	r3d_assert(localPlayer_ == NULL);
+
+	// init anti-cheat here (after map load) so baseline CRC and module
+	// count reflect the fully loaded game, avoiding false positives
+	r3dAntiCheat_GameInit();
 
 	PKT_C2S_StartGameReq_s n;
 	n.lastNetID = net_lastFreeId;
