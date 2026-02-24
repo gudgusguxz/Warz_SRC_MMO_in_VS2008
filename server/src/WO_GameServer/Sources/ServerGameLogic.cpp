@@ -4157,7 +4157,7 @@ IMPL_PACKET_FUNC(ServerGameLogic, PKT_C2S_SecurityRep)
 		if(n.antiCheatFlags & 0x08) // AC_HW_BREAKPOINT
 			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_DebuggerDetected, false, "hw breakpoint detected");
 		if(n.antiCheatFlags & 0x20) // AC_CODE_MODIFIED
-			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_CodeIntegrity, true, "code integrity violation", "crc=0x%08X", n.codeIntegrityCrc);
+			LogCheat(peerId, PKT_S2C_CheatWarning_s::CHEAT_CodeIntegrity, false, "code integrity violation", "crc=0x%08X", n.codeIntegrityCrc);
 	}
 
 	peer.secRepRecvTime = curTime;

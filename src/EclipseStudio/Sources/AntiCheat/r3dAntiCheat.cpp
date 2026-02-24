@@ -139,8 +139,9 @@ bool r3dAntiCheat::CheckTimingAnomaly()
 	QueryPerformanceCounter(&end);
 
 	double elapsed = (double)(end.QuadPart - start.QuadPart) / (double)freq.QuadPart;
-	// if a simple loop takes >50ms, likely being single-stepped
-	return (elapsed > 0.050);
+	// if a simple loop takes >500ms, likely being single-stepped
+	// (use generous threshold to avoid false positives during map loading)
+	return (elapsed > 0.500);
 }
 
 bool r3dAntiCheat::ScanProcesses()
@@ -221,8 +222,9 @@ bool r3dAntiCheat::CheckLoadedModules()
 		return false;
 
 	int curCount = (int)(cbNeeded / sizeof(HMODULE));
-	// allow small tolerance (+2) for legitimate late-loaded DLLs
-	return (curCount > s_initialModuleCount + 2);
+	// allow generous tolerance for legitimate late-loaded DLLs
+	// (map loading pulls in DirectX, audio, physics, etc.)
+	return (curCount > s_initialModuleCount + 20);
 }
 
 DWORD r3dAntiCheat::ComputeCodeCRC()
