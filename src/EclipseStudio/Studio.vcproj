@@ -2063,6 +2063,26 @@
 			</Filter>
 		</Filter>
 		<Filter
+			Name="AntiCheat"
+			>
+			<File
+				RelativePath=".\Sources\AntiCheat\r3dAntiCheat.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\AntiCheat\r3dAntiCheat.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\AntiCheat\r3dAntiCheatIntegration.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\AntiCheat\r3dAntiCheatProtocol.h"
+				>
+			</File>
+		</Filter>
+		<Filter
 			Name="Multiplayer"
 			>
 			<File

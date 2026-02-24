@@ -2914,35 +2914,35 @@ void obj_Player::CheckFireWeapon()
 	// check weapon restrictions
 	if(gClientLogic().localPlayer_) // check that we are in game
 	{
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_ASR) //»×¹¡Å
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_ASR) //ï¿½×¹ï¿½ï¿½
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_SHTG) //»×¹«Í§
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_SHTG) //ï¿½×¹ï¿½Í§
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_MG) ////»×¹¡Å
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_MG) ////ï¿½×¹ï¿½ï¿½
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_SMG) //»×¹¡Å
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_SMG) //ï¿½×¹ï¿½ï¿½
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_HG) //¾¡
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_HG) //ï¿½ï¿½
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_GRENADE) //ÃÐàºÔ´
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_GRENADE) //ï¿½ï¿½ï¿½Ô´
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_MELEE) //ÁÕ´
-			needExit = true;
-
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_SNP) //»×¹Êä¹
-			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_SHTG) //»×¹«Í§
-			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_GRENADE) //ÃÐàºÔ´
-			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_MELEE) //ÁÕ´
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableASR) && wpn->getCategory() == storecat_MELEE) //ï¿½Õ´
 			needExit = true;
 
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_MeleeOnly) && wpn->getCategory() == storecat_SNP) //»×¹Êä¹
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_SNP) //ï¿½×¹ï¿½ï¿½
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_MeleeOnly) && wpn->getCategory() == storecat_ASR) //»×¹¡Å
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_SHTG) //ï¿½×¹ï¿½Í§
 			needExit = true;
-		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_MeleeOnly) && wpn->getCategory() == storecat_GRENADE) //ÃÐàºÔ´
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_GRENADE) //ï¿½ï¿½ï¿½Ô´
+			needExit = true;
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_DisableSNP) && wpn->getCategory() == storecat_MELEE) //ï¿½Õ´
+			needExit = true;
+
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_MeleeOnly) && wpn->getCategory() == storecat_SNP) //ï¿½×¹ï¿½ï¿½
+			needExit = true;
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_MeleeOnly) && wpn->getCategory() == storecat_ASR) //ï¿½×¹ï¿½ï¿½
+			needExit = true;
+		if ((gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_MeleeOnly) && wpn->getCategory() == storecat_GRENADE) //ï¿½ï¿½ï¿½Ô´
 			needExit = true;
 	}
 
@@ -4832,8 +4832,8 @@ bool obj_Player::IsPushActive()
 	return pushVelocity > 0;
 }
 
-//////////////////////////Í¹ÔàÁªÑè¹
-void obj_Player::StartLitter()//1 àµé¹ÊØ´æ
+//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void obj_Player::StartLitter()//1 ï¿½ï¿½ï¿½Ø´ï¿½
 {
 
 	ChangeWeaponByIndex(HANDS_WEAPON_IDX);
@@ -4844,7 +4844,7 @@ void obj_Player::StartLitter()//1 àµé¹ÊØ´æ
 
 }
 
-void obj_Player::StartSpank()//2 àµé¹âÂ¡ËÑÇ
+void obj_Player::StartSpank()//2 ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½
 {
 	ChangeWeaponByIndex(HANDS_WEAPON_IDX);
 	uberAnim_->StartSpankAnim();
@@ -4862,7 +4862,7 @@ void obj_Player::StartSpanktwo()//8
 	p2pSendToHost(this, &n, sizeof(n));
 }
 
-void obj_Player::StartHandFlip()//4 Â×¹àÂÍÐàÂéÂà¤éÒ
+void obj_Player::StartHandFlip()//4 ï¿½×¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 {
 	ChangeWeaponByIndex(HANDS_WEAPON_IDX);
 	uberAnim_->StartHandFlipAnim();
@@ -5046,7 +5046,7 @@ void obj_Player::UpdateLocalPlayerMovement()
 
 	if(JumpVelocity > 0 && curTime >= JumpStartTime)
 	{
-		JumpVelocity -= Gravity * TimePassed * 2.5f;
+		JumpVelocity = JumpVelocity - Gravity * TimePassed * 2.5f;
 		RealAcceleration.Y += JumpVelocity;
 		// reset falling time
 		if(JumpVelocity<=0)
@@ -5200,11 +5200,11 @@ void obj_Player::UpdateLocalPlayerMovement()
 	if(m_Stamina>0)
 	{
 		if(CurLoadout.MedBleeding > 0)
-			m_Stamina -= TimePassed*GPP->c_fMedSys_Bleeding_Stamina;
+			m_Stamina = m_Stamina - TimePassed*GPP->c_fMedSys_Bleeding_Stamina;
 		if(CurLoadout.MedFeverCold > 0)
-			m_Stamina -= TimePassed*GPP->c_fMedSys_Fever_Stamina;
+			m_Stamina = m_Stamina - TimePassed*GPP->c_fMedSys_Fever_Stamina;
 		if(CurLoadout.MedBloodInfection > 0)
-			m_Stamina -= TimePassed*GPP->c_fMedSys_BloodInfection_Stamina;
+			m_Stamina = m_Stamina - TimePassed*GPP->c_fMedSys_BloodInfection_Stamina;
 	}
 	// STAMINA MED SYSTEM SYNC POINT END
 
@@ -5296,7 +5296,7 @@ void obj_Player::localPlayer_UseItem(int slotID, uint32_t itemID, const r3dPoint
 		else
 			SoundSys.PlayAndForget(SoundSys.GetEventIDByPath("Sounds/WarZ/PlayerSounds/PLAYER_DRINK"), GetPosition());
 
-		m_Stamina += GPP->c_fSprintMaxEnergy*fc->Stamina;
+		m_Stamina = m_Stamina + GPP->c_fSprintMaxEnergy*fc->Stamina;
 	}
 	if (itemID==WeaponConfig::ITEMID_Antibiotics||itemID==WeaponConfig::ITEMID_Bandages||itemID==WeaponConfig::ITEMID_Bandages2||
 		itemID==WeaponConfig::ITEMID_Painkillers||itemID==WeaponConfig::ITEMID_Medkit||itemID==WeaponConfig::ITEMID_CraftedBandages||
@@ -5862,13 +5862,13 @@ BOOL obj_Player::Update()
 				if(gClientLogic().m_gameInfo.flags & GBGameInfo::SFLAGS_Respawnfast) //Respawnfast
 				{
 					float time = r3dGetTime() - TimeOfDeath;
-					int t = R3D_MAX(15-int(time), 0); //àÇÅÒµÒÂà¡Ô´
+					int t = R3D_MAX(15-int(time), 0); //ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½Ô´
 					hudMain->updateDeadTimer(t);
 				}
 				else if(gUserProfile.ProfileData.PremiumAcc>0)
 				{
 					float time = r3dGetTime() - TimeOfDeath;
-					int t = R3D_MAX(30-int(time), 0); //ÍÍ¡ÍÑµâ¹ÁÑµÔ
+					int t = R3D_MAX(30-int(time), 0); //ï¿½Í¡ï¿½Ñµï¿½ï¿½Ñµï¿½
 					hudMain->updateDeadTimer(t);
 				}
 				else
@@ -6109,7 +6109,7 @@ BOOL obj_Player::Update()
 		TimeUpdateGroup = r3dGetTime() + 0.3f;
 	}
 
-	//µÑÇ·Ó§Ò¹¢Í§ÃÐºº¤ÙÅ´ÒÇ
+	//ï¿½ï¿½Ç·Ó§Ò¹ï¿½Í§ï¿½Ðºï¿½ï¿½ï¿½Å´ï¿½ï¿½
 	float TimeCoolDown = r3dGetTime();
 	if (m_TauntCoolDown > TimeCoolDown)
 	{
@@ -6789,7 +6789,7 @@ void obj_Player::UpdateActionUI()
 					}
 					else // trade
 					{
-						if (m_TauntCoolDown > 0.0f)//ËéÒÁà·Ã´àÇÅÒàµé¹
+						if (m_TauntCoolDown > 0.0f)//ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						{
 						}
 						else {
@@ -6986,7 +6986,7 @@ void obj_Player::OnNetPacket(const PKT_C2C_PlayerJump_s& n)
 	return;
 }
 
-//////////////////////////Í¹ÔàÁªÑè¹
+//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void obj_Player::OnNetPacket(const PKT_C2C_StartLitter_s& n)
 {
 	uberAnim_->StartLitterAnim();
@@ -8208,7 +8208,7 @@ BOOL obj_Player::OnNetReceive(DWORD EventID, const void* packetData, int packetS
 		DEFINE_GAMEOBJ_PACKET_HANDLER(PKT_C2C_TradeGDAns);
 		//
 
-		//////////////////////////Í¹ÔàÁªÑè¹
+		//////////////////////////Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		DEFINE_GAMEOBJ_PACKET_HANDLER(PKT_C2C_StartLitter);
 		DEFINE_GAMEOBJ_PACKET_HANDLER(PKT_C2C_StartSpank);
 		DEFINE_GAMEOBJ_PACKET_HANDLER(PKT_C2C_StartSpanktwo);
