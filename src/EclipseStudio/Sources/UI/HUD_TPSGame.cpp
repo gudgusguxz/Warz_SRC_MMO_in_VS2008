@@ -1438,7 +1438,7 @@ bool g_AutoRunToggled = false;
 
 void ProcessCamera(obj_Player* pl)
 {
-	ActiveCameraRigID = (Playerstate_e)pl->PlayerState;
+	ActiveCameraRigID = (Playerstate_e)(int)pl->PlayerState;
 	ActiveCameraRig   = TPSHudCameras[g_camera_mode->GetInt()][ActiveCameraRigID];
 	
 	// use this to update the camera from the options. 
@@ -1468,7 +1468,7 @@ void ProcessCamera(obj_Player* pl)
 
 		LerpValue = 0;
 
-		CurrentState = (Playerstate_e)pl->PlayerState;	
+		CurrentState = (Playerstate_e)(int)pl->PlayerState;
 	}
 	else
 	{
