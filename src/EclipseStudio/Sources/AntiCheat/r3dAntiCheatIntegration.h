@@ -5,12 +5,26 @@
 
 inline void r3dAntiCheat_GameInit()
 {
-	r3dAntiCheat::Init();
+	__try
+	{
+		r3dAntiCheat::Init();
+	}
+	__except(EXCEPTION_EXECUTE_HANDLER)
+	{
+		r3dOutToLog("r3dAntiCheat_GameInit: exception caught, anti-cheat disabled\n");
+	}
 }
 
 inline void r3dAntiCheat_GameShutdown()
 {
-	r3dAntiCheat::Shutdown();
+	__try
+	{
+		r3dAntiCheat::Shutdown();
+	}
+	__except(EXCEPTION_EXECUTE_HANDLER)
+	{
+		// ignore
+	}
 }
 
 inline void r3dAntiCheat_UpdateSecurityReport(
@@ -20,11 +34,19 @@ inline void r3dAntiCheat_UpdateSecurityReport(
 	BYTE& outFlags,
 	DWORD& outCodeCRC)
 {
-	if(curTicks >= nextScanTime)
+	__try
 	{
-		cachedFlags = r3dAntiCheat::PerformScan();
-		nextScanTime = curTicks + 25000 + (rand() % 10000);
+		if(curTicks >= nextScanTime)
+		{
+			cachedFlags = r3dAntiCheat::PerformScan();
+			nextScanTime = curTicks + 25000 + (rand() % 10000);
+		}
+		outFlags = cachedFlags;
+		outCodeCRC = r3dAntiCheat::GetCodeCRC();
 	}
-	outFlags = cachedFlags;
-	outCodeCRC = r3dAntiCheat::GetCodeCRC();
+	__except(EXCEPTION_EXECUTE_HANDLER)
+	{
+		outFlags = 0;
+		outCodeCRC = 0;
+	}
 }
